@@ -18,7 +18,6 @@ public class LocalizeConfig {
     private static YamlConfiguration config;
     private static final EnumMap<LocalizeNode, String> MESSAGES = new EnumMap<LocalizeNode, String>(
 	    LocalizeNode.class);
-    public static String econFailure, noPermission, reloadConfig;
 
     public static void init(PlayerPoints pp) {
 	plugin = pp;

@@ -82,9 +82,10 @@ public class StorageHandler {
 	if (statement == null) {
 	    return points;
 	}
+	ResultSet result = null;
 	try {
 	    statement.setString(1, name);
-	    final ResultSet result = statement.executeQuery();
+	    result = statement.executeQuery();
 	    if (result.next()) {
 		points = result.getInt("points");
 	    }
@@ -94,6 +95,25 @@ public class StorageHandler {
 	    plugin.getLogger().warning(
 		    "SQLException on getPoints(" + name + ")");
 	    sql.printStackTrace();
+	} finally {
+	    if (result != null) {
+		try {
+		    result.close();
+		} catch (SQLException e) {
+		    plugin.getLogger().warning(
+			    "SQLException on getPoints(" + name + ")");
+		    e.printStackTrace();
+		}
+	    }
+	    if (statement != null) {
+		try {
+		    statement.close();
+		} catch (SQLException e) {
+		    plugin.getLogger().warning(
+			    "SQLException on getPoints(" + name + ")");
+		    e.printStackTrace();
+		}
+	    }
 	}
 	return points;
     }
@@ -159,9 +179,10 @@ public class StorageHandler {
 	    return true;
 	}
 	}
+	ResultSet result = null;
 	try {
 	    statement.setString(1, name);
-	    final ResultSet result = statement.executeQuery();
+	    result = statement.executeQuery();
 	    if (result.next()) {
 		has = true;
 	    }
@@ -169,8 +190,27 @@ public class StorageHandler {
 	    statement.close();
 	} catch (SQLException sql) {
 	    plugin.getLogger().warning(
-		    "SQLException on getPoints(" + name + ")");
+		    "SQLException on playerInDatabase(" + name + ")");
 	    sql.printStackTrace();
+	} finally {
+	    if (result != null) {
+		try {
+		    result.close();
+		} catch (SQLException e) {
+		    plugin.getLogger().warning(
+			    "SQLException on playerInDatabase(" + name + ")");
+		    e.printStackTrace();
+		}
+	    }
+	    if (statement != null) {
+		try {
+		    statement.close();
+		} catch (SQLException e) {
+		    plugin.getLogger().warning(
+			    "SQLException on playerInDatabase(" + name + ")");
+		    e.printStackTrace();
+		}
+	    }
 	}
 	return has;
     }
