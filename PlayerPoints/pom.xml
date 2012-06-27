@@ -86,7 +86,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.bukkit</groupId>
-			<artifactId>Bukkit</artifactId>
+			<artifactId>bukkit</artifactId>
 			<version>1.2.5-R4.0</version>
 		</dependency>
 		<dependency>
