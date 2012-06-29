@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.black_ixx.playerPoints</groupId>
   <artifactId>PlayerPoints</artifactId>
-  <version>1.52-SNAPSHOT</version>
+  <version>1.53-SNAPSHOT</version>
   <name>PlayerPoints</name>
   <description>Player points system for Bukkit</description>
   <scm>
