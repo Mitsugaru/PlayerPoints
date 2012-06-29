@@ -51,7 +51,7 @@ public enum LocalizeNode {
 	    "message.help.look",
 	    "&7/points give <name> &6: Lookup player's points"), HELP_SET(
 	    "message.help.set",
-	    "&7/points set <name> <points> &6: Set player's points to given amount"), HELP_RESET(
+	    "&7/points set <name> <points> &6: Set player's points to amount"), HELP_RESET(
 	    "message.help.reset",
 	    "&7/points reset <name> &6: Reset player's points to 0"), HELP_PAY(
 	    "message.help.pay",
