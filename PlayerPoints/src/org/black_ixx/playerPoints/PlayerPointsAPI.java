@@ -38,7 +38,7 @@ public class PlayerPointsAPI {
 	if (take > 0) {
 	    take *= -1;
 	}
-	if ((points + take) <= 0) {
+	if ((points + take) < 0) {
 	    return false;
 	}
 	return give(playername, take);
