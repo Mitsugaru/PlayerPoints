@@ -1,9 +1,10 @@
 name: PlayerPoints
-version: 1.522
+version: 1.523
 description: Players can have points
 author: Black_ixx
 website: http://felix.neuby.de
 main: org.black_ixx.playerPoints.PlayerPoints
+softdepend: [Votifier]
 commands:
   points:
    description: Root command for PlayerPoints
