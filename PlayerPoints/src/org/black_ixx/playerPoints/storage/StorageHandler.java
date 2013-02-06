@@ -14,16 +14,49 @@ import org.black_ixx.playerPoints.storage.SQLibrary.SQLite;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+/**
+ * Storage handler for getting / setting info between YAML, SQLite, and MYSQL.
+ */
 public class StorageHandler {
-
+   /**
+    * Plugin instance.
+    */
    private PlayerPoints plugin;
+   /**
+    * Type of storage to use.
+    */
    private StorageType backend;
+   /**
+    * SQLite reference.
+    */
    private SQLite sqlite;
+   /**
+    * MYSQL reference.
+    */
    private MySQL mysql;
+   /**
+    * YAML reference.
+    */
+   private YAMLStorage yaml;
+   /**
+    * Query for getting points.
+    */
    private static final String GET_POINTS = "SELECT points FROM playerpoints WHERE playername=?;";
+   /**
+    * Query for adding a new player.
+    */
    private static final String INSERT_PLAYER = "INSERT INTO playerpoints (points,playername) VALUES(?,?);";
+   /**
+    * Query for updating a player's point amount.
+    */
    private static final String UPDATE_PLAYER = "UPDATE playerpoints SET points=? WHERE playername=?";
 
+   /**
+    * Constructor.
+    * 
+    * @param plugin
+    *           - PlayerPoints plugin instance.
+    */
    public StorageHandler(PlayerPoints plugin) {
       this.plugin = plugin;
       final RootConfig config = plugin.getRootConfig();
@@ -47,7 +80,7 @@ public class StorageHandler {
          break;
       }
       default: {
-         YAMLStorage.init(plugin);
+         yaml = new YAMLStorage(plugin);
          break;
       }
       }
@@ -59,6 +92,13 @@ public class StorageHandler {
       }
    }
 
+   /**
+    * Get the amount of points the given player has.
+    * 
+    * @param name
+    *           - Name of player.
+    * @return Points the player has.
+    */
    public int getPoints(String name) {
       int points = 0;
       if(name == null || name.equals("")) {
@@ -75,7 +115,7 @@ public class StorageHandler {
          break;
       }
       default: {
-         return YAMLStorage.getPoints(name);
+         return yaml.getPoints(name);
       }
       }
       if(statement == null) {
@@ -109,6 +149,15 @@ public class StorageHandler {
       return points;
    }
 
+   /**
+    * Set the amount of points for the given player name.
+    * 
+    * @param name
+    *           - Player name
+    * @param points
+    *           - Amount of points to set.
+    * @return True if we were successful in editing, else false.
+    */
    public boolean setPoints(String name, int points) {
       if(name == null || name.equals("")) {
          return false;
@@ -133,7 +182,7 @@ public class StorageHandler {
          break;
       }
       default: {
-         YAMLStorage.setPoints(name, points);
+         yaml.setPoints(name, points);
          return true;
       }
       }
@@ -158,6 +207,13 @@ public class StorageHandler {
       return false;
    }
 
+   /**
+    * Check if the given player name is in the database.
+    * 
+    * @param name
+    *           - Player name to check.
+    * @return True if player exists in database, else false.
+    */
    public boolean playerInDatabase(String name) {
       boolean has = false;
       if(name == null || name.equals("")) {
@@ -205,6 +261,12 @@ public class StorageHandler {
       return has;
    }
 
+   /**
+    * Imports from SQLite / YAML to MYSQL.
+    * 
+    * @param source
+    *           - Type of storage to read from.
+    */
    private void importSQL(StorageType source) {
       switch(source) {
       case SQLITE: {
@@ -230,8 +292,9 @@ public class StorageHandler {
       }
       case YAML: {
          plugin.getLogger().info("Importing YAML to MySQL");
+         PreparedStatement statement = null;
          try {
-            final PreparedStatement statement = mysql.prepare(INSERT_PLAYER);
+            statement = mysql.prepare(INSERT_PLAYER);
             final File file = new File(plugin.getDataFolder().getAbsolutePath() + "/storage.yml");
             final ConfigurationSection config = YamlConfiguration.loadConfiguration(file);
             final ConfigurationSection points = config.getConfigurationSection("Points");
@@ -241,9 +304,16 @@ public class StorageHandler {
                statement.addBatch();
             }
             statement.executeBatch();
-         } catch(SQLException sql) {
-            plugin.getLogger().warning("SQLException on importSQL(" + source.toString() + ")");
-            sql.printStackTrace();
+         } catch(SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "SQLException on importSQL(" + source.toString() + ")", e);
+         } finally {
+            if(statement != null) {
+               try {
+                  statement.close();
+               } catch(SQLException e) {
+                  plugin.getLogger().log(Level.SEVERE, "SQLException on importSQL(" + source.toString() + ")", e);
+               }
+            }
          }
          break;
       }

@@ -8,38 +8,54 @@ import org.bukkit.event.Listener;
 
 import com.vexsoftware.votifier.model.VotifierEvent;
 
+/**
+ * Listener for the votifier event.
+ */
 public class VotifierListener implements Listener {
-    private PlayerPoints plugin;
-    private int amount = 100;
-    private boolean online = false;
+   /**
+    * Plugin instance.
+    */
+   private PlayerPoints plugin;
+   /**
+    * Amount to give.
+    */
+   private int amount = 100;
+   /**
+    * Whether the player has to be online or not.
+    */
+   private boolean online = false;
 
-    public VotifierListener(PlayerPoints plugin) {
-	this.plugin = plugin;
-	amount = plugin.getRootConfig().voteAmount;
-	online = plugin.getRootConfig().voteOnline;
-    }
+   /**
+    * Constructor.
+    * 
+    * @param plugin
+    *           - Plugin instance.
+    */
+   public VotifierListener(PlayerPoints plugin) {
+      this.plugin = plugin;
+      amount = plugin.getRootConfig().voteAmount;
+      online = plugin.getRootConfig().voteOnline;
+   }
 
-    @EventHandler
-    public void vote(VotifierEvent event) {
-	if (event.getVote().getUsername() == null) {
-	    return;
-	}
-	final String name = event.getVote().getUsername();
-	boolean pay = false;
-	if (online) {
-	    final Player player = plugin.getServer().getPlayer(name);
-	    if (player != null && player.isOnline()) {
-		pay = true;
-		player.sendMessage("Thanks for voting on "
-			+ event.getVote().getServiceName() + "!");
-		player.sendMessage(this.amount
-			+ " has been added to your Points balance.");
-	    }
-	} else {
-	    pay = true;
-	}
-	if (pay) {
-	    PlayerPointsAPI.give(name, amount);
-	}
-    }
+   @EventHandler
+   public void vote(VotifierEvent event) {
+      if(event.getVote().getUsername() == null) {
+         return;
+      }
+      final String name = event.getVote().getUsername();
+      boolean pay = false;
+      if(online) {
+         final Player player = plugin.getServer().getPlayer(name);
+         if(player != null && player.isOnline()) {
+            pay = true;
+            player.sendMessage("Thanks for voting on " + event.getVote().getServiceName() + "!");
+            player.sendMessage(this.amount + " has been added to your Points balance.");
+         }
+      } else {
+         pay = true;
+      }
+      if(pay) {
+         PlayerPointsAPI.give(name, amount);
+      }
+   }
 }
