@@ -7,10 +7,10 @@ public class PlayerPointsAPI {
    /**
     * Plugin instance.
     */
-   private static PlayerPoints plugin;
+   private final PlayerPoints plugin;
 
-   public static void init(PlayerPoints p) {
-      plugin = p;
+   public PlayerPointsAPI(PlayerPoints p) {
+      this.plugin = p;
    }
 
    /**
@@ -22,7 +22,7 @@ public class PlayerPointsAPI {
     *           of points to give
     * @return True if we successfully adjusted points, else false
     */
-   public static boolean give(String playername, int amount) {
+   public boolean give(String playername, int amount) {
       final int total = look(playername.toLowerCase()) + amount;
       return plugin.getStorageHandler().setPoints(playername.toLowerCase(), total);
    }
@@ -37,7 +37,7 @@ public class PlayerPointsAPI {
     *           of points to give
     * @return True if we successfully adjusted points, else false
     */
-   public static boolean take(String playername, int amount) {
+   public boolean take(String playername, int amount) {
       final int points = look(playername);
       int take = amount;
       if(take > 0) {
@@ -57,7 +57,7 @@ public class PlayerPointsAPI {
     *           name
     * @return Points that the player has
     */
-   public static int look(String playername) {
+   public int look(String playername) {
       return plugin.getStorageHandler().getPoints(playername.toLowerCase());
    }
 
@@ -73,7 +73,7 @@ public class PlayerPointsAPI {
     *           of points to give
     * @return True if we successfully adjusted points, else false
     */
-   public static boolean pay(String source, String target, int amount) {
+   public boolean pay(String source, String target, int amount) {
       if(take(source, amount)) {
          if(give(target, amount)) {
             return true;
@@ -93,7 +93,7 @@ public class PlayerPointsAPI {
     *           of points that it should be set to
     * @return True if successful
     */
-   public static boolean set(String playername, int amount) {
+   public boolean set(String playername, int amount) {
       return plugin.getStorageHandler().setPoints(playername.toLowerCase(), amount);
    }
 
@@ -104,7 +104,7 @@ public class PlayerPointsAPI {
     *           of player
     * @return True if successful
     */
-   public static boolean reset(String playername) {
+   public boolean reset(String playername) {
       return set(playername, 0);
    }
 }

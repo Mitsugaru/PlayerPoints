@@ -1,7 +1,6 @@
 package org.black_ixx.playerPoints.listeners;
 
 import org.black_ixx.playerPoints.PlayerPoints;
-import org.black_ixx.playerPoints.PlayerPointsAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -55,7 +54,7 @@ public class VotifierListener implements Listener {
          pay = true;
       }
       if(pay) {
-         PlayerPointsAPI.give(name, amount);
+         plugin.getAPI().give(name, amount);
       }
    }
 }

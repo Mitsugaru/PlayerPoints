@@ -4,6 +4,7 @@ main: ${project.mainclass}
 version: ${project.version}
 author: Black_ixx
 website: http://felix.neuby.de
+depend: [SQLibrary]
 softdepend: [Votifier]
 commands:
   points:
