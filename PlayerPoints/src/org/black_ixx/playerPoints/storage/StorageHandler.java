@@ -6,11 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 
+import lib.PatPeter.SQLibrary.MySQL;
+import lib.PatPeter.SQLibrary.SQLite;
+
 import org.black_ixx.playerPoints.PlayerPoints;
 import org.black_ixx.playerPoints.config.RootConfig;
-import org.black_ixx.playerPoints.storage.SQLibrary.MySQL;
-import org.black_ixx.playerPoints.storage.SQLibrary.Query;
-import org.black_ixx.playerPoints.storage.SQLibrary.SQLite;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -65,17 +65,25 @@ public class StorageHandler {
       switch(backend) {
       case SQLITE: {
          sqlite = new SQLite(plugin.getLogger(), "", "storage", plugin.getDataFolder().getAbsolutePath());
-         if(!sqlite.checkTable("playerpoints")) {
+         if(!sqlite.isTable("playerpoints")) {
             plugin.getLogger().info("Creating playerpoints table");
-            sqlite.createTable("CREATE TABLE playerpoints (id INTEGER PRIMARY KEY, playername varchar(32) NOT NULL, points INTEGER NOT NULL, UNIQUE(playername));");
+            try {
+               sqlite.query("CREATE TABLE playerpoints (id INTEGER PRIMARY KEY, playername varchar(32) NOT NULL, points INTEGER NOT NULL, UNIQUE(playername));");
+            } catch(SQLException e) {
+               plugin.getLogger().log(Level.SEVERE, "Could not create SQLite table.", e);
+            }
          }
          break;
       }
       case MYSQL: {
-         mysql = new MySQL(plugin.getLogger(), "", config.host, config.port, config.database, config.user, config.password);
-         if(!mysql.checkTable("playerpoints")) {
+         mysql = new MySQL(plugin.getLogger(), "", config.host, Integer.valueOf(config.port), config.database, config.user, config.password);
+         if(!mysql.isTable("playerpoints")) {
             plugin.getLogger().info("Creating playerpoints table");
-            mysql.createTable("CREATE TABLE playerpoints (id INT UNSIGNED NOT NULL AUTO_INCREMENT, playername varchar(32) NOT NULL, points INT NOT NULL, PRIMARY KEY(id), UNIQUE(playername));");
+            try {
+               mysql.query("CREATE TABLE playerpoints (id INT UNSIGNED NOT NULL AUTO_INCREMENT, playername varchar(32) NOT NULL, points INT NOT NULL, PRIMARY KEY(id), UNIQUE(playername));");
+            } catch(SQLException e) {
+               plugin.getLogger().log(Level.SEVERE, "Could not create MySQL table.", e);
+            }
          }
          break;
       }
@@ -107,11 +115,19 @@ public class StorageHandler {
       PreparedStatement statement = null;
       switch(backend) {
       case SQLITE: {
-         statement = sqlite.prepare(GET_POINTS);
+         try {
+            statement = sqlite.prepare(GET_POINTS);
+         } catch(SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Could not create getter statement.", e);
+         }
          break;
       }
       case MYSQL: {
-         statement = mysql.prepare(GET_POINTS);
+         try {
+            statement = mysql.prepare(GET_POINTS);
+         } catch(SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Could not create getter statement.", e);
+         }
          break;
       }
       default: {
@@ -167,17 +183,33 @@ public class StorageHandler {
       switch(backend) {
       case SQLITE: {
          if(exists) {
-            statement = sqlite.prepare(UPDATE_PLAYER);
+            try {
+               statement = sqlite.prepare(UPDATE_PLAYER);
+            } catch(SQLException e) {
+               plugin.getLogger().log(Level.SEVERE, "Could not create setter statement.", e);
+            }
          } else {
-            statement = sqlite.prepare(INSERT_PLAYER);
+            try {
+               statement = sqlite.prepare(INSERT_PLAYER);
+            } catch(SQLException e) {
+               plugin.getLogger().log(Level.SEVERE, "Could not create setter statement.", e);
+            }
          }
          break;
       }
       case MYSQL: {
          if(exists) {
-            statement = mysql.prepare(UPDATE_PLAYER);
+            try {
+               statement = mysql.prepare(UPDATE_PLAYER);
+            } catch(SQLException e) {
+               plugin.getLogger().log(Level.SEVERE, "Could not create setter statement.", e);
+            }
          } else {
-            statement = mysql.prepare(INSERT_PLAYER);
+            try {
+               statement = mysql.prepare(INSERT_PLAYER);
+            } catch(SQLException e) {
+               plugin.getLogger().log(Level.SEVERE, "Could not create setter statement.", e);
+            }
          }
          break;
       }
@@ -192,9 +224,8 @@ public class StorageHandler {
          statement.executeUpdate();
          statement.close();
          return true;
-      } catch(SQLException sql) {
-         plugin.getLogger().warning("SQLException on getPoints(" + name + ")");
-         sql.printStackTrace();
+      } catch(SQLException e) {
+         plugin.getLogger().log(Level.SEVERE, "SQLException on getPoints(" + name + ")", e);
       } finally {
          if(statement != null) {
             try {
@@ -222,11 +253,19 @@ public class StorageHandler {
       PreparedStatement statement = null;
       switch(backend) {
       case SQLITE: {
-         statement = sqlite.prepare(GET_POINTS);
+         try {
+            statement = sqlite.prepare(GET_POINTS);
+         } catch(SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Could not create player check statement.", e);
+         }
          break;
       }
       case MYSQL: {
-         statement = mysql.prepare(GET_POINTS);
+         try {
+            statement = mysql.prepare(GET_POINTS);
+         } catch(SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Could not create player check statement.", e);
+         }
          break;
       }
       default: {
@@ -273,16 +312,16 @@ public class StorageHandler {
          plugin.getLogger().info("Importing SQLite to MySQL");
          try {
             sqlite = new SQLite(plugin.getLogger(), "", "storage", plugin.getDataFolder().getAbsolutePath());
-            final Query query = sqlite.select("SELECT * FROM playerpoints;");
+            final ResultSet query = sqlite.query("SELECT * FROM playerpoints");
             final PreparedStatement statement = mysql.prepare(INSERT_PLAYER);
-            if(query.getResult().next()) {
+            if(query.next()) {
                do {
-                  statement.setInt(1, query.getResult().getInt("points"));
-                  statement.setString(2, query.getResult().getString("playername"));
+                  statement.setInt(1, query.getInt("points"));
+                  statement.setString(2, query.getString("playername"));
                   statement.addBatch();
-               } while(query.getResult().next());
+               } while(query.next());
             }
-            query.closeQuery();
+            query.close();
             statement.executeBatch();
             statement.close();
          } catch(SQLException e) {

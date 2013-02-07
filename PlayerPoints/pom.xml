@@ -13,7 +13,7 @@
     </scm>
     <!-- Properties -->
     <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.mainclass>org.black_ixx.playerPoints.PlayerPoints</project.mainclass>
     </properties>
     <!-- Developers -->
@@ -47,6 +47,13 @@
             <version>1.9</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/Votifier.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>lib.PatPeter</groupId>
+            <artifactId>SQLibrary</artifactId>
+            <version>4.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/SQLibrary.jar</systemPath>
         </dependency>
     </dependencies>
     <!-- Reporting -->
