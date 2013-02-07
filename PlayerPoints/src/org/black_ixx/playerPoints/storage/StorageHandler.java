@@ -136,7 +136,7 @@ public class StorageHandler {
          try {
             statement = mysql.prepare(GET_POINTS);
             statement.setString(1, name);
-            result = sqlite.query(statement);
+            result = mysql.query(statement);
             if(result != null) {
                points = result.getInt("points");
             }
@@ -175,12 +175,13 @@ public class StorageHandler {
       case SQLITE: {
          try {
             if(exists) {
-               statement = mysql.prepare(UPDATE_PLAYER);
+               statement = sqlite.prepare(UPDATE_PLAYER);
             } else {
-               statement = mysql.prepare(INSERT_PLAYER);
+               statement = sqlite.prepare(INSERT_PLAYER);
             }
             statement.setInt(1, points);
             statement.setString(2, name);
+            result = sqlite.query(statement);
             value = true;
          } catch(SQLException e) {
             plugin.getLogger().log(Level.SEVERE, "Could not create setter statement.", e);
