@@ -65,6 +65,7 @@ public class StorageHandler {
       switch(backend) {
       case SQLITE: {
          sqlite = new SQLite(plugin.getLogger(), " ", "storage", plugin.getDataFolder().getAbsolutePath());
+         sqlite.open();
          if(!sqlite.isTable("playerpoints")) {
             plugin.getLogger().info("Creating playerpoints table");
             try {
@@ -77,6 +78,7 @@ public class StorageHandler {
       }
       case MYSQL: {
          mysql = new MySQL(plugin.getLogger(), " ", config.host, Integer.valueOf(config.port), config.database, config.user, config.password);
+         mysql.open();
          if(!mysql.isTable("playerpoints")) {
             plugin.getLogger().info("Creating playerpoints table");
             try {
