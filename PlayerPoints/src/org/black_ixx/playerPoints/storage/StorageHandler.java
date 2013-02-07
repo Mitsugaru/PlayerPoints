@@ -122,7 +122,7 @@ public class StorageHandler {
             statement = sqlite.prepare(GET_POINTS);
             statement.setString(1, name);
             result = sqlite.query(statement);
-            if(result != null) {
+            if(result != null && result.next()) {
                points = result.getInt("points");
             }
          } catch(SQLException e) {
@@ -137,7 +137,7 @@ public class StorageHandler {
             statement = mysql.prepare(GET_POINTS);
             statement.setString(1, name);
             result = mysql.query(statement);
-            if(result != null) {
+            if(result != null && result.next()) {
                points = result.getInt("points");
             }
          } catch(SQLException e) {
