@@ -64,7 +64,7 @@ public class StorageHandler {
       // Check for database type backend
       switch(backend) {
       case SQLITE: {
-         sqlite = new SQLite(plugin.getLogger(), "", "storage", plugin.getDataFolder().getAbsolutePath());
+         sqlite = new SQLite(plugin.getLogger(), " ", "storage", plugin.getDataFolder().getAbsolutePath());
          if(!sqlite.isTable("playerpoints")) {
             plugin.getLogger().info("Creating playerpoints table");
             try {
@@ -76,7 +76,7 @@ public class StorageHandler {
          break;
       }
       case MYSQL: {
-         mysql = new MySQL(plugin.getLogger(), "", config.host, Integer.valueOf(config.port), config.database, config.user, config.password);
+         mysql = new MySQL(plugin.getLogger(), " ", config.host, Integer.valueOf(config.port), config.database, config.user, config.password);
          if(!mysql.isTable("playerpoints")) {
             plugin.getLogger().info("Creating playerpoints table");
             try {
@@ -113,54 +113,41 @@ public class StorageHandler {
          return points;
       }
       PreparedStatement statement = null;
+      ResultSet result = null;
       switch(backend) {
       case SQLITE: {
          try {
             statement = sqlite.prepare(GET_POINTS);
+            statement.setString(1, name);
+            result = sqlite.query(statement);
+            if(result != null) {
+               points = result.getInt("points");
+            }
          } catch(SQLException e) {
             plugin.getLogger().log(Level.SEVERE, "Could not create getter statement.", e);
+         } finally {
+            cleanup(result, statement);
          }
          break;
       }
       case MYSQL: {
          try {
             statement = mysql.prepare(GET_POINTS);
+            statement.setString(1, name);
+            result = sqlite.query(statement);
+            if(result != null) {
+               points = result.getInt("points");
+            }
          } catch(SQLException e) {
             plugin.getLogger().log(Level.SEVERE, "Could not create getter statement.", e);
+         } finally {
+            cleanup(result, statement);
          }
          break;
       }
       default: {
-         return yaml.getPoints(name);
+         points = yaml.getPoints(name);
       }
-      }
-      if(statement == null) {
-         return points;
-      }
-      ResultSet result = null;
-      try {
-         statement.setString(1, name);
-         result = statement.executeQuery();
-         if(result.next()) {
-            points = result.getInt("points");
-         }
-      } catch(SQLException e) {
-         plugin.getLogger().log(Level.SEVERE, "SQLException on playerInDatabase(" + name + ")", e);
-      } finally {
-         if(result != null) {
-            try {
-               result.close();
-            } catch(SQLException e) {
-               plugin.getLogger().log(Level.SEVERE, "SQLException on playerInDatabase(" + name + ")", e);
-            }
-         }
-         if(statement != null) {
-            try {
-               statement.close();
-            } catch(SQLException e) {
-               plugin.getLogger().log(Level.SEVERE, "SQLException on playerInDatabase(" + name + ")", e);
-            }
-         }
       }
       return points;
    }
@@ -178,64 +165,52 @@ public class StorageHandler {
       if(name == null || name.equals("")) {
          return false;
       }
+      boolean value = false;
       final boolean exists = playerInDatabase(name);
       PreparedStatement statement = null;
+      ResultSet result = null;
       switch(backend) {
       case SQLITE: {
-         if(exists) {
-            try {
-               statement = sqlite.prepare(UPDATE_PLAYER);
-            } catch(SQLException e) {
-               plugin.getLogger().log(Level.SEVERE, "Could not create setter statement.", e);
+         try {
+            if(exists) {
+               statement = mysql.prepare(UPDATE_PLAYER);
+            } else {
+               statement = mysql.prepare(INSERT_PLAYER);
             }
-         } else {
-            try {
-               statement = sqlite.prepare(INSERT_PLAYER);
-            } catch(SQLException e) {
-               plugin.getLogger().log(Level.SEVERE, "Could not create setter statement.", e);
-            }
+            statement.setInt(1, points);
+            statement.setString(2, name);
+            value = true;
+         } catch(SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Could not create setter statement.", e);
+         } finally {
+            cleanup(result, statement);
          }
          break;
       }
       case MYSQL: {
-         if(exists) {
-            try {
+         try {
+            if(exists) {
                statement = mysql.prepare(UPDATE_PLAYER);
-            } catch(SQLException e) {
-               plugin.getLogger().log(Level.SEVERE, "Could not create setter statement.", e);
-            }
-         } else {
-            try {
+            } else {
                statement = mysql.prepare(INSERT_PLAYER);
-            } catch(SQLException e) {
-               plugin.getLogger().log(Level.SEVERE, "Could not create setter statement.", e);
             }
+            statement.setInt(1, points);
+            statement.setString(2, name);
+            result = mysql.query(statement);
+            value = true;
+         } catch(SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Could not create setter statement.", e);
+         } finally {
+            cleanup(result, statement);
          }
          break;
       }
       default: {
          yaml.setPoints(name, points);
-         return true;
+         value = true;
       }
       }
-      try {
-         statement.setInt(1, points);
-         statement.setString(2, name);
-         statement.executeUpdate();
-         statement.close();
-         return true;
-      } catch(SQLException e) {
-         plugin.getLogger().log(Level.SEVERE, "SQLException on getPoints(" + name + ")", e);
-      } finally {
-         if(statement != null) {
-            try {
-               statement.close();
-            } catch(SQLException e) {
-               plugin.getLogger().log(Level.SEVERE, "SQLException on playerInDatabase(" + name + ")", e);
-            }
-         }
-      }
-      return false;
+      return value;
    }
 
    /**
@@ -251,51 +226,41 @@ public class StorageHandler {
          return has;
       }
       PreparedStatement statement = null;
+      ResultSet result = null;
       switch(backend) {
       case SQLITE: {
          try {
             statement = sqlite.prepare(GET_POINTS);
+            statement.setString(1, name);
+            result = sqlite.query(statement);
+            if(result.next()) {
+               has = true;
+            }
          } catch(SQLException e) {
             plugin.getLogger().log(Level.SEVERE, "Could not create player check statement.", e);
+         } finally {
+            cleanup(result, statement);
          }
          break;
       }
       case MYSQL: {
          try {
             statement = mysql.prepare(GET_POINTS);
+            statement.setString(1, name);
+            result = mysql.query(statement);
+            if(result.next()) {
+               has = true;
+            }
          } catch(SQLException e) {
             plugin.getLogger().log(Level.SEVERE, "Could not create player check statement.", e);
+         } finally {
+            cleanup(result, statement);
          }
          break;
       }
       default: {
          return true;
       }
-      }
-      ResultSet result = null;
-      try {
-         statement.setString(1, name);
-         result = statement.executeQuery();
-         if(result.next()) {
-            has = true;
-         }
-      } catch(SQLException e) {
-         plugin.getLogger().log(Level.SEVERE, "SQLException on playerInDatabase(" + name + ")", e);
-      } finally {
-         if(result != null) {
-            try {
-               result.close();
-            } catch(SQLException e) {
-               plugin.getLogger().log(Level.SEVERE, "SQLException on playerInDatabase(" + name + ")", e);
-            }
-         }
-         if(statement != null) {
-            try {
-               statement.close();
-            } catch(SQLException e) {
-               plugin.getLogger().log(Level.SEVERE, "SQLException on playerInDatabase(" + name + ")", e);
-            }
-         }
       }
       return has;
    }
@@ -310,10 +275,13 @@ public class StorageHandler {
       switch(source) {
       case SQLITE: {
          plugin.getLogger().info("Importing SQLite to MySQL");
+         ResultSet query = null;
+         ResultSet outerQuery = null;
+         PreparedStatement statement = null;
          try {
-            sqlite = new SQLite(plugin.getLogger(), "", "storage", plugin.getDataFolder().getAbsolutePath());
-            final ResultSet query = sqlite.query("SELECT * FROM playerpoints");
-            final PreparedStatement statement = mysql.prepare(INSERT_PLAYER);
+            sqlite = new SQLite(plugin.getLogger(), " ", "storage", plugin.getDataFolder().getAbsolutePath());
+            query = sqlite.query("SELECT * FROM playerpoints");
+            statement = mysql.prepare(INSERT_PLAYER);
             if(query.next()) {
                do {
                   statement.setInt(1, query.getInt("points"));
@@ -322,16 +290,19 @@ public class StorageHandler {
                } while(query.next());
             }
             query.close();
-            statement.executeBatch();
-            statement.close();
+            outerQuery = mysql.query(statement);
          } catch(SQLException e) {
             plugin.getLogger().log(Level.SEVERE, "SQLException on importSQL(" + source.toString() + ")", e);
+         } finally {
+            cleanup(query, null);
+            cleanup(outerQuery, statement);
          }
          break;
       }
       case YAML: {
          plugin.getLogger().info("Importing YAML to MySQL");
          PreparedStatement statement = null;
+         ResultSet result = null;
          try {
             statement = mysql.prepare(INSERT_PLAYER);
             final File file = new File(plugin.getDataFolder().getAbsolutePath() + "/storage.yml");
@@ -342,23 +313,42 @@ public class StorageHandler {
                statement.setString(2, key);
                statement.addBatch();
             }
-            statement.executeBatch();
+            result = mysql.query(statement);
          } catch(SQLException e) {
             plugin.getLogger().log(Level.SEVERE, "SQLException on importSQL(" + source.toString() + ")", e);
          } finally {
-            if(statement != null) {
-               try {
-                  statement.close();
-               } catch(SQLException e) {
-                  plugin.getLogger().log(Level.SEVERE, "SQLException on importSQL(" + source.toString() + ")", e);
-               }
-            }
+            cleanup(result, statement);
          }
          break;
       }
       default: {
          break;
       }
+      }
+   }
+
+   /**
+    * Cleanup the given resources.
+    * 
+    * @param result
+    *           - ResultSet to close.
+    * @param statement
+    *           - Statement to close.
+    */
+   private void cleanup(ResultSet result, PreparedStatement statement) {
+      if(result != null) {
+         try {
+            result.close();
+         } catch(SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "SQLException on cleanup", e);
+         }
+      }
+      if(statement != null) {
+         try {
+            statement.close();
+         } catch(SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "SQLException on cleanup", e);
+         }
       }
    }
 }
