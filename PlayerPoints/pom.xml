@@ -2,7 +2,7 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <!-- Project properties. -->
-    <groupId>org.black_ixx.playerPoints</groupId>
+    <groupId>org.black_ixx</groupId>
     <artifactId>PlayerPoints</artifactId>
     <version>1.53</version>
     <name>PlayerPoints</name>
