@@ -4,6 +4,7 @@ import org.black_ixx.playerPoints.config.LocalizeConfig;
 import org.black_ixx.playerPoints.config.RootConfig;
 import org.black_ixx.playerPoints.listeners.VotifierListener;
 import org.black_ixx.playerPoints.storage.StorageHandler;
+import org.black_ixx.playerPoints.storage.imports.Importer;
 import org.black_ixx.playerPoints.update.Update;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -21,6 +22,9 @@ public class PlayerPoints extends JavaPlugin {
       LocalizeConfig.init(this);
       // Initialize config
       rootConfig = new RootConfig(this);
+      // Do imports
+      Importer importer = new Importer(this);
+      importer.checkImport();
       // Intialize storage handler
       storage = new StorageHandler(this);
       // Initialize API

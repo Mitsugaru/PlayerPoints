@@ -1,5 +1,8 @@
 package org.black_ixx.playerPoints;
 
+import org.black_ixx.playerPoints.event.PlayerPointsChangeEvent;
+import org.black_ixx.playerPoints.event.PlayerPointsResetEvent;
+
 /**
  * Static API hook.
  */
@@ -23,8 +26,13 @@ public class PlayerPointsAPI {
     * @return True if we successfully adjusted points, else false
     */
    public boolean give(String playername, int amount) {
-      final int total = look(playername.toLowerCase()) + amount;
-      return plugin.getStorageHandler().setPoints(playername.toLowerCase(), total);
+      PlayerPointsChangeEvent event = new PlayerPointsChangeEvent(playername, amount);
+      plugin.getServer().getPluginManager().callEvent(event);
+      if(!event.isCancelled()) {
+         final int total = look(playername.toLowerCase()) + event.getChange();
+         return plugin.getStorageHandler().setPoints(playername.toLowerCase(), total);
+      }
+      return false;
    }
 
    /**
@@ -94,7 +102,12 @@ public class PlayerPointsAPI {
     * @return True if successful
     */
    public boolean set(String playername, int amount) {
-      return plugin.getStorageHandler().setPoints(playername.toLowerCase(), amount);
+      PlayerPointsChangeEvent event = new PlayerPointsChangeEvent(playername, amount - look(playername));
+      plugin.getServer().getPluginManager().callEvent(event);
+      if(!event.isCancelled()) {
+         return plugin.getStorageHandler().setPoints(playername.toLowerCase(), event.getChange());
+      }
+      return false;
    }
 
    /**
@@ -105,6 +118,11 @@ public class PlayerPointsAPI {
     * @return True if successful
     */
    public boolean reset(String playername) {
-      return set(playername, 0);
+      PlayerPointsResetEvent event = new PlayerPointsResetEvent(playername);
+      plugin.getServer().getPluginManager().callEvent(event);
+      if(!event.isCancelled()) {
+         return plugin.getStorageHandler().setPoints(playername.toLowerCase(), event.getChange());
+      }
+      return false;
    }
 }

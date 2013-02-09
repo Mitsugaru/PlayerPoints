@@ -3,12 +3,17 @@ package org.black_ixx.playerPoints.storage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
 
 import org.black_ixx.playerPoints.PlayerPoints;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-public class YAMLStorage {
+public class YAMLStorage implements IStorage {
 
    private PlayerPoints plugin;
    private File file;
@@ -43,13 +48,20 @@ public class YAMLStorage {
       }
    }
 
-   public void setPoints(String name, int points) {
+   public boolean setPoints(String name, int points) {
       config.set("Points." + name, points);
       save();
+      return true;
    }
 
    public int getPoints(String name) {
       int points = config.getInt("Points." + name, 0);
       return points;
+   }
+
+   @Override
+   public boolean playerInDatabase(String name) {
+      // TODO Auto-generated method stub
+      return false;
    }
 }
