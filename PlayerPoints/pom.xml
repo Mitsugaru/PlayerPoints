@@ -39,7 +39,7 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.4.7-R1.0</version>
+            <version>1.5.2-R0.1</version>
         </dependency>
         <dependency>
             <groupId>com.vexsoftware.votifier</groupId>
