@@ -4,7 +4,7 @@
     <!-- Project properties. -->
     <groupId>org.black_ixx</groupId>
     <artifactId>PlayerPoints</artifactId>
-    <version>1.55-SNAPSHOT</version>
+    <version>1.6-SNAPSHOT</version>
     <name>PlayerPoints</name>
     <description>Player points system for Bukkit</description>
     <!-- Source code management URL. -->
@@ -51,7 +51,7 @@
         <dependency>
             <groupId>lib.PatPeter</groupId>
             <artifactId>SQLibrary</artifactId>
-            <version>4.0</version>
+            <version>4.2</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/SQLibrary.jar</systemPath>
         </dependency>
@@ -92,12 +92,6 @@
                     <include>LICENSE.txt</include>
                 </includes>
                 <filtering>true</filtering>
-                <directory>${basedir}</directory>
-            </resource>
-            <resource>
-                <includes>
-                    <include>LICENSE.txt</include>
-                </includes>
                 <directory>${basedir}</directory>
             </resource>
         </resources>
