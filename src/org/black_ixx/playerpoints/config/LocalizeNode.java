@@ -1,5 +1,10 @@
 package org.black_ixx.playerpoints.config;
 
+/**
+ * Configuration nodes for the localization messages config.
+ * 
+ * @author Mitsugaru
+ */
 public enum LocalizeNode {
 
    /**
@@ -54,19 +59,42 @@ public enum LocalizeNode {
    HELP_RESET("message.help.reset",
          "&7/points reset <name> &6: Reset player's points to 0"),
    HELP_PAY("message.help.pay",
-         "&7/points pay <name> <points> &6: Send points to given player");
+         "&7/points pay <name> <points> &6: Send points to given player"),
+   HELP_LEAD("message.help.lead",
+         "&7/points lead [prev/next/page] &6: Leader board");
 
+   /**
+    * Path and default value.
+    */
    private String path, def;
 
+   /**
+    * Private constructor.
+    * 
+    * @param path
+    *           - Path in config.
+    * @param def
+    *           - Default value to use.
+    */
    private LocalizeNode(String path, String def) {
       this.path = path;
       this.def = def;
    }
 
+   /**
+    * Get the configuration node path.
+    * 
+    * @return Config path.
+    */
    public String getPath() {
       return path;
    }
 
+   /**
+    * Get the default value.
+    * 
+    * @return Default value.
+    */
    public String getDefaultValue() {
       return def;
    }

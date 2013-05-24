@@ -4,8 +4,8 @@ import java.util.EnumMap;
 
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.config.LocalizeConfig;
-import org.black_ixx.playerpoints.config.LocalizeConfig.Flag;
 import org.black_ixx.playerpoints.config.LocalizeNode;
+import org.black_ixx.playerpoints.models.Flag;
 import org.black_ixx.playerpoints.permissions.PermissionHandler;
 import org.black_ixx.playerpoints.permissions.PermissionNode;
 import org.black_ixx.playerpoints.services.CommandHandler;
@@ -36,6 +36,8 @@ public class Commander extends CommandHandler {
       registerCommand("set", new SetCommand());
       registerCommand("reset", new ResetCommand());
       registerCommand("me", new MeCommand());
+      
+      // Register handlers
       registerHandler(new LeadCommand(plugin));
    }
 
@@ -62,6 +64,10 @@ public class Commander extends CommandHandler {
       }
       if(PermissionHandler.has(sender, PermissionNode.LOOK)) {
          sender.sendMessage(LocalizeConfig.parseString(LocalizeNode.HELP_LOOK,
+               info));
+      }
+      if(PermissionHandler.has(sender, PermissionNode.LEAD)) {
+         sender.sendMessage(LocalizeConfig.parseString(LocalizeNode.HELP_LEAD,
                info));
       }
       if(PermissionHandler.has(sender, PermissionNode.SET)) {

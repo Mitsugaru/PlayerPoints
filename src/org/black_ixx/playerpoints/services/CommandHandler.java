@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.black_ixx.playerpoints.PlayerPoints;
-import org.black_ixx.playerpoints.config.LocalizeConfig.Flag;
+import org.black_ixx.playerpoints.models.Flag;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

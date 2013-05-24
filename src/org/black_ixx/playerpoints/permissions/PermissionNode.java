@@ -18,13 +18,31 @@ public enum PermissionNode {
    ME(".me"),
    LEAD(".lead");
 
+   /**
+    * Permission prefix.
+    */
    private static final String prefix = "PlayerPoints";
+
+   /**
+    * Individual node path.
+    */
    private String node;
 
+   /**
+    * Private constructor.
+    * 
+    * @param node
+    *           - Specific node.
+    */
    private PermissionNode(String node) {
       this.node = prefix + node;
    }
 
+   /**
+    * Get the full permission node path.
+    * 
+    * @return Permission string.
+    */
    public String getNode() {
       return node;
    }

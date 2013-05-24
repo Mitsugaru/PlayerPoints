@@ -3,7 +3,7 @@ package org.black_ixx.playerpoints.services;
 import java.util.EnumMap;
 
 import org.black_ixx.playerpoints.PlayerPoints;
-import org.black_ixx.playerpoints.config.LocalizeConfig.Flag;
+import org.black_ixx.playerpoints.models.Flag;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 

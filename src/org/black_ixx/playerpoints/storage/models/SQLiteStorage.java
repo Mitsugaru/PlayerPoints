@@ -12,6 +12,11 @@ import org.black_ixx.playerpoints.storage.DatabaseStorage;
 
 import lib.PatPeter.SQLibrary.SQLite;
 
+/**
+ * Storage handler for SQLite.
+ * 
+ * @author Mitsugaru
+ */
 public class SQLiteStorage extends DatabaseStorage {
 
    /**

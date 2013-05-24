@@ -10,7 +10,7 @@ import java.util.TreeSet;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.config.LocalizeConfig;
 import org.black_ixx.playerpoints.config.LocalizeNode;
-import org.black_ixx.playerpoints.config.LocalizeConfig.Flag;
+import org.black_ixx.playerpoints.models.Flag;
 import org.black_ixx.playerpoints.models.SortedPlayer;
 import org.black_ixx.playerpoints.permissions.PermissionHandler;
 import org.black_ixx.playerpoints.permissions.PermissionNode;
@@ -20,7 +20,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 /**
- * Handles the leaderboard commands.
+ * Handles the leader board commands.
  * 
  * @author Mitsugaru
  */
@@ -36,6 +36,12 @@ public class LeadCommand extends CommandHandler {
     */
    private final Map<String, Integer> page = new HashMap<String, Integer>();
 
+   /**
+    * Constructor.
+    * 
+    * @param plugin
+    *           - Plugin instance.
+    */
    public LeadCommand(PlayerPoints plugin) {
       super(plugin, "lead");
    }

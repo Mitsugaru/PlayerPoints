@@ -10,6 +10,11 @@ import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.storage.IStorage;
 import org.black_ixx.playerpoints.storage.StorageType;
 
+/**
+ * Imports from SQLite to MySQL.
+ * 
+ * @author Mitsugaru
+ */
 public class SQLiteImport extends DatabaseImport {
 
    /**
@@ -17,9 +22,16 @@ public class SQLiteImport extends DatabaseImport {
     */
    private SQLite sqlite;
 
+   /**
+    * Constructor.
+    * 
+    * @param plugin
+    *           - Plugin instance.
+    */
    public SQLiteImport(PlayerPoints plugin) {
       super(plugin);
-      sqlite = new SQLite(plugin.getLogger(), " ", "storage", plugin.getDataFolder().getAbsolutePath());
+      sqlite = new SQLite(plugin.getLogger(), " ", "storage", plugin
+            .getDataFolder().getAbsolutePath());
       sqlite.open();
    }
 
@@ -29,16 +41,19 @@ public class SQLiteImport extends DatabaseImport {
       IStorage mysql = generator.createStorageHandlerForType(StorageType.MYSQL);
       ResultSet query = null;
       try {
-         sqlite = new SQLite(plugin.getLogger(), " ", "storage", plugin.getDataFolder().getAbsolutePath());
+         sqlite = new SQLite(plugin.getLogger(), " ", "storage", plugin
+               .getDataFolder().getAbsolutePath());
          query = sqlite.query("SELECT * FROM playerpoints");
          if(query.next()) {
             do {
-               mysql.setPoints(query.getString("playername"), query.getInt("points"));
+               mysql.setPoints(query.getString("playername"),
+                     query.getInt("points"));
             } while(query.next());
          }
          query.close();
       } catch(SQLException e) {
-         plugin.getLogger().log(Level.SEVERE, "SQLException on SQLite import", e);
+         plugin.getLogger().log(Level.SEVERE, "SQLException on SQLite import",
+               e);
       } finally {
       }
    }

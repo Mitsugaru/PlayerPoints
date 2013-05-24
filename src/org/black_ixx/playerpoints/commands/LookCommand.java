@@ -5,13 +5,18 @@ import java.util.EnumMap;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.config.LocalizeConfig;
 import org.black_ixx.playerpoints.config.LocalizeNode;
-import org.black_ixx.playerpoints.config.LocalizeConfig.Flag;
+import org.black_ixx.playerpoints.models.Flag;
 import org.black_ixx.playerpoints.permissions.PermissionHandler;
 import org.black_ixx.playerpoints.permissions.PermissionNode;
 import org.black_ixx.playerpoints.services.PointsCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
+/**
+ * Handles the look command.
+ * 
+ * @author Mitsugaru
+ */
 public class LookCommand implements PointsCommand {
 
    @Override

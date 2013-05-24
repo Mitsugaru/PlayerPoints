@@ -12,6 +12,11 @@ import lib.PatPeter.SQLibrary.MySQL;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.storage.DatabaseStorage;
 
+/**
+ * Storage handler for MySQL source.
+ * 
+ * @author Mitsugaru
+ */
 public class MySQLStorage extends DatabaseStorage {
 
    /**
@@ -19,6 +24,12 @@ public class MySQLStorage extends DatabaseStorage {
     */
    private MySQL mysql;
 
+   /**
+    * Constructor.
+    * 
+    * @param plugin
+    *           - Plugin instance.
+    */
    public MySQLStorage(PlayerPoints plugin) {
       super(plugin);
       mysql = new MySQL(plugin.getLogger(), " ", plugin.getRootConfig().host,

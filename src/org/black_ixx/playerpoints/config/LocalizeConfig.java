@@ -7,6 +7,7 @@ import java.util.EnumMap;
 import java.util.Map.Entry;
 
 import org.black_ixx.playerpoints.PlayerPoints;
+import org.black_ixx.playerpoints.models.Flag;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -124,21 +125,4 @@ public class LocalizeConfig {
       return out;
    }
 
-   public enum Flag {
-      NAME("%name"),
-      TAG("%tag"),
-      PLAYER("%player"),
-      EXTRA("%extra"),
-      AMOUNT("%amount");
-
-      private String flag;
-
-      private Flag(String flag) {
-         this.flag = flag;
-      }
-
-      public String getFlag() {
-         return flag;
-      }
-   }
 }
