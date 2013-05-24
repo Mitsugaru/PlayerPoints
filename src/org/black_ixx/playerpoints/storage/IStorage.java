@@ -1,5 +1,7 @@
 package org.black_ixx.playerpoints.storage;
 
+import java.util.Collection;
+
 /**
  * Represents a storage model object.
  * 
@@ -35,5 +37,12 @@ public interface IStorage {
     * @return True if player is in storage, else false.
     */
    boolean playerEntryExists(String name);
+
+   /**
+    * Get the existing players in storage.
+    * 
+    * @return Collection of player names.
+    */
+   Collection<String> getPlayers();
 
 }

@@ -1,5 +1,7 @@
 package org.black_ixx.playerpoints.storage;
 
+import java.util.Collection;
+
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.config.RootConfig;
 
@@ -41,5 +43,10 @@ public class StorageHandler implements IStorage {
    @Override
    public boolean playerEntryExists(String name) {
       return storage.playerEntryExists(name);
+   }
+
+   @Override
+   public Collection<String> getPlayers() {
+      return storage.getPlayers();
    }
 }

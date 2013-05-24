@@ -3,6 +3,7 @@ package org.black_ixx.playerpoints.storage.models;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Collection;
 
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.storage.IStorage;
@@ -93,5 +94,10 @@ public class YAMLStorage implements IStorage {
    @Override
    public boolean playerEntryExists(String name) {
       return config.contains(POINTS_SECTION + name);
+   }
+
+   @Override
+   public Collection<String> getPlayers() {
+      return config.getConfigurationSection("Points.").getKeys(false);
    }
 }

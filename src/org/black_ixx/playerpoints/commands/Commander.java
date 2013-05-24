@@ -36,6 +36,7 @@ public class Commander extends CommandHandler {
       registerCommand("set", new SetCommand());
       registerCommand("reset", new ResetCommand());
       registerCommand("me", new MeCommand());
+      registerHandler(new LeadCommand(plugin));
    }
 
    @Override

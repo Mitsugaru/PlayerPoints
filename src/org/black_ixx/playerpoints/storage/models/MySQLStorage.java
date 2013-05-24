@@ -3,6 +3,8 @@ package org.black_ixx.playerpoints.storage.models;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.logging.Level;
 
 import lib.PatPeter.SQLibrary.MySQL;
@@ -109,6 +111,32 @@ public class MySQLStorage extends DatabaseStorage {
          cleanup(result, statement);
       }
       return has;
+   }
+
+   @Override
+   public Collection<String> getPlayers() {
+      Collection<String> players = new HashSet<String>();
+
+      PreparedStatement statement = null;
+      ResultSet result = null;
+      try {
+         statement = mysql.prepare(GET_PLAYERS);
+         result = mysql.query(statement);
+
+         while(result.next()) {
+            String name = result.getString("playername");
+            if(name != null) {
+               players.add(name);
+            }
+         }
+      } catch(SQLException e) {
+         plugin.getLogger().log(Level.SEVERE,
+               "Could not create get players statement.", e);
+      } finally {
+         cleanup(result, statement);
+      }
+
+      return players;
    }
 
 }

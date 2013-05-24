@@ -15,7 +15,8 @@ public enum PermissionNode {
    PAY(".pay"),
    SET(".set"),
    RESET(".reset"),
-   ME(".me");
+   ME(".me"),
+   LEAD(".lead");
 
    private static final String prefix = "PlayerPoints";
    private String node;

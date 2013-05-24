@@ -40,3 +40,6 @@ permissions:
     PlayerPoints.reset:
         description: Gives access to the reset command
         default: op
+    PlayerPoints.lead:
+        description: Gives access to the lead command
+        default: op
