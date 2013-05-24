@@ -28,9 +28,9 @@ public class RootConfig {
     */
    public int voteAmount;
    /**
-    * Import sql and vote options.
+    * Import sql, vault and vote options.
     */
-   public boolean importSQL, voteOnline, voteEnabled;
+   public boolean importSQL, voteOnline, voteEnabled, vault;
    /**
     * Debug database option.
     */
@@ -65,6 +65,7 @@ public class RootConfig {
       defaults.put("vote.amount", 100);
       defaults.put("vote.online", false);
       defaults.put("debug.database", false);
+      defaults.put("vault", false);
       defaults.put("version", plugin.getDescription().getVersion());
       // Insert defaults into config file if they're not present
       for(final Entry<String, Object> e : defaults.entrySet()) {
@@ -96,6 +97,7 @@ public class RootConfig {
       user = config.getString("mysql.user", "user");
       password = config.getString("mysql.password", "password");
       importSQL = config.getBoolean("mysql.import.use", false);
+      vault = config.getBoolean("vault", false);
       final String source = config.getString("mysql.import.source", "YAML");
       if(source.equalsIgnoreCase("SQLITE")) {
          importSource = StorageType.SQLITE;

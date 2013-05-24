@@ -15,6 +15,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.mainclass>org.black_ixx.playerpoints.PlayerPoints</project.mainclass>
+        <dakani.repo>http://repo.dakanilabs.com/content/repositories</dakani.repo>
     </properties>
     <!-- Developers -->
     <developers>
@@ -33,13 +34,51 @@
             <id>Bukkit</id>
             <url>http://repo.bukkit.org/content/groups/public</url>
         </repository>
+        <repository>
+            <id>release</id>
+            <name>Release Repository</name>
+            <url>${dakani.repo}/releases</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>snapshots</id>
+            <name>Snapshot Repository</name>
+            <url>${dakani.repo}/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
     </repositories>
+    <!-- Distribution management -->
+    <distributionManagement>
+        <repository>
+            <id>internal</id>
+            <url>${dakani.repo}/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <url>${dakani.repo}/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
     <!-- Project dependencies. -->
     <dependencies>
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
             <version>1.5.2-R0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>Vault</artifactId>
+            <version>1.2.26-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.vexsoftware.votifier</groupId>
