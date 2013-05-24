@@ -11,108 +11,134 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+/**
+ * Handles user-based messages.
+ * 
+ * @author Mitsugaru
+ */
 public class LocalizeConfig {
-    // Class variables
-    private static PlayerPoints plugin;
-    private static File file;
-    private static YamlConfiguration config;
-    private static final EnumMap<LocalizeNode, String> MESSAGES = new EnumMap<LocalizeNode, String>(
-	    LocalizeNode.class);
 
-    public static void init(PlayerPoints pp) {
-	plugin = pp;
-	file = new File(plugin.getDataFolder().getAbsolutePath()
-		+ "/localization.yml");
-	config = YamlConfiguration.loadConfiguration(file);
-	loadDefaults();
-	loadMessages();
-    }
+   /**
+    * Plugin instance.
+    */
+   private static PlayerPoints plugin;
 
-    public static void save() {
-	// Set config
-	try {
-	    // Save the file
-	    config.save(file);
-	} catch (IOException e1) {
-	    plugin.getLogger().warning(
-		    "File I/O Exception on saving localization config");
-	    e1.printStackTrace();
-	}
-    }
+   /**
+    * File reference.
+    */
+   private static File file;
 
-    public static void reload() {
-	try {
-	    config.load(file);
-	} catch (FileNotFoundException e) {
-	    e.printStackTrace();
-	} catch (IOException e) {
-	    e.printStackTrace();
-	} catch (InvalidConfigurationException e) {
-	    e.printStackTrace();
-	}
-	MESSAGES.clear();
-	loadDefaults();
-	loadMessages();
-    }
-    
-    public static void set(String path, Object o)
-    {
-	config.set(path, o);
-	save();
-    }
-    
-    public static String getString(String path, String def)
-    {
-	return config.getString(path, def);
-    }
+   /**
+    * YAML config.
+    */
+   private static YamlConfiguration config;
 
-    private static void loadDefaults() {
-	// Add to config if missing
-	for (LocalizeNode node : LocalizeNode.values()) {
-	    if (!config.contains(node.getPath())) {
-		config.set(node.getPath(), node.getDefaultValue());
-	    }
-	}
-	save();
-    }
+   /**
+    * Map of config keys to values.
+    */
+   private static final EnumMap<LocalizeNode, String> MESSAGES = new EnumMap<LocalizeNode, String>(
+         LocalizeNode.class);
 
-    private static void loadMessages() {
-	for (LocalizeNode node : LocalizeNode.values()) {
-	    MESSAGES.put(node,
-		    config.getString(node.getPath(), node.getDefaultValue()));
-	}
-    }
+   /**
+    * Initialize.
+    * 
+    * @param pp
+    *           - Plugin instance.
+    */
+   public static void init(PlayerPoints pp) {
+      plugin = pp;
+      file = new File(plugin.getDataFolder().getAbsolutePath()
+            + "/localization.yml");
+      config = YamlConfiguration.loadConfiguration(file);
+      loadDefaults();
+      loadMessages();
+   }
 
-    public static String parseString(LocalizeNode node,
-	    EnumMap<Flag, String> replace) {
-	/**
-	 * Thanks to @Njol for the following
-	 * http://forums.bukkit.org/threads/multiple
-	 * -classes-config-colours.79719/#post-1154761
-	 */
-	String out = ChatColor.translateAlternateColorCodes('&',
-		MESSAGES.get(node));
-	if (replace != null) {
-	    for (Entry<Flag, String> entry : replace.entrySet()) {
-		out = out
-			.replaceAll(entry.getKey().getFlag(), entry.getValue());
-	    }
-	}
-	return out;
-    }
+   public static void save() {
+      // Set config
+      try {
+         // Save the file
+         config.save(file);
+      } catch(IOException e1) {
+         plugin.getLogger().warning(
+               "File I/O Exception on saving localization config");
+         e1.printStackTrace();
+      }
+   }
 
-    public enum Flag {
-	NAME("%name"), TAG("%tag"), PLAYER("%player"), EXTRA("%extra"), AMOUNT(
-		"%amount");
+   public static void reload() {
+      try {
+         config.load(file);
+      } catch(FileNotFoundException e) {
+         e.printStackTrace();
+      } catch(IOException e) {
+         e.printStackTrace();
+      } catch(InvalidConfigurationException e) {
+         e.printStackTrace();
+      }
+      MESSAGES.clear();
+      loadDefaults();
+      loadMessages();
+   }
 
-	private String flag;
+   public static void set(String path, Object o) {
+      config.set(path, o);
+      save();
+   }
 
-	private Flag(String flag) {
-	    this.flag = flag;
-	}
+   public static String getString(String path, String def) {
+      return config.getString(path, def);
+   }
 
-	public String getFlag() {
-	    return flag;
-	}
-    }
+   private static void loadDefaults() {
+      // Add to config if missing
+      for(LocalizeNode node : LocalizeNode.values()) {
+         if(!config.contains(node.getPath())) {
+            config.set(node.getPath(), node.getDefaultValue());
+         }
+      }
+      save();
+   }
+
+   private static void loadMessages() {
+      for(LocalizeNode node : LocalizeNode.values()) {
+         MESSAGES.put(node,
+               config.getString(node.getPath(), node.getDefaultValue()));
+      }
+   }
+
+   public static String parseString(LocalizeNode node,
+         EnumMap<Flag, String> replace) {
+      /**
+       * Thanks to @Njol for the following
+       * http://forums.bukkit.org/threads/multiple
+       * -classes-config-colours.79719/#post-1154761
+       */
+      String out = ChatColor.translateAlternateColorCodes('&',
+            MESSAGES.get(node));
+      if(replace != null) {
+         for(Entry<Flag, String> entry : replace.entrySet()) {
+            out = out.replaceAll(entry.getKey().getFlag(), entry.getValue());
+         }
+      }
+      return out;
+   }
+
+   public enum Flag {
+      NAME("%name"),
+      TAG("%tag"),
+      PLAYER("%player"),
+      EXTRA("%extra"),
+      AMOUNT("%amount");
+
+      private String flag;
+
+      private Flag(String flag) {
+         this.flag = flag;
+      }
+
+      public String getFlag() {
+         return flag;
+      }
+   }
 }

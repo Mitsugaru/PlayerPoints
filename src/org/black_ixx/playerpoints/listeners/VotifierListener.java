@@ -47,8 +47,10 @@ public class VotifierListener implements Listener {
          final Player player = plugin.getServer().getPlayer(name);
          if(player != null && player.isOnline()) {
             pay = true;
-            player.sendMessage("Thanks for voting on " + event.getVote().getServiceName() + "!");
-            player.sendMessage(this.amount + " has been added to your Points balance.");
+            player.sendMessage("Thanks for voting on "
+                  + event.getVote().getServiceName() + "!");
+            player.sendMessage(this.amount
+                  + " has been added to your Points balance.");
          }
       } else {
          pay = true;

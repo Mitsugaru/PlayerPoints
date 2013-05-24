@@ -25,14 +25,16 @@ public class SQLiteStorage extends DatabaseStorage {
     */
    public SQLiteStorage(PlayerPoints plugin) {
       super(plugin);
-      sqlite = new SQLite(plugin.getLogger(), " ", "storage", plugin.getDataFolder().getAbsolutePath());
+      sqlite = new SQLite(plugin.getLogger(), " ", "storage", plugin
+            .getDataFolder().getAbsolutePath());
       sqlite.open();
       if(!sqlite.isTable("playerpoints")) {
          plugin.getLogger().info("Creating playerpoints table");
          try {
             sqlite.query("CREATE TABLE playerpoints (id INTEGER PRIMARY KEY, playername varchar(32) NOT NULL, points INTEGER NOT NULL, UNIQUE(playername));");
          } catch(SQLException e) {
-            plugin.getLogger().log(Level.SEVERE, "Could not create SQLite table.", e);
+            plugin.getLogger().log(Level.SEVERE,
+                  "Could not create SQLite table.", e);
          }
       }
    }
@@ -53,7 +55,8 @@ public class SQLiteStorage extends DatabaseStorage {
             points = result.getInt("points");
          }
       } catch(SQLException e) {
-         plugin.getLogger().log(Level.SEVERE, "Could not create getter statement.", e);
+         plugin.getLogger().log(Level.SEVERE,
+               "Could not create getter statement.", e);
       } finally {
          cleanup(result, statement);
       }
@@ -80,7 +83,8 @@ public class SQLiteStorage extends DatabaseStorage {
          result = sqlite.query(statement);
          value = true;
       } catch(SQLException e) {
-         plugin.getLogger().log(Level.SEVERE, "Could not create setter statement.", e);
+         plugin.getLogger().log(Level.SEVERE,
+               "Could not create setter statement.", e);
       } finally {
          cleanup(result, statement);
       }
@@ -103,7 +107,8 @@ public class SQLiteStorage extends DatabaseStorage {
             has = true;
          }
       } catch(SQLException e) {
-         plugin.getLogger().log(Level.SEVERE, "Could not create player check statement.", e);
+         plugin.getLogger().log(Level.SEVERE,
+               "Could not create player check statement.", e);
       } finally {
          cleanup(result, statement);
       }

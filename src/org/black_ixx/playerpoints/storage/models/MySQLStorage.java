@@ -19,15 +19,18 @@ public class MySQLStorage extends DatabaseStorage {
 
    public MySQLStorage(PlayerPoints plugin) {
       super(plugin);
-      mysql = new MySQL(plugin.getLogger(), " ", plugin.getRootConfig().host, Integer.valueOf(plugin.getRootConfig().port),
-            plugin.getRootConfig().database, plugin.getRootConfig().user, plugin.getRootConfig().password);
+      mysql = new MySQL(plugin.getLogger(), " ", plugin.getRootConfig().host,
+            Integer.valueOf(plugin.getRootConfig().port),
+            plugin.getRootConfig().database, plugin.getRootConfig().user,
+            plugin.getRootConfig().password);
       mysql.open();
       if(!mysql.isTable("playerpoints")) {
          plugin.getLogger().info("Creating playerpoints table");
          try {
             mysql.query("CREATE TABLE playerpoints (id INT UNSIGNED NOT NULL AUTO_INCREMENT, playername varchar(32) NOT NULL, points INT NOT NULL, PRIMARY KEY(id), UNIQUE(playername));");
          } catch(SQLException e) {
-            plugin.getLogger().log(Level.SEVERE, "Could not create MySQL table.", e);
+            plugin.getLogger().log(Level.SEVERE,
+                  "Could not create MySQL table.", e);
          }
       }
    }
@@ -48,7 +51,8 @@ public class MySQLStorage extends DatabaseStorage {
             points = result.getInt("points");
          }
       } catch(SQLException e) {
-         plugin.getLogger().log(Level.SEVERE, "Could not create getter statement.", e);
+         plugin.getLogger().log(Level.SEVERE,
+               "Could not create getter statement.", e);
       } finally {
          cleanup(result, statement);
       }
@@ -75,7 +79,8 @@ public class MySQLStorage extends DatabaseStorage {
          result = mysql.query(statement);
          value = true;
       } catch(SQLException e) {
-         plugin.getLogger().log(Level.SEVERE, "Could not create setter statement.", e);
+         plugin.getLogger().log(Level.SEVERE,
+               "Could not create setter statement.", e);
       } finally {
          cleanup(result, statement);
       }
@@ -98,7 +103,8 @@ public class MySQLStorage extends DatabaseStorage {
             has = true;
          }
       } catch(SQLException e) {
-         plugin.getLogger().log(Level.SEVERE, "Could not create player check statement.", e);
+         plugin.getLogger().log(Level.SEVERE,
+               "Could not create player check statement.", e);
       } finally {
          cleanup(result, statement);
       }

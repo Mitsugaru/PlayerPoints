@@ -5,7 +5,7 @@ package org.black_ixx.playerpoints.storage;
  * 
  * @author Mitsugaru
  */
-public interface IStorage{
+public interface IStorage {
 
    /**
     * Get the amount of points the given player has.

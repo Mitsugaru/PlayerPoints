@@ -26,11 +26,13 @@ public class PlayerPointsAPI {
     * @return True if we successfully adjusted points, else false
     */
    public boolean give(String playername, int amount) {
-      PlayerPointsChangeEvent event = new PlayerPointsChangeEvent(playername, amount);
+      PlayerPointsChangeEvent event = new PlayerPointsChangeEvent(playername,
+            amount);
       plugin.getServer().getPluginManager().callEvent(event);
       if(!event.isCancelled()) {
          final int total = look(playername.toLowerCase()) + event.getChange();
-         return plugin.getStorageHandler().setPoints(playername.toLowerCase(), total);
+         return plugin.getStorageHandler().setPoints(playername.toLowerCase(),
+               total);
       }
       return false;
    }
@@ -102,10 +104,12 @@ public class PlayerPointsAPI {
     * @return True if successful
     */
    public boolean set(String playername, int amount) {
-      PlayerPointsChangeEvent event = new PlayerPointsChangeEvent(playername, amount - look(playername));
+      PlayerPointsChangeEvent event = new PlayerPointsChangeEvent(playername,
+            amount - look(playername));
       plugin.getServer().getPluginManager().callEvent(event);
       if(!event.isCancelled()) {
-         return plugin.getStorageHandler().setPoints(playername.toLowerCase(), event.getChange());
+         return plugin.getStorageHandler().setPoints(playername.toLowerCase(),
+               look(playername) + event.getChange());
       }
       return false;
    }
@@ -121,7 +125,8 @@ public class PlayerPointsAPI {
       PlayerPointsResetEvent event = new PlayerPointsResetEvent(playername);
       plugin.getServer().getPluginManager().callEvent(event);
       if(!event.isCancelled()) {
-         return plugin.getStorageHandler().setPoints(playername.toLowerCase(), event.getChange());
+         return plugin.getStorageHandler().setPoints(playername.toLowerCase(),
+               event.getChange());
       }
       return false;
    }

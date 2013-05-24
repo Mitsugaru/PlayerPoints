@@ -6,9 +6,9 @@ import org.black_ixx.playerpoints.storage.models.SQLiteStorage;
 import org.black_ixx.playerpoints.storage.models.YAMLStorage;
 
 public class StorageGenerator {
-   
+
    private PlayerPoints plugin;
-   
+
    public StorageGenerator(PlayerPoints plugin) {
       this.plugin = plugin;
    }
