@@ -16,7 +16,8 @@ public enum PermissionNode {
     SET(".set"),
     RESET(".reset"),
     ME(".me"),
-    LEAD(".lead");
+    LEAD(".lead"),
+    RELOAD(".reload");
 
     /**
      * Permission prefix.

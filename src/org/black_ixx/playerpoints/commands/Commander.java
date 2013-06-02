@@ -78,6 +78,10 @@ public class Commander extends CommandHandler {
             sender.sendMessage(LocalizeConfig.parseString(
                     LocalizeNode.HELP_RESET, info));
         }
+        if(PermissionHandler.has(sender, PermissionNode.RELOAD)) {
+            sender.sendMessage(LocalizeConfig.parseString(
+                    LocalizeNode.HELP_RELOAD, info));
+        }
         return true;
     }
 

@@ -137,7 +137,7 @@ public class LeadCommand extends CommandHandler {
         if(!valid) {
             info.put(Flag.EXTRA, args[0]);
             sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.COMMAND_UNKNOWN, info));
+                    LocalizeNode.COMMAND_LEAD, info));
         }
 
         return true;

@@ -22,6 +22,8 @@ permissions:
             PlayerPoints.pay: true
             PlayerPoints.set: true
             PlayerPoints.reset: true
+            PlayerPoints.lead: true
+            PlayerPoints.reload: true
     PlayerPoints.give:
         description: Gives access to the give command
         default: op
@@ -42,4 +44,7 @@ permissions:
         default: op
     PlayerPoints.lead:
         description: Gives access to the lead command
+        default: op
+    PlayerPoints.reload:
+        description: Gives access to the reload command
         default: op

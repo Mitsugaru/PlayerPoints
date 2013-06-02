@@ -14,6 +14,7 @@ public enum LocalizeNode {
             "&7%tag &cLack permission: &b%extra"),
     CONSOLE_DENY("message.noConsole", "&7%tag &cCannot use command as console"),
     NOT_INTEGER("message.notIntenger", "&7%tag &6%extra &cis not an integer"),
+    RELOAD("message.reload", "&7tag &6Configuration reloaded"),
     /**
      * Command
      */
@@ -28,6 +29,7 @@ public enum LocalizeNode {
     COMMAND_SET("message.command.set", "&7%tag &9/points set <name> <points>"),
     COMMAND_RESET("message.command.reset", "&7%tag &9/points reset <name>"),
     COMMAND_ME("message.command.me", "&7%tag &9/points me"),
+    COMMAND_LEAD("message.command.lead", "&7%tag &9/points lead [next|prev|#]"),
     /**
      * Points
      */
@@ -57,7 +59,7 @@ public enum LocalizeNode {
     HELP_TAKE("message.help.take",
             "&7/points take <name> <points> &6: Take points from player"),
     HELP_LOOK("message.help.look",
-            "&7/points give <name> &6: Lookup player's points"),
+            "&7/points look <name> &6: Lookup player's points"),
     HELP_SET("message.help.set",
             "&7/points set <name> <points> &6: Set player's points to amount"),
     HELP_RESET("message.help.reset",
@@ -65,7 +67,8 @@ public enum LocalizeNode {
     HELP_PAY("message.help.pay",
             "&7/points pay <name> <points> &6: Send points to given player"),
     HELP_LEAD("message.help.lead",
-            "&7/points lead [prev/next/page] &6: Leader board");
+            "&7/points lead [prev/next/page] &6: Leader board"),
+    HELP_RELOAD("message.help.reload", "&7/points reload &6: Reload config");
 
     /**
      * Path and default value.
