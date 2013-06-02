@@ -10,29 +10,29 @@ import org.black_ixx.playerpoints.storage.StorageGenerator;
  */
 public abstract class DatabaseImport {
 
-   /**
-    * Plugin instance.
-    */
-   protected PlayerPoints plugin;
+    /**
+     * Plugin instance.
+     */
+    protected PlayerPoints plugin;
 
-   /**
-    * Storage generator.
-    */
-   protected StorageGenerator generator;
+    /**
+     * Storage generator.
+     */
+    protected StorageGenerator generator;
 
-   /**
-    * Constructor.
-    * 
-    * @param plugin
-    *           - Plugin instance.
-    */
-   public DatabaseImport(PlayerPoints plugin) {
-      this.plugin = plugin;
-      generator = new StorageGenerator(plugin);
-   }
+    /**
+     * Constructor.
+     * 
+     * @param plugin
+     *            - Plugin instance.
+     */
+    public DatabaseImport(PlayerPoints plugin) {
+        this.plugin = plugin;
+        generator = new StorageGenerator(plugin);
+    }
 
-   /**
-    * Handle the import process into a database.
-    */
-   abstract void doImport();
+    /**
+     * Handle the import process into a database.
+     */
+    abstract void doImport();
 }

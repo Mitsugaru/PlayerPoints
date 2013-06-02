@@ -20,25 +20,25 @@ import org.bukkit.entity.Player;
  */
 public class MeCommand implements PointsCommand {
 
-   @Override
-   public boolean execute(PlayerPoints plugin, CommandSender sender,
-         Command command, String label, String[] args,
-         EnumMap<Flag, String> info) {
-      if(!(sender instanceof Player)) {
-         sender.sendMessage(LocalizeConfig.parseString(
-               LocalizeNode.CONSOLE_DENY, info));
-         return true;
-      }
-      if(!PermissionHandler.has(sender, PermissionNode.ME)) {
-         info.put(Flag.EXTRA, PermissionNode.ME.getNode());
-         sender.sendMessage(LocalizeConfig.parseString(
-               LocalizeNode.PERMISSION_DENY, info));
-         return true;
-      }
-      info.put(Flag.AMOUNT, "" + plugin.getAPI().look(sender.getName()));
-      sender.sendMessage(LocalizeConfig.parseString(LocalizeNode.POINTS_ME,
-            info));
-      return true;
-   }
+    @Override
+    public boolean execute(PlayerPoints plugin, CommandSender sender,
+            Command command, String label, String[] args,
+            EnumMap<Flag, String> info) {
+        if(!(sender instanceof Player)) {
+            sender.sendMessage(LocalizeConfig.parseString(
+                    LocalizeNode.CONSOLE_DENY, info));
+            return true;
+        }
+        if(!PermissionHandler.has(sender, PermissionNode.ME)) {
+            info.put(Flag.EXTRA, PermissionNode.ME.getNode());
+            sender.sendMessage(LocalizeConfig.parseString(
+                    LocalizeNode.PERMISSION_DENY, info));
+            return true;
+        }
+        info.put(Flag.AMOUNT, "" + plugin.getAPI().look(sender.getName()));
+        sender.sendMessage(LocalizeConfig.parseString(LocalizeNode.POINTS_ME,
+                info));
+        return true;
+    }
 
 }

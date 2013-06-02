@@ -7,34 +7,34 @@ import org.bukkit.event.HandlerList;
  */
 public class PlayerPointsChangeEvent extends PlayerPointsEvent {
 
-   /**
-    * Handler list.
-    */
-   private static final HandlerList handlers = new HandlerList();
+    /**
+     * Handler list.
+     */
+    private static final HandlerList handlers = new HandlerList();
 
-   /**
-    * Constructor.
-    * 
-    * @param name
-    *           - Name of player.
-    * @param change
-    *           - Amount of points to be changed.
-    */
-   public PlayerPointsChangeEvent(String name, int change) {
-      super(name, change);
-   }
+    /**
+     * Constructor.
+     * 
+     * @param name
+     *            - Name of player.
+     * @param change
+     *            - Amount of points to be changed.
+     */
+    public PlayerPointsChangeEvent(String name, int change) {
+        super(name, change);
+    }
 
-   /**
-    * Static method to get HandlerList.
-    * 
-    * @return HandlerList.
-    */
-   public static HandlerList getHandlerList() {
-      return handlers;
-   }
+    /**
+     * Static method to get HandlerList.
+     * 
+     * @return HandlerList.
+     */
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 
-   @Override
-   public HandlerList getHandlers() {
-      return handlers;
-   }
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
 }

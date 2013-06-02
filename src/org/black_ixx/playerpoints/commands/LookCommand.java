@@ -19,27 +19,27 @@ import org.bukkit.command.CommandSender;
  */
 public class LookCommand implements PointsCommand {
 
-   @Override
-   public boolean execute(PlayerPoints plugin, CommandSender sender,
-         Command command, String label, String[] args,
-         EnumMap<Flag, String> info) {
-      if(!PermissionHandler.has(sender, PermissionNode.LOOK)) {
-         info.put(Flag.EXTRA, PermissionNode.LOOK.getNode());
-         sender.sendMessage(LocalizeConfig.parseString(
-               LocalizeNode.PERMISSION_DENY, info));
-         return true;
-      }
-      if(args.length < 1) {
-         // Falsche Argumente
-         sender.sendMessage(LocalizeConfig.parseString(
-               LocalizeNode.COMMAND_LOOK, info));
-         return true;
-      }
-      info.put(Flag.PLAYER, args[0]);
-      info.put(Flag.AMOUNT, "" + plugin.getAPI().look(args[0]));
-      sender.sendMessage(LocalizeConfig.parseString(LocalizeNode.POINTS_LOOK,
-            info));
-      return true;
-   }
+    @Override
+    public boolean execute(PlayerPoints plugin, CommandSender sender,
+            Command command, String label, String[] args,
+            EnumMap<Flag, String> info) {
+        if(!PermissionHandler.has(sender, PermissionNode.LOOK)) {
+            info.put(Flag.EXTRA, PermissionNode.LOOK.getNode());
+            sender.sendMessage(LocalizeConfig.parseString(
+                    LocalizeNode.PERMISSION_DENY, info));
+            return true;
+        }
+        if(args.length < 1) {
+            // Falsche Argumente
+            sender.sendMessage(LocalizeConfig.parseString(
+                    LocalizeNode.COMMAND_LOOK, info));
+            return true;
+        }
+        info.put(Flag.PLAYER, args[0]);
+        info.put(Flag.AMOUNT, "" + plugin.getAPI().look(args[0]));
+        sender.sendMessage(LocalizeConfig.parseString(LocalizeNode.POINTS_LOOK,
+                info));
+        return true;
+    }
 
 }

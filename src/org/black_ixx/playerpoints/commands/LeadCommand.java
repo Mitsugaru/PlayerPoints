@@ -26,142 +26,142 @@ import org.bukkit.command.CommandSender;
  */
 public class LeadCommand extends CommandHandler {
 
-   /**
-    * Entires per page limit.
-    */
-   private static final int LIMIT = 10;
+    /**
+     * Entires per page limit.
+     */
+    private static final int LIMIT = 10;
 
-   /**
-    * Current page the player is viewing.
-    */
-   private final Map<String, Integer> page = new HashMap<String, Integer>();
+    /**
+     * Current page the player is viewing.
+     */
+    private final Map<String, Integer> page = new HashMap<String, Integer>();
 
-   /**
-    * Constructor.
-    * 
-    * @param plugin
-    *           - Plugin instance.
-    */
-   public LeadCommand(PlayerPoints plugin) {
-      super(plugin, "lead");
-   }
+    /**
+     * Constructor.
+     * 
+     * @param plugin
+     *            - Plugin instance.
+     */
+    public LeadCommand(PlayerPoints plugin) {
+        super(plugin, "lead");
+    }
 
-   @Override
-   public boolean noArgs(CommandSender sender, Command command, String label,
-         EnumMap<Flag, String> info) {
-      // Check permissions
-      if(!PermissionHandler.has(sender, PermissionNode.LEAD)) {
-         info.put(Flag.EXTRA, PermissionNode.LEAD.getNode());
-         sender.sendMessage(LocalizeConfig.parseString(
-               LocalizeNode.PERMISSION_DENY, info));
-         return true;
-      }
+    @Override
+    public boolean noArgs(CommandSender sender, Command command, String label,
+            EnumMap<Flag, String> info) {
+        // Check permissions
+        if(!PermissionHandler.has(sender, PermissionNode.LEAD)) {
+            info.put(Flag.EXTRA, PermissionNode.LEAD.getNode());
+            sender.sendMessage(LocalizeConfig.parseString(
+                    LocalizeNode.PERMISSION_DENY, info));
+            return true;
+        }
 
-      SortedSet<SortedPlayer> leaders = sortLeaders(plugin, plugin
-            .getStorageHandler().getPlayers());
+        SortedSet<SortedPlayer> leaders = sortLeaders(plugin, plugin
+                .getStorageHandler().getPlayers());
 
-      int current = 0;
-      if(page.containsKey(sender.getName())) {
-         current = page.get(sender.getName());
-      }
+        int current = 0;
+        if(page.containsKey(sender.getName())) {
+            current = page.get(sender.getName());
+        }
 
-      int num = leaders.size() / LIMIT;
-      double rem = (double) leaders.size() % (double) LIMIT;
-      if(rem != 0) {
-         num++;
-      }
+        int num = leaders.size() / LIMIT;
+        double rem = (double) leaders.size() % (double) LIMIT;
+        if(rem != 0) {
+            num++;
+        }
 
-      // Bounds check
-      if(current < 0) {
-         current = 0;
-         page.put(sender.getName(), current);
-      } else if(current >= num) {
-         current = num - 1;
-         page.put(sender.getName(), current);
-      }
+        // Bounds check
+        if(current < 0) {
+            current = 0;
+            page.put(sender.getName(), current);
+        } else if(current >= num) {
+            current = num - 1;
+            page.put(sender.getName(), current);
+        }
 
-      SortedPlayer[] array = leaders.toArray(new SortedPlayer[0]);
+        SortedPlayer[] array = leaders.toArray(new SortedPlayer[0]);
 
-      // Header
-      sender.sendMessage(ChatColor.BLUE + "=== " + ChatColor.GRAY
-            + PlayerPoints.TAG + " Leader Board " + ChatColor.BLUE + "=== "
-            + ChatColor.GRAY + (current + 1) + ":" + num);
+        // Header
+        sender.sendMessage(ChatColor.BLUE + "=== " + ChatColor.GRAY
+                + PlayerPoints.TAG + " Leader Board " + ChatColor.BLUE + "=== "
+                + ChatColor.GRAY + (current + 1) + ":" + num);
 
-      // Page through
-      for(int i = current * LIMIT; i < (current * LIMIT + LIMIT); i++) {
-         if(i >= array.length) {
-            break;
-         }
-         SortedPlayer player = array[i];
-         sender.sendMessage(ChatColor.AQUA + "" + (i + 1) + ". "
-               + ChatColor.GRAY + player.getName() + ChatColor.WHITE + " - "
-               + ChatColor.GOLD + player.getPoints());
-      }
+        // Page through
+        for(int i = current * LIMIT; i < (current * LIMIT + LIMIT); i++) {
+            if(i >= array.length) {
+                break;
+            }
+            SortedPlayer player = array[i];
+            sender.sendMessage(ChatColor.AQUA + "" + (i + 1) + ". "
+                    + ChatColor.GRAY + player.getName() + ChatColor.WHITE
+                    + " - " + ChatColor.GOLD + player.getPoints());
+        }
 
-      return true;
-   }
+        return true;
+    }
 
-   @Override
-   public boolean unknownCommand(CommandSender sender, Command command,
-         String label, String[] args, EnumMap<Flag, String> info) {
-      // TODO Check for prev, next, and integer
-      String com = args[0];
+    @Override
+    public boolean unknownCommand(CommandSender sender, Command command,
+            String label, String[] args, EnumMap<Flag, String> info) {
+        // TODO Check for prev, next, and integer
+        String com = args[0];
 
-      int current = 0;
-      if(page.containsKey(sender.getName())) {
-         current = page.get(sender.getName());
-      }
+        int current = 0;
+        if(page.containsKey(sender.getName())) {
+            current = page.get(sender.getName());
+        }
 
-      boolean valid = false;
+        boolean valid = false;
 
-      if(com.equalsIgnoreCase("prev")) {
-         page.put(sender.getName(), --current);
-         noArgs(sender, command, label, info);
-         valid = true;
-      } else if(com.equals("next")) {
-         page.put(sender.getName(), ++current);
-         noArgs(sender, command, label, info);
-         valid = true;
-      } else {
-         try {
-            current = Integer.parseInt(com);
-            page.put(sender.getName(), current - 1);
+        if(com.equalsIgnoreCase("prev")) {
+            page.put(sender.getName(), --current);
             noArgs(sender, command, label, info);
             valid = true;
-         } catch(NumberFormatException e) {
-            // Handle notification later
-         }
-      }
+        } else if(com.equals("next")) {
+            page.put(sender.getName(), ++current);
+            noArgs(sender, command, label, info);
+            valid = true;
+        } else {
+            try {
+                current = Integer.parseInt(com);
+                page.put(sender.getName(), current - 1);
+                noArgs(sender, command, label, info);
+                valid = true;
+            } catch(NumberFormatException e) {
+                // Handle notification later
+            }
+        }
 
-      // Handle invalid input
-      if(!valid) {
-         info.put(Flag.EXTRA, args[0]);
-         sender.sendMessage(LocalizeConfig.parseString(
-               LocalizeNode.COMMAND_UNKNOWN, info));
-      }
+        // Handle invalid input
+        if(!valid) {
+            info.put(Flag.EXTRA, args[0]);
+            sender.sendMessage(LocalizeConfig.parseString(
+                    LocalizeNode.COMMAND_UNKNOWN, info));
+        }
 
-      return true;
-   }
+        return true;
+    }
 
-   /**
-    * Sorts the given players by their point value and name.
-    * 
-    * @param plugin
-    *           - Plugin instance.
-    * @param players
-    *           - All player names in storage.
-    * @return Set of sorted players.
-    */
-   private SortedSet<SortedPlayer> sortLeaders(PlayerPoints plugin,
-         Collection<String> players) {
-      SortedSet<SortedPlayer> sorted = new TreeSet<SortedPlayer>();
+    /**
+     * Sorts the given players by their point value and name.
+     * 
+     * @param plugin
+     *            - Plugin instance.
+     * @param players
+     *            - All player names in storage.
+     * @return Set of sorted players.
+     */
+    private SortedSet<SortedPlayer> sortLeaders(PlayerPoints plugin,
+            Collection<String> players) {
+        SortedSet<SortedPlayer> sorted = new TreeSet<SortedPlayer>();
 
-      for(String name : players) {
-         int points = plugin.getAPI().look(name);
-         sorted.add(new SortedPlayer(name, points));
-      }
+        for(String name : players) {
+            int points = plugin.getAPI().look(name);
+            sorted.add(new SortedPlayer(name, points));
+        }
 
-      return sorted;
-   }
+        return sorted;
+    }
 
 }

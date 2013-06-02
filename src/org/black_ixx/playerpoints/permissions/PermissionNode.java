@@ -9,41 +9,41 @@ package org.black_ixx.playerpoints.permissions;
  */
 public enum PermissionNode {
 
-   GIVE(".give"),
-   TAKE(".take"),
-   LOOK(".look"),
-   PAY(".pay"),
-   SET(".set"),
-   RESET(".reset"),
-   ME(".me"),
-   LEAD(".lead");
+    GIVE(".give"),
+    TAKE(".take"),
+    LOOK(".look"),
+    PAY(".pay"),
+    SET(".set"),
+    RESET(".reset"),
+    ME(".me"),
+    LEAD(".lead");
 
-   /**
-    * Permission prefix.
-    */
-   private static final String prefix = "PlayerPoints";
+    /**
+     * Permission prefix.
+     */
+    private static final String prefix = "PlayerPoints";
 
-   /**
-    * Individual node path.
-    */
-   private String node;
+    /**
+     * Individual node path.
+     */
+    private String node;
 
-   /**
-    * Private constructor.
-    * 
-    * @param node
-    *           - Specific node.
-    */
-   private PermissionNode(String node) {
-      this.node = prefix + node;
-   }
+    /**
+     * Private constructor.
+     * 
+     * @param node
+     *            - Specific node.
+     */
+    private PermissionNode(String node) {
+        this.node = prefix + node;
+    }
 
-   /**
-    * Get the full permission node path.
-    * 
-    * @return Permission string.
-    */
-   public String getNode() {
-      return node;
-   }
+    /**
+     * Get the full permission node path.
+     * 
+     * @return Permission string.
+     */
+    public String getNode() {
+        return node;
+    }
 }

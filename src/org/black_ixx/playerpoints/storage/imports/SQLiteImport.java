@@ -17,45 +17,46 @@ import org.black_ixx.playerpoints.storage.StorageType;
  */
 public class SQLiteImport extends DatabaseImport {
 
-   /**
-    * SQLite reference.
-    */
-   private SQLite sqlite;
+    /**
+     * SQLite reference.
+     */
+    private SQLite sqlite;
 
-   /**
-    * Constructor.
-    * 
-    * @param plugin
-    *           - Plugin instance.
-    */
-   public SQLiteImport(PlayerPoints plugin) {
-      super(plugin);
-      sqlite = new SQLite(plugin.getLogger(), " ", "storage", plugin
-            .getDataFolder().getAbsolutePath());
-      sqlite.open();
-   }
+    /**
+     * Constructor.
+     * 
+     * @param plugin
+     *            - Plugin instance.
+     */
+    public SQLiteImport(PlayerPoints plugin) {
+        super(plugin);
+        sqlite = new SQLite(plugin.getLogger(), " ", "storage", plugin
+                .getDataFolder().getAbsolutePath());
+        sqlite.open();
+    }
 
-   @Override
-   void doImport() {
-      plugin.getLogger().info("Importing SQLite to MySQL");
-      IStorage mysql = generator.createStorageHandlerForType(StorageType.MYSQL);
-      ResultSet query = null;
-      try {
-         sqlite = new SQLite(plugin.getLogger(), " ", "storage", plugin
-               .getDataFolder().getAbsolutePath());
-         query = sqlite.query("SELECT * FROM playerpoints");
-         if(query.next()) {
-            do {
-               mysql.setPoints(query.getString("playername"),
-                     query.getInt("points"));
-            } while(query.next());
-         }
-         query.close();
-      } catch(SQLException e) {
-         plugin.getLogger().log(Level.SEVERE, "SQLException on SQLite import",
-               e);
-      } finally {
-      }
-   }
+    @Override
+    void doImport() {
+        plugin.getLogger().info("Importing SQLite to MySQL");
+        IStorage mysql = generator
+                .createStorageHandlerForType(StorageType.MYSQL);
+        ResultSet query = null;
+        try {
+            sqlite = new SQLite(plugin.getLogger(), " ", "storage", plugin
+                    .getDataFolder().getAbsolutePath());
+            query = sqlite.query("SELECT * FROM playerpoints");
+            if(query.next()) {
+                do {
+                    mysql.setPoints(query.getString("playername"),
+                            query.getInt("points"));
+                } while(query.next());
+            }
+            query.close();
+        } catch(SQLException e) {
+            plugin.getLogger().log(Level.SEVERE,
+                    "SQLException on SQLite import", e);
+        } finally {
+        }
+    }
 
 }

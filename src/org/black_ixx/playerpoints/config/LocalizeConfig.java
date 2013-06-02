@@ -19,110 +19,111 @@ import org.bukkit.configuration.file.YamlConfiguration;
  */
 public class LocalizeConfig {
 
-   /**
-    * Plugin instance.
-    */
-   private static PlayerPoints plugin;
+    /**
+     * Plugin instance.
+     */
+    private static PlayerPoints plugin;
 
-   /**
-    * File reference.
-    */
-   private static File file;
+    /**
+     * File reference.
+     */
+    private static File file;
 
-   /**
-    * YAML config.
-    */
-   private static YamlConfiguration config;
+    /**
+     * YAML config.
+     */
+    private static YamlConfiguration config;
 
-   /**
-    * Map of config keys to values.
-    */
-   private static final EnumMap<LocalizeNode, String> MESSAGES = new EnumMap<LocalizeNode, String>(
-         LocalizeNode.class);
+    /**
+     * Map of config keys to values.
+     */
+    private static final EnumMap<LocalizeNode, String> MESSAGES = new EnumMap<LocalizeNode, String>(
+            LocalizeNode.class);
 
-   /**
-    * Initialize.
-    * 
-    * @param pp
-    *           - Plugin instance.
-    */
-   public static void init(PlayerPoints pp) {
-      plugin = pp;
-      file = new File(plugin.getDataFolder().getAbsolutePath()
-            + "/localization.yml");
-      config = YamlConfiguration.loadConfiguration(file);
-      loadDefaults();
-      loadMessages();
-   }
+    /**
+     * Initialize.
+     * 
+     * @param pp
+     *            - Plugin instance.
+     */
+    public static void init(PlayerPoints pp) {
+        plugin = pp;
+        file = new File(plugin.getDataFolder().getAbsolutePath()
+                + "/localization.yml");
+        config = YamlConfiguration.loadConfiguration(file);
+        loadDefaults();
+        loadMessages();
+    }
 
-   public static void save() {
-      // Set config
-      try {
-         // Save the file
-         config.save(file);
-      } catch(IOException e1) {
-         plugin.getLogger().warning(
-               "File I/O Exception on saving localization config");
-         e1.printStackTrace();
-      }
-   }
+    public static void save() {
+        // Set config
+        try {
+            // Save the file
+            config.save(file);
+        } catch(IOException e1) {
+            plugin.getLogger().warning(
+                    "File I/O Exception on saving localization config");
+            e1.printStackTrace();
+        }
+    }
 
-   public static void reload() {
-      try {
-         config.load(file);
-      } catch(FileNotFoundException e) {
-         e.printStackTrace();
-      } catch(IOException e) {
-         e.printStackTrace();
-      } catch(InvalidConfigurationException e) {
-         e.printStackTrace();
-      }
-      MESSAGES.clear();
-      loadDefaults();
-      loadMessages();
-   }
+    public static void reload() {
+        try {
+            config.load(file);
+        } catch(FileNotFoundException e) {
+            e.printStackTrace();
+        } catch(IOException e) {
+            e.printStackTrace();
+        } catch(InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+        MESSAGES.clear();
+        loadDefaults();
+        loadMessages();
+    }
 
-   public static void set(String path, Object o) {
-      config.set(path, o);
-      save();
-   }
+    public static void set(String path, Object o) {
+        config.set(path, o);
+        save();
+    }
 
-   public static String getString(String path, String def) {
-      return config.getString(path, def);
-   }
+    public static String getString(String path, String def) {
+        return config.getString(path, def);
+    }
 
-   private static void loadDefaults() {
-      // Add to config if missing
-      for(LocalizeNode node : LocalizeNode.values()) {
-         if(!config.contains(node.getPath())) {
-            config.set(node.getPath(), node.getDefaultValue());
-         }
-      }
-      save();
-   }
+    private static void loadDefaults() {
+        // Add to config if missing
+        for(LocalizeNode node : LocalizeNode.values()) {
+            if(!config.contains(node.getPath())) {
+                config.set(node.getPath(), node.getDefaultValue());
+            }
+        }
+        save();
+    }
 
-   private static void loadMessages() {
-      for(LocalizeNode node : LocalizeNode.values()) {
-         MESSAGES.put(node,
-               config.getString(node.getPath(), node.getDefaultValue()));
-      }
-   }
+    private static void loadMessages() {
+        for(LocalizeNode node : LocalizeNode.values()) {
+            MESSAGES.put(node,
+                    config.getString(node.getPath(), node.getDefaultValue()));
+        }
+    }
 
-   public static String parseString(LocalizeNode node,
-         EnumMap<Flag, String> replace) {
-      /**
-       * Thanks to @Njol for the following
-       * http://forums.bukkit.org/threads/multiple
-       * -classes-config-colours.79719/#post-1154761
-       */
-      String out = ChatColor.translateAlternateColorCodes('&',
-            MESSAGES.get(node));
-      if(replace != null) {
-         for(Entry<Flag, String> entry : replace.entrySet()) {
-            out = out.replaceAll(entry.getKey().getFlag(), entry.getValue());
-         }
-      }
-      return out;
-   }
+    public static String parseString(LocalizeNode node,
+            EnumMap<Flag, String> replace) {
+        /**
+         * Thanks to @Njol for the following
+         * http://forums.bukkit.org/threads/multiple
+         * -classes-config-colours.79719/#post-1154761
+         */
+        String out = ChatColor.translateAlternateColorCodes('&',
+                MESSAGES.get(node));
+        if(replace != null) {
+            for(Entry<Flag, String> entry : replace.entrySet()) {
+                out = out
+                        .replaceAll(entry.getKey().getFlag(), entry.getValue());
+            }
+        }
+        return out;
+    }
 
 }

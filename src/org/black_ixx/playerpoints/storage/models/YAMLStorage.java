@@ -17,87 +17,89 @@ import org.bukkit.configuration.file.YamlConfiguration;
  */
 public class YAMLStorage implements IStorage {
 
-   /**
-    * Plugin reference.
-    */
-   private PlayerPoints plugin;
+    /**
+     * Plugin reference.
+     */
+    private PlayerPoints plugin;
 
-   /**
-    * File reference.
-    */
-   private File file;
+    /**
+     * File reference.
+     */
+    private File file;
 
-   /**
-    * Yaml config.
-    */
-   private YamlConfiguration config;
+    /**
+     * Yaml config.
+     */
+    private YamlConfiguration config;
 
-   /**
-    * Points section string.
-    */
-   private static final String POINTS_SECTION = "Points.";
+    /**
+     * Points section string.
+     */
+    private static final String POINTS_SECTION = "Points.";
 
-   /**
-    * Constructor.
-    * 
-    * @param pp
-    *           - Player points plugin instance.
-    */
-   public YAMLStorage(PlayerPoints pp) {
-      plugin = pp;
-      file = new File(plugin.getDataFolder().getAbsolutePath() + "/storage.yml");
-      config = YamlConfiguration.loadConfiguration(file);
-   }
+    /**
+     * Constructor.
+     * 
+     * @param pp
+     *            - Player points plugin instance.
+     */
+    public YAMLStorage(PlayerPoints pp) {
+        plugin = pp;
+        file = new File(plugin.getDataFolder().getAbsolutePath()
+                + "/storage.yml");
+        config = YamlConfiguration.loadConfiguration(file);
+    }
 
-   /**
-    * Save the config data.
-    */
-   public void save() {
-      // Set config
-      try {
-         // Save the file
-         config.save(file);
-      } catch(IOException e1) {
-         plugin.getLogger().warning("File I/O Exception on saving storage.yml");
-         e1.printStackTrace();
-      }
-   }
+    /**
+     * Save the config data.
+     */
+    public void save() {
+        // Set config
+        try {
+            // Save the file
+            config.save(file);
+        } catch(IOException e1) {
+            plugin.getLogger().warning(
+                    "File I/O Exception on saving storage.yml");
+            e1.printStackTrace();
+        }
+    }
 
-   /**
-    * Reload the config file.
-    */
-   public void reload() {
-      try {
-         config.load(file);
-      } catch(FileNotFoundException e) {
-         e.printStackTrace();
-      } catch(IOException e) {
-         e.printStackTrace();
-      } catch(InvalidConfigurationException e) {
-         e.printStackTrace();
-      }
-   }
+    /**
+     * Reload the config file.
+     */
+    public void reload() {
+        try {
+            config.load(file);
+        } catch(FileNotFoundException e) {
+            e.printStackTrace();
+        } catch(IOException e) {
+            e.printStackTrace();
+        } catch(InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
 
-   @Override
-   public boolean setPoints(String name, int points) {
-      config.set(POINTS_SECTION + name, points);
-      save();
-      return true;
-   }
+    @Override
+    public boolean setPoints(String name, int points) {
+        config.set(POINTS_SECTION + name, points);
+        save();
+        return true;
+    }
 
-   @Override
-   public int getPoints(String name) {
-      int points = config.getInt(POINTS_SECTION + name, 0);
-      return points;
-   }
+    @Override
+    public int getPoints(String name) {
+        int points = config.getInt(POINTS_SECTION + name, 0);
+        return points;
+    }
 
-   @Override
-   public boolean playerEntryExists(String name) {
-      return config.contains(POINTS_SECTION + name);
-   }
+    @Override
+    public boolean playerEntryExists(String name) {
+        return config.contains(POINTS_SECTION + name);
+    }
 
-   @Override
-   public Collection<String> getPlayers() {
-      return config.getConfigurationSection("Points.").getKeys(false);
-   }
+    @Override
+    public Collection<String> getPlayers() {
+        return config.getConfigurationSection("Points.").getKeys(false);
+    }
 }
