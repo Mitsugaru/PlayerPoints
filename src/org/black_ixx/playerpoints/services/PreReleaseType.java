@@ -13,7 +13,7 @@ public class PreReleaseType implements Comparable<PreReleaseType> {
     /**
      * Empty prerelease type.
      */
-    public static final PreReleaseType NONE = new PreReleaseType("NONE");
+    public static final PreReleaseType NONE = new PreReleaseType("");
 
     /**
      * Normal string found in version.
@@ -67,29 +67,12 @@ public class PreReleaseType implements Comparable<PreReleaseType> {
         return type;
     }
 
-    /**
-     * Standard order of pre-release types, from latest to earliest.
-     */
-    private enum Order {
-        NONE,
-        RC,
-        SNAPSHOT,
-        BETA,
-        ALPHA;
-    }
-
     @Override
     public int compareTo(PreReleaseType o) {
-        int compare = 0;
-
-        // Compare base types
-        try {
-            Order o1 = Order.valueOf(base.toUpperCase());
-            Order o2 = Order.valueOf(o.getBase().toUpperCase());
-            compare = o1.ordinal() - o2.ordinal();
-        } catch(IllegalArgumentException e) {
-            compare = type.compareTo(o.getType());
+        if (type.isEmpty() && !o.getType().isEmpty()) {
+            return -1;
         }
+        int compare = o.getType().toLowerCase().compareTo(type.toLowerCase());
 
         // Compare identifiers if matching base types
         if(compare == 0) {
