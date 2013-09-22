@@ -52,7 +52,6 @@ public class RootConfig {
         final ConfigurationSection config = plugin.getConfig();
         // LinkedHashmap of defaults
         final Map<String, Object> defaults = new LinkedHashMap<String, Object>();
-        // TODO defaults
         defaults.put("storage", "YAML");
         defaults.put("mysql.host", "localhost");
         defaults.put("mysql.port", 3306);

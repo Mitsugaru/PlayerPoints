@@ -3,7 +3,7 @@ package org.black_ixx.playerpoints.update.modules;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.config.LocalizeConfig;
 import org.black_ixx.playerpoints.config.LocalizeNode;
-import org.black_ixx.playerpoints.services.Version;
+import org.black_ixx.playerpoints.services.version.Version;
 import org.black_ixx.playerpoints.update.UpdateModule;
 
 /**
@@ -11,7 +11,7 @@ import org.black_ixx.playerpoints.update.UpdateModule;
  * 
  * @author Mitsugaru
  */
-public class OneDotFiveTwoUpdate extends UpdateModule {
+public class OneFiveTwoUpdate extends UpdateModule {
 
     /**
      * Constructor.
@@ -19,7 +19,7 @@ public class OneDotFiveTwoUpdate extends UpdateModule {
      * @param plugin
      *            - plugin instance.
      */
-    public OneDotFiveTwoUpdate(PlayerPoints plugin) {
+    public OneFiveTwoUpdate(PlayerPoints plugin) {
         super(plugin);
         targetVersion = new Version("1.52");
         targetVersion.setIgnorePatch(true);

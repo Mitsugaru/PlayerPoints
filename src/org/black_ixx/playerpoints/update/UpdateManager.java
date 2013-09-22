@@ -4,9 +4,9 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.black_ixx.playerpoints.PlayerPoints;
-import org.black_ixx.playerpoints.services.Version;
-import org.black_ixx.playerpoints.update.modules.OneDotFiveTwoUpdate;
-import org.black_ixx.playerpoints.update.modules.OneDotFiveUpdate;
+import org.black_ixx.playerpoints.services.version.Version;
+import org.black_ixx.playerpoints.update.modules.OneFiveTwoUpdate;
+import org.black_ixx.playerpoints.update.modules.OneFiveUpdate;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class UpdateManager {
@@ -30,8 +30,8 @@ public class UpdateManager {
     public UpdateManager(final PlayerPoints plugin) {
         this.plugin = plugin;
 
-        modules.add(new OneDotFiveUpdate(plugin));
-        modules.add(new OneDotFiveTwoUpdate(plugin));
+        modules.add(new OneFiveUpdate(plugin));
+        modules.add(new OneFiveTwoUpdate(plugin));
     }
 
     /**

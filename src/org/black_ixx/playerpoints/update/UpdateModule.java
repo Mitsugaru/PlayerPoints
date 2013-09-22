@@ -1,7 +1,7 @@
 package org.black_ixx.playerpoints.update;
 
 import org.black_ixx.playerpoints.PlayerPoints;
-import org.black_ixx.playerpoints.services.Version;
+import org.black_ixx.playerpoints.services.version.Version;
 
 public abstract class UpdateModule implements Comparable<UpdateModule> {
 

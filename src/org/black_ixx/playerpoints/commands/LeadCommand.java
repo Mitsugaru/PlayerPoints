@@ -104,7 +104,6 @@ public class LeadCommand extends CommandHandler {
     @Override
     public boolean unknownCommand(CommandSender sender, Command command,
             String label, String[] args, EnumMap<Flag, String> info) {
-        // TODO Check for prev, next, and integer
         String com = args[0];
 
         int current = 0;

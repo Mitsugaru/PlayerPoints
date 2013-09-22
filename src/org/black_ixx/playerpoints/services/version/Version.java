@@ -1,4 +1,4 @@
-package org.black_ixx.playerpoints.services;
+package org.black_ixx.playerpoints.services.version;
 
 import org.apache.commons.lang.StringUtils;
 

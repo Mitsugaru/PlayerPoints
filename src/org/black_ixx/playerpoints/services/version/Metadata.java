@@ -1,4 +1,4 @@
-package org.black_ixx.playerpoints.services;
+package org.black_ixx.playerpoints.services.version;
 
 import java.util.ArrayList;
 import java.util.List;

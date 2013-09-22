@@ -3,7 +3,7 @@ package org.black_ixx.playerpoints.update.modules;
 import java.io.File;
 
 import org.black_ixx.playerpoints.PlayerPoints;
-import org.black_ixx.playerpoints.services.Version;
+import org.black_ixx.playerpoints.services.version.Version;
 import org.black_ixx.playerpoints.update.UpdateModule;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -12,7 +12,7 @@ import org.bukkit.configuration.ConfigurationSection;
  * 
  * @author Mitsugaru
  */
-public class OneDotFiveUpdate extends UpdateModule {
+public class OneFiveUpdate extends UpdateModule {
 
     /**
      * Constructor.
@@ -20,7 +20,7 @@ public class OneDotFiveUpdate extends UpdateModule {
      * @param plugin
      *            - Plugin instance.
      */
-    public OneDotFiveUpdate(PlayerPoints plugin) {
+    public OneFiveUpdate(PlayerPoints plugin) {
         super(plugin);
         targetVersion = new Version("1.5");
         targetVersion.setIgnorePatch(true);
