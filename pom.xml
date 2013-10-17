@@ -88,11 +88,9 @@
             <systemPath>${project.basedir}/lib/Votifier.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>lib.PatPeter</groupId>
+            <groupId>lib.PatPeter.SQLibrary</groupId>
             <artifactId>SQLibrary</artifactId>
-            <version>4.2</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/SQLibrary.jar</systemPath>
+            <version>6.1</version>
         </dependency>
     </dependencies>
     <!-- Reporting -->
