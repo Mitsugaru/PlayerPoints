@@ -24,9 +24,9 @@ public class RootConfig {
      */
     public String host, port, database, user, password;
     /**
-     * Vote amount.
+     * Vote amount and MySQL retry limit.
      */
-    public int voteAmount;
+    public int voteAmount, retryLimit;
     /**
      * Import sql, vault and vote options.
      */
@@ -60,6 +60,7 @@ public class RootConfig {
         defaults.put("mysql.password", "pass");
         defaults.put("mysql.import.use", false);
         defaults.put("mysql.import.source", "YAML");
+        defaults.put("mysql.retry", 10);
         defaults.put("vote.enabled", false);
         defaults.put("vote.amount", 100);
         defaults.put("vote.online", false);
@@ -97,6 +98,7 @@ public class RootConfig {
         password = config.getString("mysql.password", "password");
         importSQL = config.getBoolean("mysql.import.use", false);
         vault = config.getBoolean("vault", false);
+        retryLimit = config.getInt("mysql.retry", 10);
         final String source = config.getString("mysql.import.source", "YAML");
         if(source.equalsIgnoreCase("SQLITE")) {
             importSource = StorageType.SQLITE;

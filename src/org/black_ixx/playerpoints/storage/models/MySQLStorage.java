@@ -23,6 +23,18 @@ public class MySQLStorage extends DatabaseStorage {
      * MYSQL reference.
      */
     private MySQL mysql;
+    /**
+     * Number of attempts to reconnect before completely failing an operation.
+     */
+    private int retryLimit = 10;
+    /**
+     * Current retry count.
+     */
+    private int retryCount = 0;
+    /**
+     * Skip operation flag.
+     */
+    private boolean skip = false;
 
     /**
      * Constructor.
@@ -32,11 +44,8 @@ public class MySQLStorage extends DatabaseStorage {
      */
     public MySQLStorage(PlayerPoints plugin) {
         super(plugin);
-        mysql = new MySQL(plugin.getLogger(), " ", plugin.getRootConfig().host,
-                Integer.valueOf(plugin.getRootConfig().port),
-                plugin.getRootConfig().database, plugin.getRootConfig().user,
-                plugin.getRootConfig().password);
-        mysql.open();
+        retryLimit = plugin.getRootConfig().retryLimit;
+        connect();
         if(!mysql.isTable("playerpoints")) {
             plugin.getLogger().info("Creating playerpoints table");
             try {
@@ -66,9 +75,15 @@ public class MySQLStorage extends DatabaseStorage {
         } catch(SQLException e) {
             plugin.getLogger().log(Level.SEVERE,
                     "Could not create getter statement.", e);
+            retryCount++;
+            connect();
+            if(!skip) {
+                points = getPoints(name);
+            }
         } finally {
             cleanup(result, statement);
         }
+        retryCount = 0;
         return points;
     }
 
@@ -94,9 +109,15 @@ public class MySQLStorage extends DatabaseStorage {
         } catch(SQLException e) {
             plugin.getLogger().log(Level.SEVERE,
                     "Could not create setter statement.", e);
+            retryCount++;
+            connect();
+            if(!skip) {
+                value = setPoints(name, points);
+            }
         } finally {
             cleanup(result, statement);
         }
+        retryCount = 0;
         return value;
     }
 
@@ -118,9 +139,15 @@ public class MySQLStorage extends DatabaseStorage {
         } catch(SQLException e) {
             plugin.getLogger().log(Level.SEVERE,
                     "Could not create player check statement.", e);
+            retryCount++;
+            connect();
+            if(!skip) {
+                has = playerEntryExists(name);
+            }
         } finally {
             cleanup(result, statement);
         }
+        retryCount = 0;
         return has;
     }
 
@@ -143,11 +170,41 @@ public class MySQLStorage extends DatabaseStorage {
         } catch(SQLException e) {
             plugin.getLogger().log(Level.SEVERE,
                     "Could not create get players statement.", e);
+            retryCount++;
+            connect();
+            if(!skip) {
+                players.clear();
+                players.addAll(getPlayers());
+            }
         } finally {
             cleanup(result, statement);
         }
-
+        retryCount = 0;
         return players;
+    }
+
+    /**
+     * Connect to MySQL database. Close existing connection if one exists.
+     */
+    private void connect() {
+        if(mysql != null) {
+            mysql.close();
+        }
+        mysql = new MySQL(plugin.getLogger(), " ", plugin.getRootConfig().host,
+                Integer.valueOf(plugin.getRootConfig().port),
+                plugin.getRootConfig().database, plugin.getRootConfig().user,
+                plugin.getRootConfig().password);
+        if(retryCount < retryLimit) {
+            mysql.open();
+        } else {
+            plugin.getLogger().severe(
+                    "Tried connecting to MySQL " + retryLimit
+                            + " times and could not connect.");
+            plugin.getLogger()
+                    .severe("It may be in your best interest to restart the plugin / server.");
+            retryCount = 0;
+            skip = true;
+        }
     }
 
 }
