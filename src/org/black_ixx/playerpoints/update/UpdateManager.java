@@ -45,12 +45,10 @@ public class UpdateManager {
         if(!version.validate()) {
             version.setIgnorePatch(true);
         }
-        version.getMinor();
         Version current = new Version(config.getString("version"));
         if(!current.validate()) {
             current.setIgnorePatch(true);
         }
-        current.getMinor();
         if(version.compareTo(current) > 0) {
             // Update to latest version
             plugin.getLogger().info(
