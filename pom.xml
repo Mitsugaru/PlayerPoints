@@ -4,7 +4,7 @@
     <!-- Project properties. -->
     <groupId>org.black_ixx</groupId>
     <artifactId>PlayerPoints</artifactId>
-    <version>1.6-SNAPSHOT</version>
+    <version>1.7-SNAPSHOT</version>
     <name>PlayerPoints</name>
     <description>Player points system for Bukkit</description>
     <!-- Source code management URL. -->
@@ -73,12 +73,12 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.7.2-R0.1</version>
+            <version>1.7.2-R0.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>Vault</artifactId>
-            <version>1.2.27</version>
+            <version>1.2.29</version>
         </dependency>
         <dependency>
             <groupId>com.vexsoftware.votifier</groupId>
