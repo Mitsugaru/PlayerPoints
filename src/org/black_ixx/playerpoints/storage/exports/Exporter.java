@@ -29,8 +29,7 @@ public class Exporter {
      * Check whether we need to import and where we are importing from.
      */
     public void checkExport() {
-        if(plugin.getRootConfig().exportSQL
-                && plugin.getRootConfig().getStorageType() == StorageType.MYSQL) {
+        if(plugin.getRootConfig().exportSQL) {
             exportSQL(plugin.getRootConfig().exportSource);
             plugin.getConfig().set("mysql.export.use", false);
             plugin.saveConfig();
