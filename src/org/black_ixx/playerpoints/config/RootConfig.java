@@ -28,9 +28,9 @@ public class RootConfig {
      */
     public int voteAmount, retryLimit;
     /**
-     * Import sql, vault and vote options.
+     * Import / export sql, vault and vote options.
      */
-    public boolean importSQL, voteOnline, voteEnabled, vault;
+    public boolean importSQL, exportSQL, voteOnline, voteEnabled, vault;
     /**
      * Debug database option.
      */
@@ -38,7 +38,7 @@ public class RootConfig {
     /**
      * Storage info.
      */
-    public StorageType backend, importSource;
+    public StorageType backend, importSource, exportSource;
 
     /**
      * Constructor.
@@ -60,6 +60,8 @@ public class RootConfig {
         defaults.put("mysql.password", "pass");
         defaults.put("mysql.import.use", false);
         defaults.put("mysql.import.source", "YAML");
+        defaults.put("mysql.export.use", false);
+        defaults.put("mysql.export.source", "SQLITE");
         defaults.put("mysql.retry", 10);
         defaults.put("vote.enabled", false);
         defaults.put("vote.amount", 100);
@@ -99,11 +101,18 @@ public class RootConfig {
         importSQL = config.getBoolean("mysql.import.use", false);
         vault = config.getBoolean("vault", false);
         retryLimit = config.getInt("mysql.retry", 10);
-        final String source = config.getString("mysql.import.source", "YAML");
-        if(source.equalsIgnoreCase("SQLITE")) {
+        exportSQL = config.getBoolean("mysql.export.use", false);
+        final String databaseImportSource = config.getString("mysql.import.source", "YAML");
+        if(databaseImportSource.equalsIgnoreCase("SQLITE")) {
             importSource = StorageType.SQLITE;
         } else {
             importSource = StorageType.YAML;
+        }
+        final String databaseExportSource = config.getString("mysql.export.source", "MYSQL");
+        if(databaseExportSource.equalsIgnoreCase("SQLITE")) {
+            exportSource = StorageType.SQLITE;
+        } else {
+            exportSource = StorageType.MYSQL;
         }
     }
 

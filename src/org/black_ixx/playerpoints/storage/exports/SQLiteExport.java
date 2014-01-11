@@ -1,4 +1,4 @@
-package org.black_ixx.playerpoints.storage.imports;
+package org.black_ixx.playerpoints.storage.exports;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,12 +11,12 @@ import org.black_ixx.playerpoints.storage.IStorage;
 import org.black_ixx.playerpoints.storage.StorageType;
 
 /**
- * Imports from SQLite to MySQL.
+ * Handles SQLite to YAML export.
  * 
  * @author Mitsugaru
  */
-public class SQLiteImport extends DatabaseImport {
-
+public class SQLiteExport extends DatabaseExport {
+    
     /**
      * SQLite reference.
      */
@@ -28,7 +28,7 @@ public class SQLiteImport extends DatabaseImport {
      * @param plugin
      *            - Plugin instance.
      */
-    public SQLiteImport(PlayerPoints plugin) {
+    public SQLiteExport(PlayerPoints plugin) {
         super(plugin);
         sqlite = new SQLite(plugin.getLogger(), " ", "storage", plugin
                 .getDataFolder().getAbsolutePath());
@@ -36,23 +36,21 @@ public class SQLiteImport extends DatabaseImport {
     }
 
     @Override
-    void doImport() {
-        plugin.getLogger().info("Importing SQLite to MySQL");
-        IStorage mysql = generator
-                .createStorageHandlerForType(StorageType.MYSQL);
+    void doExport() {
+        IStorage yaml = generator.createStorageHandlerForType(StorageType.YAML);
         ResultSet query = null;
         try {
             query = sqlite.query("SELECT * FROM playerpoints");
             if(query.next()) {
                 do {
-                    mysql.setPoints(query.getString("playername"),
+                    yaml.setPoints(query.getString("playername"),
                             query.getInt("points"));
                 } while(query.next());
             }
             query.close();
         } catch(SQLException e) {
             plugin.getLogger().log(Level.SEVERE,
-                    "SQLException on SQLite import", e);
+                    "SQLException on SQLite export", e);
         } finally {
             sqlite.close();
         }
