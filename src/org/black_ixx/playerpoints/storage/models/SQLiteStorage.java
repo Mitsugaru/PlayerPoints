@@ -32,8 +32,8 @@ public class SQLiteStorage extends DatabaseStorage {
      */
     public SQLiteStorage(PlayerPoints plugin) {
         super(plugin);
-        sqlite = new SQLite(plugin.getLogger(), " ", "storage", plugin
-                .getDataFolder().getAbsolutePath());
+        sqlite = new SQLite(plugin.getLogger(), " ", plugin.getDataFolder()
+                .getAbsolutePath(), "storage");
         sqlite.open();
         if(!sqlite.isTable("playerpoints")) {
             plugin.getLogger().info("Creating playerpoints table");

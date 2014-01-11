@@ -30,8 +30,8 @@ public class SQLiteExport extends DatabaseExport {
      */
     public SQLiteExport(PlayerPoints plugin) {
         super(plugin);
-        sqlite = new SQLite(plugin.getLogger(), " ", "storage", plugin
-                .getDataFolder().getAbsolutePath());
+        sqlite = new SQLite(plugin.getLogger(), " ", plugin.getDataFolder()
+                .getAbsolutePath(), "storage");
         sqlite.open();
     }
 
