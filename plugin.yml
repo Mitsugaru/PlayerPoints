@@ -4,7 +4,7 @@ main: ${project.mainclass}
 version: ${project.version}
 author: Black_ixx
 website: http://felix.neuby.de
-softdepend: [Votifier, SQLibrary]
+softdepend: [Votifier, SQLibrary, Vault]
 commands:
   points:
    description: Root command for PlayerPoints
