@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import lib.PatPeter.SQLibrary.MySQL;
 
 import org.black_ixx.playerpoints.PlayerPoints;
+import org.black_ixx.playerpoints.config.RootConfig;
 import org.black_ixx.playerpoints.storage.DatabaseStorage;
 
 /**
@@ -44,7 +45,7 @@ public class MySQLStorage extends DatabaseStorage {
      */
     public MySQLStorage(PlayerPoints plugin) {
         super(plugin);
-        retryLimit = plugin.getRootConfig().retryLimit;
+        retryLimit = plugin.getModuleForClass(RootConfig.class).retryLimit;
         connect();
         if(!mysql.isTable("playerpoints")) {
             plugin.getLogger().info("Creating playerpoints table");
@@ -190,10 +191,10 @@ public class MySQLStorage extends DatabaseStorage {
         if(mysql != null) {
             mysql.close();
         }
-        mysql = new MySQL(plugin.getLogger(), " ", plugin.getRootConfig().host,
-                Integer.valueOf(plugin.getRootConfig().port),
-                plugin.getRootConfig().database, plugin.getRootConfig().user,
-                plugin.getRootConfig().password);
+        RootConfig config = plugin.getModuleForClass(RootConfig.class);
+        mysql = new MySQL(plugin.getLogger(), " ", config.host,
+                Integer.valueOf(config.port), config.database, config.user,
+                config.password);
         if(retryCount < retryLimit) {
             mysql.open();
         } else {

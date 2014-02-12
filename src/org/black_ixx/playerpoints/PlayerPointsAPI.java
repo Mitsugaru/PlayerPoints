@@ -2,6 +2,7 @@ package org.black_ixx.playerpoints;
 
 import org.black_ixx.playerpoints.event.PlayerPointsChangeEvent;
 import org.black_ixx.playerpoints.event.PlayerPointsResetEvent;
+import org.black_ixx.playerpoints.storage.StorageHandler;
 
 /**
  * Static API hook.
@@ -32,7 +33,7 @@ public class PlayerPointsAPI {
         if(!event.isCancelled()) {
             final int total = look(playername.toLowerCase())
                     + event.getChange();
-            return plugin.getStorageHandler().setPoints(
+            return plugin.getModuleForClass(StorageHandler.class).setPoints(
                     playername.toLowerCase(), total);
         }
         return false;
@@ -69,7 +70,7 @@ public class PlayerPointsAPI {
      * @return Points that the player has
      */
     public int look(String playername) {
-        return plugin.getStorageHandler().getPoints(playername.toLowerCase());
+        return plugin.getModuleForClass(StorageHandler.class).getPoints(playername.toLowerCase());
     }
 
     /**
@@ -109,7 +110,7 @@ public class PlayerPointsAPI {
                 amount - look(playername));
         plugin.getServer().getPluginManager().callEvent(event);
         if(!event.isCancelled()) {
-            return plugin.getStorageHandler().setPoints(
+            return plugin.getModuleForClass(StorageHandler.class).setPoints(
                     playername.toLowerCase(),
                     look(playername) + event.getChange());
         }
@@ -127,7 +128,7 @@ public class PlayerPointsAPI {
         PlayerPointsResetEvent event = new PlayerPointsResetEvent(playername);
         plugin.getServer().getPluginManager().callEvent(event);
         if(!event.isCancelled()) {
-            return plugin.getStorageHandler().setPoints(
+            return plugin.getModuleForClass(StorageHandler.class).setPoints(
                     playername.toLowerCase(), event.getChange());
         }
         return false;

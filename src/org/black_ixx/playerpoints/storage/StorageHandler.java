@@ -4,11 +4,16 @@ import java.util.Collection;
 
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.config.RootConfig;
+import org.black_ixx.playerpoints.services.IModule;
 
 /**
  * Storage handler for getting / setting info between YAML, SQLite, and MYSQL.
  */
-public class StorageHandler implements IStorage {
+public class StorageHandler implements IStorage, IModule {
+    /**
+     * Plugin instance.
+     */
+    private PlayerPoints plugin;
     /**
      * Generator for storage objects.
      */
@@ -25,10 +30,8 @@ public class StorageHandler implements IStorage {
      *            - PlayerPoints plugin instance.
      */
     public StorageHandler(PlayerPoints plugin) {
-        final RootConfig config = plugin.getRootConfig();
-        generator = new StorageGenerator(plugin);
-        storage = generator
-                .createStorageHandlerForType(config.getStorageType());
+        this.plugin = plugin;
+
     }
 
     @Override
@@ -49,5 +52,16 @@ public class StorageHandler implements IStorage {
     @Override
     public Collection<String> getPlayers() {
         return storage.getPlayers();
+    }
+
+    @Override
+    public void starting() {
+        generator = new StorageGenerator(plugin);
+        storage = generator.createStorageHandlerForType(plugin
+                .getModuleForClass(RootConfig.class).getStorageType());
+    }
+
+    @Override
+    public void closing() {
     }
 }

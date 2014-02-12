@@ -8,6 +8,7 @@ import java.util.Map;
 import org.black_ixx.playerpoints.commands.Commander;
 import org.black_ixx.playerpoints.config.LocalizeConfig;
 import org.black_ixx.playerpoints.config.RootConfig;
+import org.black_ixx.playerpoints.listeners.RestrictionListener;
 import org.black_ixx.playerpoints.listeners.VotifierListener;
 import org.black_ixx.playerpoints.services.IModule;
 import org.black_ixx.playerpoints.storage.StorageHandler;
@@ -29,16 +30,6 @@ public class PlayerPoints extends JavaPlugin {
     public static final String TAG = "[PlayerPoints]";
 
     /**
-     * Root config reference.
-     */
-    private RootConfig rootConfig;
-
-    /**
-     * Storage handler.
-     */
-    private StorageHandler storage;
-
-    /**
      * API instance.
      */
     private PlayerPointsAPI api;
@@ -53,7 +44,8 @@ public class PlayerPoints extends JavaPlugin {
         // Initialize localization
         LocalizeConfig.init(this);
         // Initialize config
-        rootConfig = new RootConfig(this);
+        RootConfig rootConfig = new RootConfig(this);
+        registerModule(RootConfig.class, rootConfig);
         // Do imports
         Importer importer = new Importer(this);
         importer.checkImport();
@@ -61,7 +53,7 @@ public class PlayerPoints extends JavaPlugin {
         Exporter exporter = new Exporter(this);
         exporter.checkExport();
         // Intialize storage handler
-        storage = new StorageHandler(this);
+        registerModule(StorageHandler.class, new StorageHandler(this));
         // Initialize API
         api = new PlayerPointsAPI(this);
         // Initialize updater
@@ -71,9 +63,9 @@ public class PlayerPoints extends JavaPlugin {
         final Commander commander = new Commander(this);
         getCommand("points").setExecutor(commander);
         getCommand("p").setExecutor(commander);
+        final PluginManager pm = getServer().getPluginManager();
         // Register votifier listener, if applicable
         if(rootConfig.voteEnabled) {
-            final PluginManager pm = getServer().getPluginManager();
             final Plugin votifier = pm.getPlugin("Votifier");
             if(votifier != null) {
                 pm.registerEvents(new VotifierListener(this), this);
@@ -86,6 +78,8 @@ public class PlayerPoints extends JavaPlugin {
             registerModule(PlayerPointsVaultLayer.class,
                     new PlayerPointsVaultLayer(this));
         }
+        //Register listeners
+        pm.registerEvents(new RestrictionListener(this), this);
     }
 
     @Override
@@ -105,24 +99,6 @@ public class PlayerPoints extends JavaPlugin {
      */
     public PlayerPointsAPI getAPI() {
         return api;
-    }
-
-    /**
-     * Get the root plugin config.yml handler.
-     * 
-     * @return Root config handler.
-     */
-    public RootConfig getRootConfig() {
-        return rootConfig;
-    }
-
-    /**
-     * Get the storage handler for player points data.
-     * 
-     * @return Storage handler.
-     */
-    public StorageHandler getStorageHandler() {
-        return storage;
     }
 
     /**

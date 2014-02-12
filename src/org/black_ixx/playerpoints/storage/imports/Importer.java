@@ -1,6 +1,7 @@
 package org.black_ixx.playerpoints.storage.imports;
 
 import org.black_ixx.playerpoints.PlayerPoints;
+import org.black_ixx.playerpoints.config.RootConfig;
 import org.black_ixx.playerpoints.storage.StorageType;
 
 /**
@@ -29,9 +30,10 @@ public class Importer {
      * Check whether we need to import and where we are importing from.
      */
     public void checkImport() {
-        if(plugin.getRootConfig().importSQL
-                && plugin.getRootConfig().getStorageType() == StorageType.MYSQL) {
-            importSQL(plugin.getRootConfig().importSource);
+        RootConfig config = plugin.getModuleForClass(RootConfig.class);
+        if(config.importSQL
+                && config.getStorageType() == StorageType.MYSQL) {
+            importSQL(config.importSource);
             plugin.getConfig().set("mysql.import.use", false);
             plugin.saveConfig();
         }

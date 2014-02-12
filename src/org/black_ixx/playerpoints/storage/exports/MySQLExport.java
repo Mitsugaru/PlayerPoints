@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import lib.PatPeter.SQLibrary.MySQL;
 
 import org.black_ixx.playerpoints.PlayerPoints;
+import org.black_ixx.playerpoints.config.RootConfig;
 import org.black_ixx.playerpoints.storage.IStorage;
 import org.black_ixx.playerpoints.storage.StorageType;
 
@@ -24,10 +25,11 @@ public class MySQLExport extends DatabaseExport {
 
     public MySQLExport(PlayerPoints plugin) {
         super(plugin);
-        mysql = new MySQL(plugin.getLogger(), " ", plugin.getRootConfig().host,
-                Integer.valueOf(plugin.getRootConfig().port),
-                plugin.getRootConfig().database, plugin.getRootConfig().user,
-                plugin.getRootConfig().password);
+        RootConfig config = plugin.getModuleForClass(RootConfig.class);
+        mysql = new MySQL(plugin.getLogger(), " ", config.host,
+                Integer.valueOf(config.port),
+                config.database, config.user,
+                config.password);
         mysql.open();
     }
 

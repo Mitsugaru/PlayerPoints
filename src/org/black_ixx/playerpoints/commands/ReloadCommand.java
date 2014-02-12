@@ -5,6 +5,7 @@ import java.util.EnumMap;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.config.LocalizeConfig;
 import org.black_ixx.playerpoints.config.LocalizeNode;
+import org.black_ixx.playerpoints.config.RootConfig;
 import org.black_ixx.playerpoints.models.Flag;
 import org.black_ixx.playerpoints.permissions.PermissionHandler;
 import org.black_ixx.playerpoints.permissions.PermissionNode;
@@ -23,7 +24,7 @@ public class ReloadCommand implements PointsCommand {
             sender.sendMessage(LocalizeConfig.parseString(LocalizeNode.PERMISSION_DENY, info));
             return true;
         }
-        plugin.getRootConfig().reloadConfig();
+        plugin.getModuleForClass(RootConfig.class).reloadConfig();
         LocalizeConfig.reload();
         sender.sendMessage(LocalizeConfig.parseString(LocalizeNode.RELOAD, info));
         return true;

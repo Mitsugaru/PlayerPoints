@@ -15,6 +15,7 @@ import org.black_ixx.playerpoints.models.SortedPlayer;
 import org.black_ixx.playerpoints.permissions.PermissionHandler;
 import org.black_ixx.playerpoints.permissions.PermissionNode;
 import org.black_ixx.playerpoints.services.CommandHandler;
+import org.black_ixx.playerpoints.storage.StorageHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -58,7 +59,7 @@ public class LeadCommand extends CommandHandler {
         }
 
         SortedSet<SortedPlayer> leaders = sortLeaders(plugin, plugin
-                .getStorageHandler().getPlayers());
+                .getModuleForClass(StorageHandler.class).getPlayers());
 
         int current = 0;
         if(page.containsKey(sender.getName())) {

@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.black_ixx.playerpoints.services.IModule;
+import org.black_ixx.playerpoints.storage.StorageHandler;
 import org.bukkit.plugin.ServicePriority;
 
 import net.milkbowl.vault.economy.Economy;
@@ -90,7 +91,7 @@ public class PlayerPointsVaultLayer implements Economy, IModule {
 
     @Override
     public boolean hasAccount(String playerName) {
-        return plugin.getStorageHandler().playerEntryExists(playerName);
+        return plugin.getModuleForClass(StorageHandler.class).playerEntryExists(playerName);
     }
 
     @Override

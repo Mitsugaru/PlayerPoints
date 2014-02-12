@@ -1,6 +1,7 @@
 package org.black_ixx.playerpoints.storage.exports;
 
 import org.black_ixx.playerpoints.PlayerPoints;
+import org.black_ixx.playerpoints.config.RootConfig;
 import org.black_ixx.playerpoints.storage.StorageType;
 
 /**
@@ -29,8 +30,9 @@ public class Exporter {
      * Check whether we need to import and where we are importing from.
      */
     public void checkExport() {
-        if(plugin.getRootConfig().exportSQL) {
-            exportSQL(plugin.getRootConfig().exportSource);
+        RootConfig config = plugin.getModuleForClass(RootConfig.class);
+        if(config.exportSQL) {
+            exportSQL(config.exportSource);
             plugin.getConfig().set("mysql.export.use", false);
             plugin.saveConfig();
         }
