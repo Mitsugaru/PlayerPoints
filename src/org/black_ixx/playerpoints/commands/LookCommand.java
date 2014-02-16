@@ -5,6 +5,7 @@ import java.util.EnumMap;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.config.LocalizeConfig;
 import org.black_ixx.playerpoints.config.LocalizeNode;
+import org.black_ixx.playerpoints.config.RootConfig;
 import org.black_ixx.playerpoints.models.Flag;
 import org.black_ixx.playerpoints.permissions.PermissionHandler;
 import org.black_ixx.playerpoints.permissions.PermissionNode;
@@ -35,8 +36,15 @@ public class LookCommand implements PointsCommand {
                     LocalizeNode.COMMAND_LOOK, info));
             return true;
         }
-        info.put(Flag.PLAYER, args[0]);
-        info.put(Flag.AMOUNT, "" + plugin.getAPI().look(args[0]));
+        String playerName = null;
+        if(plugin.getModuleForClass(RootConfig.class).autocompleteOnline) {
+            playerName = plugin.expandName(args[0]);
+        }
+        if(playerName == null) {
+            playerName = args[0];
+        }
+        info.put(Flag.PLAYER, playerName);
+        info.put(Flag.AMOUNT, "" + plugin.getAPI().look(playerName));
         sender.sendMessage(LocalizeConfig.parseString(LocalizeNode.POINTS_LOOK,
                 info));
         return true;

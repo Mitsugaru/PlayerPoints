@@ -32,7 +32,7 @@ public class RootConfig implements IModule {
      * Import / export sql, vault and vote options.
      */
     public boolean importSQL, exportSQL, voteOnline, voteEnabled, vault,
-            hasPlayedBefore, debugDatabase;
+            hasPlayedBefore, autocompleteOnline, debugDatabase;
     /**
      * Storage info.
      */
@@ -74,6 +74,7 @@ public class RootConfig implements IModule {
         vault = config.getBoolean("vault", false);
         hasPlayedBefore = config.getBoolean("restrictions.hasPlayedBefore",
                 false);
+        autocompleteOnline = config.getBoolean("restrictions.autocompleteOnline", false);
     }
 
     /**
@@ -150,6 +151,7 @@ public class RootConfig implements IModule {
         defaults.put("vote.enabled", false);
         defaults.put("vote.amount", 100);
         defaults.put("vote.online", false);
+        defaults.put("restrictions.autocompleteOnline", false);
         defaults.put("restrictions.hasPlayedBefore", false);
         defaults.put("debug.database", false);
         defaults.put("vault", false);

@@ -15,6 +15,7 @@ import org.black_ixx.playerpoints.storage.StorageHandler;
 import org.black_ixx.playerpoints.storage.exports.Exporter;
 import org.black_ixx.playerpoints.storage.imports.Importer;
 import org.black_ixx.playerpoints.update.UpdateManager;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -78,7 +79,7 @@ public class PlayerPoints extends JavaPlugin {
             registerModule(PlayerPointsVaultLayer.class,
                     new PlayerPointsVaultLayer(this));
         }
-        //Register listeners
+        // Register listeners
         pm.registerEvents(new RestrictionListener(this), this);
     }
 
@@ -158,5 +159,36 @@ public class PlayerPoints extends JavaPlugin {
      */
     public <T extends IModule> T getModuleForClass(Class<T> clazz) {
         return clazz.cast(modules.get(clazz));
+    }
+
+    /**
+     * Attempts to look up full name based on who's on the server Given a
+     * partial name
+     * 
+     * @author Frigid, edited by Raphfrk and petteyg359
+     */
+    public String expandName(String Name) {
+        int m = 0;
+        String Result = "";
+        final Player[] online = getServer().getOnlinePlayers();
+        for(Player player : online) {
+            String str = player.getName();
+            if(str.matches("(?i).*" + Name + ".*")) {
+                m++;
+                Result = str;
+                if(m == 2) {
+                    return null;
+                }
+            }
+            if(str.equalsIgnoreCase(Name)) {
+                return str;
+            }
+        }
+        if(m == 1)
+            return Result;
+        if(m > 1) {
+            return null;
+        }
+        return Name;
     }
 }

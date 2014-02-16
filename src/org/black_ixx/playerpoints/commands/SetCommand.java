@@ -5,6 +5,7 @@ import java.util.EnumMap;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.config.LocalizeConfig;
 import org.black_ixx.playerpoints.config.LocalizeNode;
+import org.black_ixx.playerpoints.config.RootConfig;
 import org.black_ixx.playerpoints.models.Flag;
 import org.black_ixx.playerpoints.permissions.PermissionHandler;
 import org.black_ixx.playerpoints.permissions.PermissionNode;
@@ -37,8 +38,15 @@ public class SetCommand implements PointsCommand {
         }
         try {
             int intanzahl = Integer.parseInt(args[1]);
-            if(plugin.getAPI().set(args[0], intanzahl)) {
-                info.put(Flag.PLAYER, args[0]);
+            String playerName = null;
+            if(plugin.getModuleForClass(RootConfig.class).autocompleteOnline) {
+                playerName = plugin.expandName(args[0]);
+            }
+            if(playerName == null) {
+                playerName = args[0];
+            }
+            if(plugin.getAPI().set(playerName, intanzahl)) {
+                info.put(Flag.PLAYER, playerName);
                 info.put(Flag.AMOUNT, "" + intanzahl);
                 sender.sendMessage(LocalizeConfig.parseString(
                         LocalizeNode.POINTS_SUCCESS, info));
