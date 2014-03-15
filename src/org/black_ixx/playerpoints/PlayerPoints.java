@@ -62,8 +62,12 @@ public class PlayerPoints extends JavaPlugin {
         update.checkUpdate();
         // Register commands
         final Commander commander = new Commander(this);
-        getCommand("points").setExecutor(commander);
-        getCommand("p").setExecutor(commander);
+        if(getDescription().getCommands().containsKey("points")) {
+            getCommand("points").setExecutor(commander);
+        }
+        if(getDescription().getCommands().containsKey("p")) {
+            getCommand("p").setExecutor(commander);
+        }
         final PluginManager pm = getServer().getPluginManager();
         // Register votifier listener, if applicable
         if(rootConfig.voteEnabled) {
