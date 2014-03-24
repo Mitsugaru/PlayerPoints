@@ -70,12 +70,4 @@ public abstract class DatabaseStorage implements IStorage {
         }
     }
 
-    /**
-     * Check if the given player name is in the database.
-     * 
-     * @param name
-     *            - Player name to check.
-     * @return True if player exists in database, else false.
-     */
-    public abstract boolean playerEntryExists(String name);
 }
