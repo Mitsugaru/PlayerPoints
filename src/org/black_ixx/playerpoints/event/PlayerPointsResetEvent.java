@@ -1,5 +1,7 @@
 package org.black_ixx.playerpoints.event;
 
+import java.util.UUID;
+
 import org.bukkit.event.HandlerList;
 
 /**
@@ -18,8 +20,8 @@ public class PlayerPointsResetEvent extends PlayerPointsEvent {
      * @param name
      *            - Name of player.
      */
-    public PlayerPointsResetEvent(String name) {
-        super(name, 0);
+    public PlayerPointsResetEvent(UUID id) {
+        super(id, 0);
     }
 
     /**

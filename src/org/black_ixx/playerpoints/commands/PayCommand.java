@@ -1,6 +1,7 @@
 package org.black_ixx.playerpoints.commands;
 
 import java.util.EnumMap;
+import java.util.UUID;
 
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.config.LocalizeConfig;
@@ -57,13 +58,14 @@ public class PayCommand implements PointsCommand {
             if(playerName == null) {
                 playerName = args[0];
             }
-            if(plugin.getAPI().pay(sender.getName(), playerName, intanzahl)) {
+            UUID id = plugin.translateNameToUUID(playerName);
+            if(plugin.getAPI().pay(((Player)sender).getUniqueId(), id, intanzahl)) {
                 info.put(Flag.PLAYER, playerName);
                 info.put(Flag.AMOUNT, "" + args[1]);
                 sender.sendMessage(LocalizeConfig.parseString(
                         LocalizeNode.POINTS_PAY_SEND, info));
                 // Send message to receiver
-                final Player target = Bukkit.getServer().getPlayer(playerName);
+                final Player target = Bukkit.getServer().getPlayer(id);
                 if(target != null && target.isOnline()) {
                     info.put(Flag.PLAYER, sender.getName());
                     target.sendMessage(LocalizeConfig.parseString(

@@ -1,6 +1,7 @@
 package org.black_ixx.playerpoints.commands;
 
 import java.util.EnumMap;
+import java.util.UUID;
 
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.config.LocalizeConfig;
@@ -46,12 +47,13 @@ public class GiveCommand implements PointsCommand {
             if(playerName == null) {
                 playerName = args[0];
             }
-            if(plugin.getAPI().give(playerName, anzahl)) {
+            UUID id = plugin.translateNameToUUID(playerName);
+            if(plugin.getAPI().give(id, anzahl)) {
                 info.put(Flag.PLAYER, playerName);
-                info.put(Flag.AMOUNT, "" + plugin.getAPI().look(playerName));
+                info.put(Flag.AMOUNT, "" + plugin.getAPI().look(id));
                 sender.sendMessage(LocalizeConfig.parseString(
                         LocalizeNode.POINTS_SUCCESS, info));
-                final Player target = Bukkit.getServer().getPlayer(playerName);
+                final Player target = Bukkit.getServer().getPlayer(id);
                 if(target != null && target.isOnline()) {
                     info.put(Flag.PLAYER, sender.getName());
                     info.put(Flag.AMOUNT, "" + anzahl);

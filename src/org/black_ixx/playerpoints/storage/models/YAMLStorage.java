@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.logging.Level;
 
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.storage.IStorage;
@@ -81,25 +82,52 @@ public class YAMLStorage implements IStorage {
     }
 
     @Override
-    public boolean setPoints(String name, int points) {
-        config.set(POINTS_SECTION + name, points);
+    public boolean setPoints(String id, int points) {
+        config.set(POINTS_SECTION + id, points);
         save();
         return true;
     }
 
     @Override
-    public int getPoints(String name) {
-        int points = config.getInt(POINTS_SECTION + name, 0);
+    public int getPoints(String id) {
+        int points = config.getInt(POINTS_SECTION + id, 0);
         return points;
     }
 
     @Override
-    public boolean playerEntryExists(String name) {
-        return config.contains(POINTS_SECTION + name);
+    public boolean playerEntryExists(String id) {
+        return config.contains(POINTS_SECTION + id);
+    }
+
+    @Override
+    public boolean removePlayer(String id) {
+        config.set(POINTS_SECTION + id, null);
+        return true;
     }
 
     @Override
     public Collection<String> getPlayers() {
         return config.getConfigurationSection("Points.").getKeys(false);
     }
+
+    @Override
+    public boolean destroy() {
+        Collection<String> sections = config.getKeys(false);
+        for(String section: sections) {
+            config.set(section, null);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean build() {
+        boolean success = false;
+        try {
+            success = file.createNewFile();
+        } catch(IOException e) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to create storage file!", e);
+        }
+        return success;
+    }
+
 }

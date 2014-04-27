@@ -44,7 +44,7 @@ public class LookCommand implements PointsCommand {
             playerName = args[0];
         }
         info.put(Flag.PLAYER, playerName);
-        info.put(Flag.AMOUNT, "" + plugin.getAPI().look(playerName));
+        info.put(Flag.AMOUNT, "" + plugin.getAPI().look(plugin.translateNameToUUID(playerName)));
         sender.sendMessage(LocalizeConfig.parseString(LocalizeNode.POINTS_LOOK,
                 info));
         return true;

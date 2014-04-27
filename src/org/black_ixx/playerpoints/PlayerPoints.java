@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.black_ixx.playerpoints.commands.Commander;
 import org.black_ixx.playerpoints.config.LocalizeConfig;
@@ -15,6 +16,7 @@ import org.black_ixx.playerpoints.storage.StorageHandler;
 import org.black_ixx.playerpoints.storage.exports.Exporter;
 import org.black_ixx.playerpoints.storage.imports.Importer;
 import org.black_ixx.playerpoints.update.UpdateManager;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -171,20 +173,20 @@ public class PlayerPoints extends JavaPlugin {
      * 
      * @author Frigid, edited by Raphfrk and petteyg359
      */
-    public String expandName(String Name) {
+    public String expandName(String name) {
         int m = 0;
         String Result = "";
         final Player[] online = getServer().getOnlinePlayers();
         for(Player player : online) {
             String str = player.getName();
-            if(str.matches("(?i).*" + Name + ".*")) {
+            if(str.matches("(?i).*" + name + ".*")) {
                 m++;
                 Result = str;
                 if(m == 2) {
                     return null;
                 }
             }
-            if(str.equalsIgnoreCase(Name)) {
+            if(str.equalsIgnoreCase(name)) {
                 return str;
             }
         }
@@ -193,6 +195,25 @@ public class PlayerPoints extends JavaPlugin {
         if(m > 1) {
             return null;
         }
-        return Name;
+        return name;
+    }
+    
+    public UUID translateNameToUUID(String name) {
+        UUID id = null;
+        
+        // Look through online players first
+        for(Player p : Bukkit.getServer().getOnlinePlayers()) {
+            if(p.getName().equals(name)) {
+                id = p.getUniqueId();
+                break;
+            }
+        }
+        
+        // Attempt offline lookup
+        if(id == null) {
+            id = Bukkit.getServer().getOfflinePlayer(name).getUniqueId();
+        }
+        
+        return id;
     }
 }

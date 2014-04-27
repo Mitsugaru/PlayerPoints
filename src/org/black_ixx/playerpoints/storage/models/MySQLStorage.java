@@ -48,27 +48,21 @@ public class MySQLStorage extends DatabaseStorage {
         retryLimit = plugin.getModuleForClass(RootConfig.class).retryLimit;
         connect();
         if(!mysql.isTable("playerpoints")) {
-            plugin.getLogger().info("Creating playerpoints table");
-            try {
-                mysql.query("CREATE TABLE playerpoints (id INT UNSIGNED NOT NULL AUTO_INCREMENT, playername varchar(32) NOT NULL, points INT NOT NULL, PRIMARY KEY(id), UNIQUE(playername));");
-            } catch(SQLException e) {
-                plugin.getLogger().log(Level.SEVERE,
-                        "Could not create MySQL table.", e);
-            }
+            build();
         }
     }
 
     @Override
-    public int getPoints(String name) {
+    public int getPoints(String id) {
         int points = 0;
-        if(name == null || name.equals("")) {
+        if(id == null || id.equals("")) {
             return points;
         }
         PreparedStatement statement = null;
         ResultSet result = null;
         try {
             statement = mysql.prepare(GET_POINTS);
-            statement.setString(1, name);
+            statement.setString(1, id);
             result = mysql.query(statement);
             if(result != null && result.next()) {
                 points = result.getInt("points");
@@ -79,7 +73,7 @@ public class MySQLStorage extends DatabaseStorage {
             retryCount++;
             connect();
             if(!skip) {
-                points = getPoints(name);
+                points = getPoints(id);
             }
         } finally {
             cleanup(result, statement);
@@ -89,12 +83,12 @@ public class MySQLStorage extends DatabaseStorage {
     }
 
     @Override
-    public boolean setPoints(String name, int points) {
+    public boolean setPoints(String id, int points) {
         boolean value = false;
-        if(name == null || name.equals("")) {
+        if(id == null || id.equals("")) {
             return value;
         }
-        final boolean exists = playerEntryExists(name);
+        final boolean exists = playerEntryExists(id);
         PreparedStatement statement = null;
         ResultSet result = null;
         try {
@@ -104,7 +98,7 @@ public class MySQLStorage extends DatabaseStorage {
                 statement = mysql.prepare(INSERT_PLAYER);
             }
             statement.setInt(1, points);
-            statement.setString(2, name);
+            statement.setString(2, id);
             result = mysql.query(statement);
             value = true;
         } catch(SQLException e) {
@@ -113,7 +107,7 @@ public class MySQLStorage extends DatabaseStorage {
             retryCount++;
             connect();
             if(!skip) {
-                value = setPoints(name, points);
+                value = setPoints(id, points);
             }
         } finally {
             cleanup(result, statement);
@@ -123,16 +117,16 @@ public class MySQLStorage extends DatabaseStorage {
     }
 
     @Override
-    public boolean playerEntryExists(String name) {
+    public boolean playerEntryExists(String id) {
         boolean has = false;
-        if(name == null || name.equals("")) {
+        if(id == null || id.equals("")) {
             return has;
         }
         PreparedStatement statement = null;
         ResultSet result = null;
         try {
             statement = mysql.prepare(GET_POINTS);
-            statement.setString(1, name);
+            statement.setString(1, id);
             result = mysql.query(statement);
             if(result.next()) {
                 has = true;
@@ -143,13 +137,41 @@ public class MySQLStorage extends DatabaseStorage {
             retryCount++;
             connect();
             if(!skip) {
-                has = playerEntryExists(name);
+                has = playerEntryExists(id);
             }
         } finally {
             cleanup(result, statement);
         }
         retryCount = 0;
         return has;
+    }
+    
+    @Override
+    public boolean removePlayer(String id) {
+        boolean deleted = false;
+        if(id == null || id.equals("")) {
+            return deleted;
+        }
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        try {
+            statement = mysql.prepare(REMOVE_PLAYER);
+            statement.setString(1, id);
+            result = mysql.query(statement);
+            deleted = true;
+        } catch(SQLException e) {
+            plugin.getLogger().log(Level.SEVERE,
+                    "Could not create player remove statement.", e);
+            retryCount++;
+            connect();
+            if(!skip) {
+                deleted = playerEntryExists(id);
+            }
+        } finally {
+            cleanup(result, statement);
+        }
+        retryCount = 0;
+        return deleted;
     }
 
     @Override
@@ -206,6 +228,34 @@ public class MySQLStorage extends DatabaseStorage {
             retryCount = 0;
             skip = true;
         }
+    }
+
+    @Override
+    public boolean destroy() {
+        boolean success = false;
+        plugin.getLogger().info("Creating playerpoints table");
+        try {
+            mysql.query("DROP TABLE playerpoints;");
+            success = true;
+        } catch(SQLException e) {
+            plugin.getLogger().log(Level.SEVERE,
+                    "Could not drop MySQL table.", e);
+        }
+        return success;
+    }
+
+    @Override
+    public boolean build() {
+        boolean success = false;
+        plugin.getLogger().info("Creating playerpoints table");
+        try {
+            mysql.query("CREATE TABLE playerpoints (id INT UNSIGNED NOT NULL AUTO_INCREMENT, playername varchar(36) NOT NULL, points INT NOT NULL, PRIMARY KEY(id), UNIQUE(playername));");
+            success = true;
+        } catch(SQLException e) {
+            plugin.getLogger().log(Level.SEVERE,
+                    "Could not create MySQL table.", e);
+        }
+        return success;
     }
 
 }

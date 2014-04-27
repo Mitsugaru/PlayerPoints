@@ -2,6 +2,7 @@ package org.black_ixx.playerpoints;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import org.black_ixx.playerpoints.services.IModule;
 import org.black_ixx.playerpoints.storage.StorageHandler;
@@ -101,7 +102,7 @@ public class PlayerPointsVaultLayer implements Economy, IModule {
 
     @Override
     public double getBalance(String playerName) {
-        return plugin.getAPI().look(playerName);
+        return plugin.getAPI().look(handleTranslation(playerName));
     }
 
     @Override
@@ -111,7 +112,7 @@ public class PlayerPointsVaultLayer implements Economy, IModule {
 
     @Override
     public boolean has(String playerName, double amount) {
-        int current = plugin.getAPI().look(playerName);
+        int current = plugin.getAPI().look(handleTranslation(playerName));
         return current >= amount;
     }
 
@@ -123,8 +124,8 @@ public class PlayerPointsVaultLayer implements Economy, IModule {
     @Override
     public EconomyResponse withdrawPlayer(String playerName, double amount) {
         int points = (int) amount;
-        boolean result = plugin.getAPI().take(playerName, points);
-        int balance = plugin.getAPI().look(playerName);
+        boolean result = plugin.getAPI().take(handleTranslation(playerName), points);
+        int balance = plugin.getAPI().look(handleTranslation(playerName));
 
         EconomyResponse response = null;
         if(result) {
@@ -146,8 +147,8 @@ public class PlayerPointsVaultLayer implements Economy, IModule {
     @Override
     public EconomyResponse depositPlayer(String playerName, double amount) {
         int points = (int) amount;
-        boolean result = plugin.getAPI().give(playerName, points);
-        int balance = plugin.getAPI().look(playerName);
+        boolean result = plugin.getAPI().give(handleTranslation(playerName), points);
+        int balance = plugin.getAPI().look(handleTranslation(playerName));
 
         EconomyResponse response = null;
         if(result) {
@@ -228,6 +229,16 @@ public class PlayerPointsVaultLayer implements Economy, IModule {
     @Override
     public boolean createPlayerAccount(String playerName, String worldName) {
         return createPlayerAccount(playerName);
+    }
+    
+    private UUID handleTranslation(String name) {
+        UUID id = null;
+        try {
+            UUID.fromString(name);
+        } catch(IllegalArgumentException e) {
+            id = plugin.translateNameToUUID(name);
+        }
+        return id;
     }
 
 }

@@ -1,5 +1,7 @@
 package org.black_ixx.playerpoints.event;
 
+import java.util.UUID;
+
 import org.bukkit.event.HandlerList;
 
 /**
@@ -20,8 +22,8 @@ public class PlayerPointsChangeEvent extends PlayerPointsEvent {
      * @param change
      *            - Amount of points to be changed.
      */
-    public PlayerPointsChangeEvent(String name, int change) {
-        super(name, change);
+    public PlayerPointsChangeEvent(UUID id, int change) {
+        super(id, change);
     }
 
     /**

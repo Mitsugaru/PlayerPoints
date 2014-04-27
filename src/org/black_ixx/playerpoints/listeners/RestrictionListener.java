@@ -20,7 +20,7 @@ public class RestrictionListener implements Listener {
     public void validatePlayerChangeEvent(PlayerPointsChangeEvent event) {
         RootConfig config = plugin.getModuleForClass(RootConfig.class);
         if(config.hasPlayedBefore) {
-            Player player = plugin.getServer().getPlayer(event.getPlayerName());
+            Player player = plugin.getServer().getPlayer(event.getPlayerId());
             if(player != null) {
                 event.setCancelled(!player.hasPlayedBefore());
             }

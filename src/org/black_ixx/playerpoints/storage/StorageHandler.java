@@ -45,8 +45,13 @@ public class StorageHandler implements IStorage, IModule {
     }
 
     @Override
-    public boolean playerEntryExists(String name) {
-        return storage.playerEntryExists(name);
+    public boolean playerEntryExists(String id) {
+        return storage.playerEntryExists(id);
+    }
+
+    @Override
+    public boolean removePlayer(String id) {
+        return storage.removePlayer(id);
     }
 
     @Override
@@ -64,4 +69,15 @@ public class StorageHandler implements IStorage, IModule {
     @Override
     public void closing() {
     }
+
+    @Override
+    public boolean destroy() {
+        return storage.destroy();
+    }
+
+    @Override
+    public boolean build() {
+        return storage.build();
+    }
+
 }

@@ -32,6 +32,10 @@ public abstract class DatabaseStorage implements IStorage {
      * Query for updating a player's point amount.
      */
     protected static final String UPDATE_PLAYER = "UPDATE playerpoints SET points=? WHERE playername=?";
+    /**
+     * Query for removing a player.
+     */
+    protected static final String REMOVE_PLAYER = "DELETE playerpoints WHERE playername=?";
 
     /**
      * Constructor.

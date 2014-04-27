@@ -45,7 +45,7 @@ public class SetCommand implements PointsCommand {
             if(playerName == null) {
                 playerName = args[0];
             }
-            if(plugin.getAPI().set(playerName, intanzahl)) {
+            if(plugin.getAPI().set(plugin.translateNameToUUID(playerName), intanzahl)) {
                 info.put(Flag.PLAYER, playerName);
                 info.put(Flag.AMOUNT, "" + intanzahl);
                 sender.sendMessage(LocalizeConfig.parseString(

@@ -36,13 +36,7 @@ public class SQLiteStorage extends DatabaseStorage {
                 .getAbsolutePath(), "storage");
         sqlite.open();
         if(!sqlite.isTable("playerpoints")) {
-            plugin.getLogger().info("Creating playerpoints table");
-            try {
-                sqlite.query("CREATE TABLE playerpoints (id INTEGER PRIMARY KEY, playername varchar(32) NOT NULL, points INTEGER NOT NULL, UNIQUE(playername));");
-            } catch(SQLException e) {
-                plugin.getLogger().log(Level.SEVERE,
-                        "Could not create SQLite table.", e);
-            }
+            build();
         }
     }
 
@@ -121,6 +115,28 @@ public class SQLiteStorage extends DatabaseStorage {
         }
         return has;
     }
+    
+    @Override
+    public boolean removePlayer(String id) {
+        boolean deleted = false;
+        if(id == null || id.equals("")) {
+            return deleted;
+        }
+        PreparedStatement statement = null;
+        ResultSet result = null;
+        try {
+            statement = sqlite.prepare(REMOVE_PLAYER);
+            statement.setString(1, id);
+            result = sqlite.query(statement);
+            deleted = true;
+        } catch(SQLException e) {
+            plugin.getLogger().log(Level.SEVERE,
+                    "Could not create player remove statement.", e);
+        } finally {
+            cleanup(result, statement);
+        }
+        return deleted;
+    }
 
     @Override
     public Collection<String> getPlayers() {
@@ -146,6 +162,34 @@ public class SQLiteStorage extends DatabaseStorage {
         }
 
         return players;
+    }
+
+    @Override
+    public boolean destroy() {
+        boolean success = false;
+        plugin.getLogger().info("Creating playerpoints table");
+        try {
+            sqlite.query("DROP TABLE playerpoints;");
+            success = true;
+        } catch(SQLException e) {
+            plugin.getLogger().log(Level.SEVERE,
+                    "Could not drop SQLite table.", e);
+        }
+        return success;
+    }
+
+    @Override
+    public boolean build() {
+        boolean success = false;
+        plugin.getLogger().info("Creating playerpoints table");
+        try {
+            sqlite.query("CREATE TABLE playerpoints (id INTEGER PRIMARY KEY, playername varchar(36) NOT NULL, points INTEGER NOT NULL, UNIQUE(playername));");
+            success = true;
+        } catch(SQLException e) {
+            plugin.getLogger().log(Level.SEVERE,
+                    "Could not create SQLite table.", e);
+        }
+        return success;
     }
 
 }

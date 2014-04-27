@@ -30,7 +30,7 @@ public class ResetCommand implements PointsCommand {
                     LocalizeNode.COMMAND_RESET, info));
             return true;
         }
-        if(plugin.getAPI().reset(args[0])) {
+        if(plugin.getAPI().reset(plugin.translateNameToUUID(args[0]))) {
             info.put(Flag.PLAYER, args[0]);
             sender.sendMessage(LocalizeConfig.parseString(
                     LocalizeNode.POINTS_RESET, info));

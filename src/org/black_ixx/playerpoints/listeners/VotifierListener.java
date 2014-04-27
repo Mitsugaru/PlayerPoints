@@ -1,5 +1,7 @@
 package org.black_ixx.playerpoints.listeners;
 
+import java.util.UUID;
+
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.config.RootConfig;
 import org.bukkit.entity.Player;
@@ -34,9 +36,10 @@ public class VotifierListener implements Listener {
             return;
         }
         final String name = event.getVote().getUsername();
+        final UUID id = plugin.translateNameToUUID(name);
         boolean pay = false;
         if(config.voteOnline) {
-            final Player player = plugin.getServer().getPlayer(name);
+            final Player player = plugin.getServer().getPlayer(id);
             if(player != null && player.isOnline()) {
                 pay = true;
                 player.sendMessage("Thanks for voting on "
@@ -48,7 +51,7 @@ public class VotifierListener implements Listener {
             pay = true;
         }
         if(pay) {
-            plugin.getAPI().give(name, config.voteAmount);
+            plugin.getAPI().give(id, config.voteAmount);
         }
     }
 }

@@ -5,6 +5,7 @@ import java.util.TreeSet;
 
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.services.version.Version;
+import org.black_ixx.playerpoints.update.modules.OneEightUpdate;
 import org.black_ixx.playerpoints.update.modules.OneFiveTwoUpdate;
 import org.black_ixx.playerpoints.update.modules.OneFiveUpdate;
 import org.bukkit.configuration.ConfigurationSection;
@@ -32,6 +33,7 @@ public class UpdateManager {
 
         modules.add(new OneFiveUpdate(plugin));
         modules.add(new OneFiveTwoUpdate(plugin));
+        modules.add(new OneEightUpdate(plugin));
     }
 
     /**

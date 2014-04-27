@@ -35,7 +35,7 @@ public class MeCommand implements PointsCommand {
                     LocalizeNode.PERMISSION_DENY, info));
             return true;
         }
-        info.put(Flag.AMOUNT, "" + plugin.getAPI().look(sender.getName()));
+        info.put(Flag.AMOUNT, "" + plugin.getAPI().look(((Player)sender).getUniqueId()));
         sender.sendMessage(LocalizeConfig.parseString(LocalizeNode.POINTS_ME,
                 info));
         return true;

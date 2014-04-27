@@ -1,5 +1,7 @@
 package org.black_ixx.playerpoints.event;
 
+import java.util.UUID;
+
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -10,9 +12,9 @@ public class PlayerPointsEvent extends Event implements Cancellable {
      */
     private static final HandlerList handlers = new HandlerList();
     /**
-     * Player name whose points is changing.
+     * Player whose points is changing.
      */
-    private final String playerName;
+    private final UUID playerId;
     /**
      * Amount their points are being changed by. Note, this is NOT the final
      * amount that the player's points balance will be. This is the amount to
@@ -27,13 +29,13 @@ public class PlayerPointsEvent extends Event implements Cancellable {
     /**
      * Constructor.
      * 
-     * @param name
-     *            - Name of player.
+     * @param id
+     *            - Id of player.
      * @param change
      *            - Amount of change that will apply to their current balance.
      */
-    public PlayerPointsEvent(String name, int change) {
-        this.playerName = name;
+    public PlayerPointsEvent(UUID id, int change) {
+        this.playerId = id;
         this.change = change;
     }
 
@@ -58,12 +60,12 @@ public class PlayerPointsEvent extends Event implements Cancellable {
     }
 
     /**
-     * Get the player name.
+     * Get the player id.
      * 
-     * @return Name of Player.
+     * @return Player UUID.
      */
-    public String getPlayerName() {
-        return playerName;
+    public UUID getPlayerId() {
+        return playerId;
     }
 
     @Override

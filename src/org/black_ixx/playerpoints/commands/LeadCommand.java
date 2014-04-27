@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.UUID;
 
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.config.LocalizeConfig;
@@ -16,6 +17,7 @@ import org.black_ixx.playerpoints.permissions.PermissionHandler;
 import org.black_ixx.playerpoints.permissions.PermissionNode;
 import org.black_ixx.playerpoints.services.CommandHandler;
 import org.black_ixx.playerpoints.storage.StorageHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -95,7 +97,7 @@ public class LeadCommand extends CommandHandler {
             }
             SortedPlayer player = array[i];
             sender.sendMessage(ChatColor.AQUA + "" + (i + 1) + ". "
-                    + ChatColor.GRAY + player.getName() + ChatColor.WHITE
+                    + ChatColor.GRAY + Bukkit.getOfflinePlayer(UUID.fromString(player.getName())).getName()  + ChatColor.WHITE
                     + " - " + ChatColor.GOLD + player.getPoints());
         }
 
@@ -157,7 +159,7 @@ public class LeadCommand extends CommandHandler {
         SortedSet<SortedPlayer> sorted = new TreeSet<SortedPlayer>();
 
         for(String name : players) {
-            int points = plugin.getAPI().look(name);
+            int points = plugin.getAPI().look(UUID.fromString(name));
             sorted.add(new SortedPlayer(name, points));
         }
 
