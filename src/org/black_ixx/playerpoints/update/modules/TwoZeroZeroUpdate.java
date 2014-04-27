@@ -10,13 +10,13 @@ import org.black_ixx.playerpoints.services.version.Version;
 import org.black_ixx.playerpoints.storage.StorageHandler;
 import org.black_ixx.playerpoints.update.UpdateModule;
 
-public class OneEightUpdate extends UpdateModule {
+public class TwoZeroZeroUpdate extends UpdateModule {
     
     private Map<String, Integer> cache = new HashMap<String, Integer>();
 
-    public OneEightUpdate(PlayerPoints plugin) {
+    public TwoZeroZeroUpdate(PlayerPoints plugin) {
         super(plugin);
-        targetVersion = new Version("1.8");
+        targetVersion = new Version("2.0.0");
         targetVersion.setIgnorePatch(true);
     }
 
