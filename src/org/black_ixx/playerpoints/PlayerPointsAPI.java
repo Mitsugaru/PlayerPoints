@@ -45,6 +45,15 @@ public class PlayerPointsAPI {
         return false;
     }
 
+    @Deprecated
+    public boolean give(String playerName, int amount) {
+    	boolean success = false;
+    	if(playerName != null) {
+    		success = give(plugin.translateNameToUUID(playerName), amount);
+    	}
+    	return success;
+    }
+
     /**
      * Take points from specified player. If the amount given is not already
      * negative, we make it negative.
@@ -66,6 +75,15 @@ public class PlayerPointsAPI {
         }
         return give(playerId, take);
     }
+    
+    @Deprecated
+    public boolean take(String playerName, int amount) {
+    	boolean success = false;
+    	if(playerName != null) {
+    		success = take(plugin.translateNameToUUID(playerName), amount);
+    	}
+    	return success;
+    }
 
     /**
      * Look up the current points of a player, if available. If player does not
@@ -77,6 +95,11 @@ public class PlayerPointsAPI {
      */
     public int look(UUID playerId) {
         return plugin.getModuleForClass(StorageHandler.class).getPoints(playerId.toString());
+    }
+    
+    @Deprecated
+    public int look(String playerName) {
+    	return look(plugin.translateNameToUUID(playerName));
     }
 
     /**
@@ -96,6 +119,15 @@ public class PlayerPointsAPI {
             }
         }
         return false;
+    }
+    
+    @Deprecated
+    public boolean pay(String sourceName, String targetName, int amount) {
+    	boolean success = false;
+    	if(sourceName != null && targetName != null) {
+    		success = pay(plugin.translateNameToUUID(sourceName), plugin.translateNameToUUID(targetName), amount);
+    	}
+    	return success;
     }
 
     /**
@@ -118,6 +150,15 @@ public class PlayerPointsAPI {
         }
         return false;
     }
+    
+    @Deprecated
+    public boolean set(String playerName, int amount) {
+    	boolean success = false;
+    	if(playerName != null) {
+    		success = set(plugin.translateNameToUUID(playerName), amount);
+    	}
+    	return success;
+    }
 
     /**
      * Reset a player's points by removing their entry from the config.
@@ -134,5 +175,14 @@ public class PlayerPointsAPI {
                     playerId.toString(), event.getChange());
         }
         return false;
+    }
+    
+    @Deprecated
+    public boolean reset(String playerName, int amount) {
+    	boolean success = false;
+    	if(playerName != null) {
+    		success = reset(plugin.translateNameToUUID(playerName));
+    	}
+    	return success;
     }
 }

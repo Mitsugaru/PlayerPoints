@@ -17,7 +17,6 @@ public class TwoZeroZeroUpdate extends UpdateModule {
     public TwoZeroZeroUpdate(PlayerPoints plugin) {
         super(plugin);
         targetVersion = new Version("2.0.0");
-        targetVersion.setIgnorePatch(true);
     }
 
     @Override

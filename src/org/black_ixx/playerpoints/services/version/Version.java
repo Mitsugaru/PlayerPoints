@@ -184,9 +184,9 @@ public class Version implements Comparable<Version> {
             valid = valid && StringUtils.countMatches(version, "-") <= 1;
             valid = valid && StringUtils.countMatches(version, "+") <= 1;
         } catch(IndexOutOfBoundsException e) {
-
+        	valid = false;
         } catch(NumberFormatException e) {
-
+        	valid = false;
         }
         return valid;
     }
