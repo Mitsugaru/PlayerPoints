@@ -87,14 +87,18 @@ public class PlayerPointsAPI {
 
     /**
      * Look up the current points of a player, if available. If player does not
-     * exist in the config file, then we default to 0.
+     * exist in the config file, or if given a null UUID, then we default to 0.
      * 
      * @param playerId
      *            Player UUID
      * @return Points that the player has
      */
     public int look(UUID playerId) {
-        return plugin.getModuleForClass(StorageHandler.class).getPoints(playerId.toString());
+    	int amount = 0;
+    	if(playerId != null) {
+    		amount = plugin.getModuleForClass(StorageHandler.class).getPoints(playerId.toString());
+    	}
+    	return amount;
     }
     
     @Deprecated
