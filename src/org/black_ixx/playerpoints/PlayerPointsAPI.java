@@ -33,6 +33,9 @@ public class PlayerPointsAPI {
      * @return True if we successfully adjusted points, else false
      */
     public boolean give(UUID playerId, int amount) {
+    	if(playerId == null) {
+    		return false;
+    	}
         PlayerPointsChangeEvent event = new PlayerPointsChangeEvent(playerId,
                 amount);
         plugin.getServer().getPluginManager().callEvent(event);
@@ -144,6 +147,9 @@ public class PlayerPointsAPI {
      * @return True if successful
      */
     public boolean set(UUID playerId, int amount) {
+    	if(playerId == null) {
+    		return false;
+    	}
         PlayerPointsChangeEvent event = new PlayerPointsChangeEvent(playerId,
                 amount - look(playerId));
         plugin.getServer().getPluginManager().callEvent(event);
@@ -172,6 +178,9 @@ public class PlayerPointsAPI {
      * @return True if successful
      */
     public boolean reset(UUID playerId) {
+    	if(playerId == null) {
+    		return false;
+    	}
         PlayerPointsResetEvent event = new PlayerPointsResetEvent(playerId);
         plugin.getServer().getPluginManager().callEvent(event);
         if(!event.isCancelled()) {
