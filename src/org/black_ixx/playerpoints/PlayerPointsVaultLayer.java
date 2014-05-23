@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.black_ixx.playerpoints.services.IModule;
 import org.black_ixx.playerpoints.storage.StorageHandler;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.ServicePriority;
 
 import net.milkbowl.vault.economy.Economy;
@@ -92,7 +93,12 @@ public class PlayerPointsVaultLayer implements Economy, IModule {
 
     @Override
     public boolean hasAccount(String playerName) {
-        return plugin.getModuleForClass(StorageHandler.class).playerEntryExists(playerName);
+    	boolean has = false;
+    	UUID id = handleTranslation(playerName);
+    	if(id != null) {
+    		has = plugin.getModuleForClass(StorageHandler.class).playerEntryExists(id.toString());
+    	}
+        return has;
     }
 
     @Override
@@ -240,5 +246,112 @@ public class PlayerPointsVaultLayer implements Economy, IModule {
         }
         return id;
     }
+
+	@Override
+	public EconomyResponse createBank(String bank, OfflinePlayer player) {
+		return new EconomyResponse(0, 0, ResponseType.NOT_IMPLEMENTED,
+                "Does not handle banks.");
+	}
+
+	@Override
+	public boolean createPlayerAccount(OfflinePlayer player) {
+		// Assume true as the storage handler will dynamically add players.
+        return true;
+	}
+
+	@Override
+	public boolean createPlayerAccount(OfflinePlayer player, String world) {
+		// Assume true as the storage handler will dynamically add players.
+        return true;
+	}
+
+	@Override
+	public EconomyResponse depositPlayer(OfflinePlayer player, double amount) {
+		int points = (int) amount;
+        boolean result = plugin.getAPI().give(player.getUniqueId(), points);
+        int balance = plugin.getAPI().look(player.getUniqueId());
+
+        EconomyResponse response = null;
+        if(result) {
+            response = new EconomyResponse(amount, balance,
+                    ResponseType.SUCCESS, null);
+        } else {
+            response = new EconomyResponse(amount, balance,
+                    ResponseType.FAILURE, null);
+        }
+        return response;
+	}
+
+	@Override
+	public EconomyResponse depositPlayer(OfflinePlayer player, String world,
+			double amount) {
+		return depositPlayer(player, amount);
+	}
+
+	@Override
+	public double getBalance(OfflinePlayer player) {
+		return plugin.getAPI().look(player.getUniqueId());
+	}
+
+	@Override
+	public double getBalance(OfflinePlayer player, String world) {
+		return getBalance(player);
+	}
+
+	@Override
+	public boolean has(OfflinePlayer player, double amount) {
+		int current = plugin.getAPI().look(player.getUniqueId());
+        return current >= amount;
+	}
+
+	@Override
+	public boolean has(OfflinePlayer player, String world, double amount) {
+		return has(player, amount);
+	}
+
+	@Override
+	public boolean hasAccount(OfflinePlayer player) {
+		return plugin.getModuleForClass(StorageHandler.class).playerEntryExists(player.getUniqueId().toString());
+	}
+
+	@Override
+	public boolean hasAccount(OfflinePlayer player, String world) {
+		return hasAccount(player);
+	}
+
+	@Override
+	public EconomyResponse isBankMember(String bank, OfflinePlayer player) {
+		return new EconomyResponse(0, 0, ResponseType.NOT_IMPLEMENTED,
+                "Does not handle banks.");
+	}
+
+	@Override
+	public EconomyResponse isBankOwner(String bank, OfflinePlayer player) {
+		return new EconomyResponse(0, 0, ResponseType.NOT_IMPLEMENTED,
+                "Does not handle banks.");
+	}
+
+	@Override
+	public EconomyResponse withdrawPlayer(OfflinePlayer player, double amount) {
+		int points = (int) amount;
+        boolean result = plugin.getAPI().take(player.getUniqueId(), points);
+        int balance = plugin.getAPI().look(player.getUniqueId());
+
+        EconomyResponse response = null;
+        if(result) {
+            response = new EconomyResponse(amount, balance,
+                    ResponseType.SUCCESS, null);
+        } else {
+            response = new EconomyResponse(amount, balance,
+                    ResponseType.FAILURE, "Lack funds");
+        }
+        return response;
+	}
+
+	@Override
+	public EconomyResponse withdrawPlayer(OfflinePlayer player, String world,
+			double amount) {
+		return withdrawPlayer(player, amount);
+	}
 
 }
