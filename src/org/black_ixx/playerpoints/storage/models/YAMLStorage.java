@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.logging.Level;
 
 import org.black_ixx.playerpoints.PlayerPoints;
@@ -49,6 +50,7 @@ public class YAMLStorage implements IStorage {
         file = new File(plugin.getDataFolder().getAbsolutePath()
                 + "/storage.yml");
         config = YamlConfiguration.loadConfiguration(file);
+        save();
     }
 
     /**
@@ -107,7 +109,12 @@ public class YAMLStorage implements IStorage {
 
     @Override
     public Collection<String> getPlayers() {
-        return config.getConfigurationSection("Points.").getKeys(false);
+    	Collection<String> players = Collections.emptySet();
+    	
+    	if(config.isConfigurationSection("Points")) {
+    		players = config.getConfigurationSection("Points").getKeys(false);
+    	}
+        return players;
     }
 
     @Override

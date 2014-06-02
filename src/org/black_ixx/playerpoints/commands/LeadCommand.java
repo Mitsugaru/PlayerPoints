@@ -84,6 +84,11 @@ public class LeadCommand extends CommandHandler {
         }
 
         SortedPlayer[] array = leaders.toArray(new SortedPlayer[0]);
+        
+        if(leaders.isEmpty()) {
+        	current = 0;
+        	num = 0;
+        }
 
         // Header
         sender.sendMessage(ChatColor.BLUE + "=== " + ChatColor.GRAY
