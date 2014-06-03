@@ -17,6 +17,7 @@ import org.black_ixx.playerpoints.storage.exports.Exporter;
 import org.black_ixx.playerpoints.storage.imports.Importer;
 import org.black_ixx.playerpoints.update.UpdateManager;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -198,22 +199,39 @@ public class PlayerPoints extends JavaPlugin {
         return name;
     }
     
+    /**
+     * Attempt to translate a player name into a UUID.
+     * @param name - Player name.
+     * @return Player UUID. Null if no match found.
+     */
     public UUID translateNameToUUID(String name) {
         UUID id = null;
-        
+
+        if(name == null) {
+        	return id;
+        }
+
         // Look through online players first
         for(Player p : Bukkit.getServer().getOnlinePlayers()) {
-            if(p.getName().equals(name)) {
+            if(p.getName().toLowerCase().equals(name.toLowerCase())) {
                 id = p.getUniqueId();
                 break;
             }
         }
-        
-        // Attempt offline lookup
+
+        // Attempt local lookup
+        for(OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
+        	if(p != null && p.getName().toLowerCase().equals(name.toLowerCase())) {
+        		id = p.getUniqueId();
+        		break;
+        	}
+        }
+
+        // Last resort, attempt bukkit api lookup
         if(id == null) {
             id = Bukkit.getServer().getOfflinePlayer(name).getUniqueId();
         }
-        
+
         return id;
     }
 }
