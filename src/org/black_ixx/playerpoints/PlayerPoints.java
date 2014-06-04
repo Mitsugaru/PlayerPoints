@@ -221,9 +221,12 @@ public class PlayerPoints extends JavaPlugin {
 
         // Attempt local lookup
         for(OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
-        	if(p != null && p.getName().toLowerCase().equals(name.toLowerCase())) {
-        		id = p.getUniqueId();
-        		break;
+        	if(p != null) {
+        		String offlineName = p.getName();
+        		if(offlineName != null && offlineName.toLowerCase().equals(name.toLowerCase())) {
+        			id = p.getUniqueId();
+        			break;
+        		}
         	}
         }
 
