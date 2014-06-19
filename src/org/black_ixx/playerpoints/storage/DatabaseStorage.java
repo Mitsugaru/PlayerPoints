@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 
 import org.black_ixx.playerpoints.PlayerPoints;
+import org.black_ixx.playerpoints.config.RootConfig;
 
 /**
  * Represents a database type of storage.
@@ -56,6 +57,10 @@ public abstract class DatabaseStorage implements IStorage {
      *            - Statement to close.
      */
     protected void cleanup(ResultSet result, PreparedStatement statement) {
+    	RootConfig config = plugin.getModuleForClass(RootConfig.class);
+        if(config.debugDatabase) {
+        	plugin.getLogger().info("cleanup()");
+        }
         if(result != null) {
             try {
                 result.close();
