@@ -206,33 +206,60 @@ public class PlayerPoints extends JavaPlugin {
      */
     public UUID translateNameToUUID(String name) {
         UUID id = null;
+        RootConfig config = getModuleForClass(RootConfig.class);
+        if(config.debugUUID) {
+        	getLogger().info("translateNameToUUID(" + name + ")");
+        }
 
         if(name == null) {
+        	if(config.debugUUID) {
+            	getLogger().info("translateNameToUUID() - bad ID");
+            }
         	return id;
         }
 
         // Look through online players first
+        if(config.debugUUID) {
+        	getLogger().info("translateNameToUUID() - Looking through online players");
+        }
         for(Player p : Bukkit.getServer().getOnlinePlayers()) {
             if(p.getName().toLowerCase().equals(name.toLowerCase())) {
                 id = p.getUniqueId();
+                if(config.debugUUID) {
+                	getLogger().info("translateNameToUUID() player UUID found: " + id.toString());
+                }
                 break;
             }
         }
 
         // Attempt local lookup
-        for(OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
-        	if(p != null) {
-        		String offlineName = p.getName();
-        		if(offlineName != null && offlineName.toLowerCase().equals(name.toLowerCase())) {
-        			id = p.getUniqueId();
-        			break;
-        		}
-        	}
+        if(id == null) {
+        	if(config.debugUUID) {
+            	getLogger().info("translateNameToUUID() - Looking through offline players");
+            }
+	        for(OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
+	        	if(p != null) {
+	        		String offlineName = p.getName();
+	        		if(offlineName != null && offlineName.toLowerCase().equals(name.toLowerCase())) {
+	        			id = p.getUniqueId();
+	        			if(config.debugUUID) {
+	                    	getLogger().info("translateNameToUUID() player UUID found: " + id.toString());
+	                    }
+	        			break;
+	        		}
+	        	}
+	        }
         }
 
         // Last resort, attempt bukkit api lookup
         if(id == null) {
+        	if(config.debugUUID) {
+            	getLogger().info("translateNameToUUID() - Attempting online lookup");
+            }
             id = Bukkit.getServer().getOfflinePlayer(name).getUniqueId();
+            if(config.debugUUID) {
+            	getLogger().info("translateNameToUUID() player UUID found: " + id.toString());
+            }
         }
 
         return id;
