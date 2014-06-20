@@ -240,7 +240,7 @@ public class PlayerPoints extends JavaPlugin {
 	        for(OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
 	        	if(p != null) {
 	        		String offlineName = p.getName();
-	        		if(offlineName != null && offlineName.toLowerCase().equals(name.toLowerCase())) {
+	        		if(offlineName != null && offlineName.equalsIgnoreCase(name)) {
 	        			id = p.getUniqueId();
 	        			if(config.debugUUID) {
 	                    	getLogger().info("translateNameToUUID() player UUID found: " + id.toString());
