@@ -220,7 +220,7 @@ public class PlayerPoints extends JavaPlugin {
 
         // Look through online players first
         if(config.debugUUID) {
-        	getLogger().info("translateNameToUUID() - Looking through online players");
+        	getLogger().info("translateNameToUUID() - Looking through online players: " + Bukkit.getServer().getOnlinePlayers().length);
         }
         for(Player p : Bukkit.getServer().getOnlinePlayers()) {
             if(p.getName().toLowerCase().equals(name.toLowerCase())) {
@@ -235,7 +235,7 @@ public class PlayerPoints extends JavaPlugin {
         // Attempt local lookup
         if(id == null) {
         	if(config.debugUUID) {
-            	getLogger().info("translateNameToUUID() - Looking through offline players");
+            	getLogger().info("translateNameToUUID() - Looking through offline players: " + Bukkit.getServer().getOnlinePlayers().length);
             }
 	        for(OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
 	        	if(p != null) {
