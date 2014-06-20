@@ -235,7 +235,7 @@ public class PlayerPoints extends JavaPlugin {
         // Attempt local lookup
         if(id == null) {
         	if(config.debugUUID) {
-            	getLogger().info("translateNameToUUID() - Looking through offline players: " + Bukkit.getServer().getOnlinePlayers().length);
+            	getLogger().info("translateNameToUUID() - Looking through offline players: " + Bukkit.getServer().getOfflinePlayers().length);
             }
 	        for(OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
 	        	if(p != null) {
