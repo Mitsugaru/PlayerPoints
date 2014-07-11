@@ -256,14 +256,7 @@ public class PlayerPoints extends JavaPlugin {
 			} catch (Exception e) {
 				getLogger().log(Level.SEVERE, "Exception on online UUID fetch", e);
 			}
-        } else if(id == null && !Bukkit.getServer().getOnlineMode()) {
-        	//There's nothing we can do but attempt to get the UUID from old method.
-        	id = Bukkit.getServer().getOfflinePlayer(name).getUniqueId();
-            if(config.debugUUID) {
-            	getLogger().info("translateNameToUUID() offline player UUID found: " + ((id == null) ? id : id.toString()));
-            }
         }
-
         return id;
     }
 }
