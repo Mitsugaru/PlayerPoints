@@ -2,6 +2,7 @@ package org.black_ixx.playerpoints;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,6 @@ import org.black_ixx.playerpoints.storage.exports.Exporter;
 import org.black_ixx.playerpoints.storage.imports.Importer;
 import org.black_ixx.playerpoints.update.UpdateManager;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -181,7 +181,7 @@ public class PlayerPoints extends JavaPlugin {
     public String expandName(String name) {
         int m = 0;
         String Result = "";
-        final Player[] online = getServer().getOnlinePlayers();
+        final Collection<? extends Player> online = getServer().getOnlinePlayers();
         for(Player player : online) {
             String str = player.getName();
             if(str.matches("(?i).*" + name + ".*")) {
@@ -224,7 +224,7 @@ public class PlayerPoints extends JavaPlugin {
 
         // Look through online players first
         if(config.debugUUID) {
-        	getLogger().info("translateNameToUUID() - Looking through online players: " + Bukkit.getServer().getOnlinePlayers().length);
+        	getLogger().info("translateNameToUUID() - Looking through online players: " + Bukkit.getServer().getOnlinePlayers().size());
         }
         for(Player p : Bukkit.getServer().getOnlinePlayers()) {
             if(p.getName().equalsIgnoreCase(name)) {
@@ -256,6 +256,12 @@ public class PlayerPoints extends JavaPlugin {
 			} catch (Exception e) {
 				getLogger().log(Level.SEVERE, "Exception on online UUID fetch", e);
 			}
+        } else if(id == null && !Bukkit.getServer().getOnlineMode()) {
+            //There's nothing we can do but attempt to get the UUID from old method.
+            id = Bukkit.getServer().getOfflinePlayer(name).getUniqueId();
+            if(config.debugUUID) {
+                getLogger().info("translateNameToUUID() offline player UUID found: " + ((id == null) ? id : id.toString()));
+            }
         }
         return id;
     }
