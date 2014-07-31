@@ -34,6 +34,7 @@ public class Commander extends CommandHandler {
         registerCommand("look", new LookCommand());
         registerCommand("pay", new PayCommand());
         registerCommand("set", new SetCommand());
+        registerCommand("broadcast", new BroadcastCommand());
         registerCommand("reset", new ResetCommand());
         registerCommand("me", new MeCommand());
         registerCommand("reload", new ReloadCommand());
@@ -70,6 +71,10 @@ public class Commander extends CommandHandler {
         if(PermissionHandler.has(sender, PermissionNode.LEAD)) {
             sender.sendMessage(LocalizeConfig.parseString(
                     LocalizeNode.HELP_LEAD, info));
+        }
+        if(PermissionHandler.has(sender, PermissionNode.BROADCAST)) {
+            sender.sendMessage(LocalizeConfig.parseString(
+                    LocalizeNode.HELP_BROADCAST, info));
         }
         if(PermissionHandler.has(sender, PermissionNode.SET)) {
             sender.sendMessage(LocalizeConfig.parseString(
