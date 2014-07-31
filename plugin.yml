@@ -36,6 +36,9 @@ permissions:
     PlayerPoints.pay:
         description: Gives access to the pay command
         default: op
+    PlayerPoints.broadcast:
+        description: Give access to the broadcast command
+        default: op
     PlayerPoints.set:
         description: Gives access to the set command
         default: op

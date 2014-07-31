@@ -14,7 +14,9 @@ public enum LocalizeNode {
             "&7%tag &cLack permission: &b%extra"),
     CONSOLE_DENY("message.noConsole", "&7%tag &cCannot use command as console"),
     NOT_INTEGER("message.notIntenger", "&7%tag &6%extra &cis not an integer"),
-    RELOAD("message.reload", "&7tag &6Configuration reloaded"),
+    RELOAD("message.reload", "&7%tag &6Configuration reloaded"),
+    BROADCAST("message.broadcast",
+            "&7%tag &9Player &a%player &9has &a%amount &9Points"),
     /**
      * Command
      */
@@ -30,6 +32,8 @@ public enum LocalizeNode {
     COMMAND_RESET("message.command.reset", "&7%tag &9/points reset <name>"),
     COMMAND_ME("message.command.me", "&7%tag &9/points me"),
     COMMAND_LEAD("message.command.lead", "&7%tag &9/points lead [next|prev|#]"),
+    COMMAND_BROADCAST("message.command.broadcast",
+            "&7%tag &9/points broadcast <name>"),
     /**
      * Points
      */
@@ -68,6 +72,8 @@ public enum LocalizeNode {
             "&7/points pay <name> <points> &6: Send points to given player"),
     HELP_LEAD("message.help.lead",
             "&7/points lead [prev/next/page] &6: Leader board"),
+    HELP_BROADCAST("message.help.broadcast",
+            "&7/points broadcast <name> &6: Broadcast player's points"),
     HELP_RELOAD("message.help.reload", "&7/points reload &6: Reload config");
 
     /**
