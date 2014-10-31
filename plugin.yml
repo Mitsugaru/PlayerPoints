@@ -17,6 +17,7 @@ permissions:
         description: Gives access to all PlayerPoints commands
         children:
             PlayerPoints.give: true
+            PlayerPoints.giveall: true
             PlayerPoints.take: true
             PlayerPoints.look: true
             PlayerPoints.pay: true
@@ -26,6 +27,9 @@ permissions:
             PlayerPoints.reload: true
     PlayerPoints.give:
         description: Gives access to the give command
+        default: op
+    PlayerPoints.giveall:
+        description: Gives access to the giveall command
         default: op
     PlayerPoints.take:
         description: Gives access to the take command
