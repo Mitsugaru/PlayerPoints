@@ -65,7 +65,7 @@ public enum LocalizeNode {
     HELP_ME("message.help.me", "&7/points me &6: Show current points"),
     HELP_GIVE("message.help.give",
             "&7/points give <name> <points> &6: Generate points for given player"),
-    HELP_GIVEALL("message.help.give",
+    HELP_GIVEALL("message.help.giveall",
             "&7/points giveall <points> &6: Generate points for online players"),
     HELP_TAKE("message.help.take",
             "&7/points take <name> <points> &6: Take points from player"),

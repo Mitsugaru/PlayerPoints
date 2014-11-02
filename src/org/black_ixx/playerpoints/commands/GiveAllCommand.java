@@ -34,7 +34,7 @@ public class GiveAllCommand implements PointsCommand {
             return true;
         }
         try {
-            final int anzahl = Integer.parseInt(args[1]);
+            final int anzahl = Integer.parseInt(args[0]);
             info.put(Flag.AMOUNT, String.valueOf(anzahl));
             List<String> unsuccessful = new ArrayList<String>();
             for(Player player : Bukkit.getOnlinePlayers()) {
