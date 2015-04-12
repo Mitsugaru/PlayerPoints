@@ -26,14 +26,20 @@ public class LookCommand implements PointsCommand {
             EnumMap<Flag, String> info) {
         if(!PermissionHandler.has(sender, PermissionNode.LOOK)) {
             info.put(Flag.EXTRA, PermissionNode.LOOK.getNode());
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.PERMISSION_DENY, info));
+            final String permMessage = LocalizeConfig.parseString(
+                    LocalizeNode.PERMISSION_DENY, info);
+            if(!permMessage.isEmpty()) {
+                sender.sendMessage(permMessage);
+            }
             return true;
         }
         if(args.length < 1) {
             // Falsche Argumente
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.COMMAND_LOOK, info));
+            final String argMessage = LocalizeConfig.parseString(
+                    LocalizeNode.COMMAND_LOOK, info);
+            if(!argMessage.isEmpty()) {
+                sender.sendMessage(argMessage);
+            }
             return true;
         }
         String playerName = null;
@@ -45,8 +51,11 @@ public class LookCommand implements PointsCommand {
         }
         info.put(Flag.PLAYER, playerName);
         info.put(Flag.AMOUNT, "" + plugin.getAPI().look(plugin.translateNameToUUID(playerName)));
-        sender.sendMessage(LocalizeConfig.parseString(LocalizeNode.POINTS_LOOK,
-                info));
+        final String senderMessage = LocalizeConfig.parseString(LocalizeNode.POINTS_LOOK,
+                info);
+        if(!senderMessage.isEmpty()) {
+            sender.sendMessage(senderMessage);
+        }
         return true;
     }
 

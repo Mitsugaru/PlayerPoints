@@ -22,13 +22,19 @@ public class BroadcastCommand implements PointsCommand {
             EnumMap<Flag, String> info) {
         if(!PermissionHandler.has(sender, PermissionNode.BROADCAST)) {
             info.put(Flag.EXTRA, PermissionNode.BROADCAST.getNode());
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.PERMISSION_DENY, info));
+            final String permMessage = LocalizeConfig.parseString(
+                    LocalizeNode.PERMISSION_DENY, info);
+            if(!permMessage.isEmpty()) {
+                sender.sendMessage(permMessage);
+            }
             return true;
         }
         if(args.length < 1) {
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.COMMAND_BROADCAST, info));
+            final String argMessage = LocalizeConfig.parseString(
+                    LocalizeNode.COMMAND_BROADCAST, info);
+            if(!argMessage.isEmpty()) {
+                sender.sendMessage(argMessage);
+            }
             return true;
         }
         String playerName = null;
@@ -41,8 +47,10 @@ public class BroadcastCommand implements PointsCommand {
         info.put(Flag.PLAYER, playerName);
         info.put(Flag.AMOUNT, "" + plugin.getAPI().look(plugin.translateNameToUUID(playerName)));
         final String message = LocalizeConfig.parseString(LocalizeNode.BROADCAST, info);
-        for(Player player : plugin.getServer().getOnlinePlayers()) {
-            player.sendMessage(message);
+        if(!message.isEmpty()) {
+            for(Player player : plugin.getServer().getOnlinePlayers()) {
+                player.sendMessage(message);
+            }
         }
         return true;
     }

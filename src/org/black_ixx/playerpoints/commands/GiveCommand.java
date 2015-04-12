@@ -29,13 +29,19 @@ public class GiveCommand implements PointsCommand {
             EnumMap<Flag, String> info) {
         if(!PermissionHandler.has(sender, PermissionNode.GIVE)) {
             info.put(Flag.EXTRA, PermissionNode.GIVE.getNode());
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.PERMISSION_DENY, info));
+            final String permMessage = LocalizeConfig.parseString(
+                    LocalizeNode.PERMISSION_DENY, info);
+            if(!permMessage.isEmpty()) {
+                sender.sendMessage(permMessage);
+            }
             return true;
         }
         if(args.length < 2) {
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.COMMAND_GIVE, info));
+            final String argMessage = LocalizeConfig.parseString(
+                    LocalizeNode.COMMAND_GIVE, info);
+            if(!argMessage.isEmpty()) {
+                sender.sendMessage(argMessage);
+            }
             return true;
         }
         try {
@@ -51,23 +57,35 @@ public class GiveCommand implements PointsCommand {
             if(plugin.getAPI().give(id, anzahl)) {
                 info.put(Flag.PLAYER, playerName);
                 info.put(Flag.AMOUNT, "" + plugin.getAPI().look(id));
-                sender.sendMessage(LocalizeConfig.parseString(
-                        LocalizeNode.POINTS_SUCCESS, info));
+                final String successMessage = LocalizeConfig.parseString(
+                        LocalizeNode.POINTS_SUCCESS, info);
+                if(!successMessage.isEmpty()) {
+                    sender.sendMessage(successMessage);
+                }
                 final Player target = Bukkit.getServer().getPlayer(id);
                 if(target != null && target.isOnline()) {
                     info.put(Flag.PLAYER, sender.getName());
                     info.put(Flag.AMOUNT, "" + anzahl);
-                    target.sendMessage(LocalizeConfig.parseString(
-                            LocalizeNode.POINTS_PAY_RECEIVE, info));
+                    final String targetMessage = LocalizeConfig.parseString(
+                            LocalizeNode.POINTS_PAY_RECEIVE, info);
+                    if(!targetMessage.isEmpty()) {
+                        target.sendMessage(targetMessage);
+                    }
                 }
             } else {
-                sender.sendMessage(LocalizeConfig.parseString(
-                        LocalizeNode.POINTS_FAIL, info));
+                final String failMessage = LocalizeConfig.parseString(
+                        LocalizeNode.POINTS_FAIL, info);
+                if(!failMessage.isEmpty()) {
+                    sender.sendMessage(failMessage);
+                }
             }
         } catch(NumberFormatException notnumber) {
             info.put(Flag.EXTRA, args[1]);
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.NOT_INTEGER, info));
+            final String errorMessage = LocalizeConfig.parseString(
+                    LocalizeNode.NOT_INTEGER, info);
+            if(!errorMessage.isEmpty()) {
+                sender.sendMessage(errorMessage);
+            }
         }
         return true;
     }

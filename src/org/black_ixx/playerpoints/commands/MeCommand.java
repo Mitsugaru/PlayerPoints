@@ -25,19 +25,28 @@ public class MeCommand implements PointsCommand {
             Command command, String label, String[] args,
             EnumMap<Flag, String> info) {
         if(!(sender instanceof Player)) {
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.CONSOLE_DENY, info));
+            final String consoleMessage = LocalizeConfig.parseString(
+                    LocalizeNode.CONSOLE_DENY, info);
+            if(!consoleMessage.isEmpty()) {
+                sender.sendMessage(consoleMessage);
+            }
             return true;
         }
         if(!PermissionHandler.has(sender, PermissionNode.ME)) {
             info.put(Flag.EXTRA, PermissionNode.ME.getNode());
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.PERMISSION_DENY, info));
+            final String permMessage = LocalizeConfig.parseString(
+                    LocalizeNode.PERMISSION_DENY, info);
+            if(!permMessage.isEmpty()) {
+                sender.sendMessage(permMessage);
+            }
             return true;
         }
         info.put(Flag.AMOUNT, "" + plugin.getAPI().look(((Player)sender).getUniqueId()));
-        sender.sendMessage(LocalizeConfig.parseString(LocalizeNode.POINTS_ME,
-                info));
+        final String meMessage = LocalizeConfig.parseString(LocalizeNode.POINTS_ME,
+                info);
+        if(!meMessage.isEmpty()) {
+            sender.sendMessage(meMessage);
+        }
         return true;
     }
 

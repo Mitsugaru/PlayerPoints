@@ -20,23 +20,35 @@ public class ResetCommand implements PointsCommand {
             EnumMap<Flag, String> info) {
         if(!PermissionHandler.has(sender, PermissionNode.RESET)) {
             info.put(Flag.EXTRA, PermissionNode.RESET.getNode());
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.PERMISSION_DENY, info));
+            final String permMessage = LocalizeConfig.parseString(
+                    LocalizeNode.PERMISSION_DENY, info);
+            if(!permMessage.isEmpty()) {
+                sender.sendMessage(permMessage);
+            }
             return true;
         }
         if(args.length < 1) {
             // Falsche Argumente
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.COMMAND_RESET, info));
+            final String argMessage = LocalizeConfig.parseString(
+                    LocalizeNode.COMMAND_RESET, info);
+            if(!argMessage.isEmpty()) {
+                sender.sendMessage(argMessage);
+            }
             return true;
         }
         if(plugin.getAPI().reset(plugin.translateNameToUUID(args[0]))) {
             info.put(Flag.PLAYER, args[0]);
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.POINTS_RESET, info));
+            final String resetMessage = LocalizeConfig.parseString(
+                    LocalizeNode.POINTS_RESET, info);
+            if(!resetMessage.isEmpty()) {
+                sender.sendMessage(resetMessage);
+            }
         } else {
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.POINTS_FAIL, info));
+            final String failMessage = LocalizeConfig.parseString(
+                    LocalizeNode.POINTS_FAIL, info);
+            if(!failMessage.isEmpty()) {
+                sender.sendMessage(failMessage);
+            }
         }
         return true;
     }

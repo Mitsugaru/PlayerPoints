@@ -26,14 +26,20 @@ public class SetCommand implements PointsCommand {
             EnumMap<Flag, String> info) {
         if(!PermissionHandler.has(sender, PermissionNode.SET)) {
             info.put(Flag.EXTRA, PermissionNode.SET.getNode());
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.PERMISSION_DENY, info));
+            final String permMessage = LocalizeConfig.parseString(
+                    LocalizeNode.PERMISSION_DENY, info);
+            if(!permMessage.isEmpty()) {
+                sender.sendMessage(permMessage);
+            }
             return true;
         }
         if(args.length < 2) {
             // Falsche Argumente
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.COMMAND_SET, info));
+            final String argMessage = LocalizeConfig.parseString(
+                    LocalizeNode.COMMAND_SET, info);
+            if(!argMessage.isEmpty()) {
+                sender.sendMessage(argMessage);
+            }
             return true;
         }
         try {
@@ -48,17 +54,26 @@ public class SetCommand implements PointsCommand {
             if(plugin.getAPI().set(plugin.translateNameToUUID(playerName), intanzahl)) {
                 info.put(Flag.PLAYER, playerName);
                 info.put(Flag.AMOUNT, "" + intanzahl);
-                sender.sendMessage(LocalizeConfig.parseString(
-                        LocalizeNode.POINTS_SUCCESS, info));
+                final String successMessage = LocalizeConfig.parseString(
+                        LocalizeNode.POINTS_SUCCESS, info);
+                if(!successMessage.isEmpty()) {
+                    sender.sendMessage(successMessage);
+                }
             } else {
-                sender.sendMessage(LocalizeConfig.parseString(
-                        LocalizeNode.POINTS_FAIL, info));
+                final String failMessage = LocalizeConfig.parseString(
+                        LocalizeNode.POINTS_FAIL, info);
+                if(!failMessage.isEmpty()) {
+                    sender.sendMessage(failMessage);
+                }
             }
 
         } catch(NumberFormatException notnumber) {
             info.put(Flag.EXTRA, args[1]);
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.NOT_INTEGER, info));
+            final String errorMessage = LocalizeConfig.parseString(
+                    LocalizeNode.NOT_INTEGER, info);
+            if(!errorMessage.isEmpty()) {
+                sender.sendMessage(errorMessage);
+            }
         }
         return true;
     }

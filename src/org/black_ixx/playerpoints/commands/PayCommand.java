@@ -28,27 +28,39 @@ public class PayCommand implements PointsCommand {
             Command command, String label, String[] args,
             EnumMap<Flag, String> info) {
         if(!(sender instanceof Player)) {
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.CONSOLE_DENY, info));
+            final String consoleMessage = LocalizeConfig.parseString(
+                    LocalizeNode.CONSOLE_DENY, info);
+            if(!consoleMessage.isEmpty()) {
+                sender.sendMessage(consoleMessage);
+            }
             return true;
         }
         if(!PermissionHandler.has(sender, PermissionNode.PAY)) {
             info.put(Flag.EXTRA, PermissionNode.PAY.getNode());
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.PERMISSION_DENY, info));
+            final String permMessage = LocalizeConfig.parseString(
+                    LocalizeNode.PERMISSION_DENY, info);
+            if(!permMessage.isEmpty()) {
+                sender.sendMessage(permMessage);
+            }
             return true;
         }
         if(args.length < 2) {
             // Falsche Argumente
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.COMMAND_PAY, info));
+            final String argMessage = LocalizeConfig.parseString(
+                    LocalizeNode.COMMAND_PAY, info);
+            if(!argMessage.isEmpty()) {
+                sender.sendMessage(argMessage);
+            }
             return true;
         }
         try {
             final int intanzahl = Integer.parseInt(args[1]);
             if(intanzahl <= 0) {
-                sender.sendMessage(LocalizeConfig.parseString(
-                        LocalizeNode.POINTS_PAY_INVALID, info));
+                final String invalidMessage = LocalizeConfig.parseString(
+                        LocalizeNode.POINTS_PAY_INVALID, info);
+                if(!invalidMessage.isEmpty()) {
+                    sender.sendMessage(invalidMessage);
+                }
                 return true;
             }
             String playerName = null;
@@ -62,23 +74,35 @@ public class PayCommand implements PointsCommand {
             if(plugin.getAPI().pay(((Player)sender).getUniqueId(), id, intanzahl)) {
                 info.put(Flag.PLAYER, playerName);
                 info.put(Flag.AMOUNT, "" + args[1]);
-                sender.sendMessage(LocalizeConfig.parseString(
-                        LocalizeNode.POINTS_PAY_SEND, info));
+                final String sendMessage = LocalizeConfig.parseString(
+                        LocalizeNode.POINTS_PAY_SEND, info);
+                if(!sendMessage.isEmpty()) {
+                    sender.sendMessage(sendMessage);
+                }
                 // Send message to receiver
                 final Player target = Bukkit.getServer().getPlayer(id);
                 if(target != null && target.isOnline()) {
                     info.put(Flag.PLAYER, sender.getName());
-                    target.sendMessage(LocalizeConfig.parseString(
-                            LocalizeNode.POINTS_PAY_RECEIVE, info));
+                    final String receiveMessage = LocalizeConfig.parseString(
+                            LocalizeNode.POINTS_PAY_RECEIVE, info);
+                    if(!receiveMessage.isEmpty()) {
+                        target.sendMessage(receiveMessage);
+                    }
                 }
             } else {
-                sender.sendMessage(LocalizeConfig.parseString(
-                        LocalizeNode.POINTS_LACK, info));
+                final String lackMessage = LocalizeConfig.parseString(
+                        LocalizeNode.POINTS_LACK, info);
+                if(!lackMessage.isEmpty()) {
+                    sender.sendMessage(lackMessage);
+                }
             }
         } catch(NumberFormatException notnumber) {
             info.put(Flag.EXTRA, args[1]);
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.NOT_INTEGER, info));
+            final String errorMessage = LocalizeConfig.parseString(
+                    LocalizeNode.NOT_INTEGER, info);
+            if(!errorMessage.isEmpty()) {
+                sender.sendMessage(errorMessage);
+            }
         }
         return true;
     }

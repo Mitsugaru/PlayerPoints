@@ -21,12 +21,19 @@ public class ReloadCommand implements PointsCommand {
             EnumMap<Flag, String> info) {
         if(!PermissionHandler.has(sender, PermissionNode.RELOAD)) {
             info.put(Flag.EXTRA, PermissionNode.RELOAD.getNode());
-            sender.sendMessage(LocalizeConfig.parseString(LocalizeNode.PERMISSION_DENY, info));
+            final String permMessage = LocalizeConfig.parseString(
+                    LocalizeNode.PERMISSION_DENY, info);
+            if(!permMessage.isEmpty()) {
+                sender.sendMessage(permMessage);
+            }
             return true;
         }
         plugin.getModuleForClass(RootConfig.class).reloadConfig();
         LocalizeConfig.reload();
-        sender.sendMessage(LocalizeConfig.parseString(LocalizeNode.RELOAD, info));
+        final String reloadMessage = LocalizeConfig.parseString(LocalizeNode.RELOAD, info);
+        if(!reloadMessage.isEmpty()) {
+            sender.sendMessage(reloadMessage);
+        }
         return true;
     }
 

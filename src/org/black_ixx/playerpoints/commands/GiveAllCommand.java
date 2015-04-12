@@ -24,13 +24,19 @@ public class GiveAllCommand implements PointsCommand {
             EnumMap<Flag, String> info) {
         if(!PermissionHandler.has(sender, PermissionNode.GIVEALL)) {
             info.put(Flag.EXTRA, PermissionNode.GIVEALL.getNode());
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.PERMISSION_DENY, info));
+            final String permMessage = LocalizeConfig.parseString(
+                    LocalizeNode.PERMISSION_DENY, info);
+            if(!permMessage.isEmpty()) {
+                sender.sendMessage(permMessage);
+            }
             return true;
         }
         if(args.length < 1) {
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.COMMAND_GIVEALL, info));
+            final String argMessage = LocalizeConfig.parseString(
+                    LocalizeNode.COMMAND_GIVEALL, info);
+            if(!argMessage.isEmpty()) {
+                sender.sendMessage(argMessage);
+            }
             return true;
         }
         try {
@@ -41,8 +47,11 @@ public class GiveAllCommand implements PointsCommand {
                 if(player != null) {
                     if(plugin.getAPI().give(player.getUniqueId(), anzahl)) {
                         info.put(Flag.PLAYER, sender.getName());
-                        player.sendMessage(LocalizeConfig.parseString(
-                                LocalizeNode.POINTS_PAY_RECEIVE, info));
+                        final String receiveMessage = LocalizeConfig.parseString(
+                                LocalizeNode.POINTS_PAY_RECEIVE, info);
+                        if(!receiveMessage.isEmpty()) {
+                            player.sendMessage(receiveMessage);
+                        }
                     } else {
                         unsuccessful.add(player.getName());
                     }
@@ -52,18 +61,27 @@ public class GiveAllCommand implements PointsCommand {
                     Flag.PLAYER,
                     String.valueOf(Bukkit.getOnlinePlayers().size()
                             - unsuccessful.size()));
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.POINTS_SUCCESS_ALL, info));
+            final String successMessage = LocalizeConfig.parseString(
+                    LocalizeNode.POINTS_SUCCESS_ALL, info);
+            if(!successMessage.isEmpty()) {
+                sender.sendMessage(successMessage);
+            }
             if(!unsuccessful.isEmpty()) {
                 // TODO maybe tell them which players failed...
                 info.put(Flag.PLAYER, String.valueOf(unsuccessful.size()));
-                sender.sendMessage(LocalizeConfig.parseString(
-                        LocalizeNode.POINTS_FAIL_ALL, info));
+                final String failMessage = LocalizeConfig.parseString(
+                        LocalizeNode.POINTS_FAIL_ALL, info);
+                if(!failMessage.isEmpty()) {
+                    sender.sendMessage(failMessage);
+                }
             }
         } catch(NumberFormatException notnumber) {
             info.put(Flag.EXTRA, args[1]);
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.NOT_INTEGER, info));
+            final String errorMessage = LocalizeConfig.parseString(
+                    LocalizeNode.NOT_INTEGER, info);
+            if(!errorMessage.isEmpty()) {
+                sender.sendMessage(errorMessage);
+            }
         }
         return true;
     }

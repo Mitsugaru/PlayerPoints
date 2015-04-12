@@ -55,8 +55,11 @@ public class LeadCommand extends CommandHandler {
         // Check permissions
         if(!PermissionHandler.has(sender, PermissionNode.LEAD)) {
             info.put(Flag.EXTRA, PermissionNode.LEAD.getNode());
-            sender.sendMessage(LocalizeConfig.parseString(
-                    LocalizeNode.PERMISSION_DENY, info));
+            final String permMessage = LocalizeConfig.parseString(
+                    LocalizeNode.PERMISSION_DENY, info);
+            if(!permMessage.isEmpty()) {
+                sender.sendMessage(permMessage);
+            }
             return true;
         }
 
