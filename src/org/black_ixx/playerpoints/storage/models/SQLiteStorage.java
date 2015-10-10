@@ -7,10 +7,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.logging.Level;
 
+import lib.PatPeter.SQLibrary.SQLite;
+
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.storage.DatabaseStorage;
-
-import lib.PatPeter.SQLibrary.SQLite;
 
 /**
  * Storage handler for SQLite.
@@ -35,6 +35,7 @@ public class SQLiteStorage extends DatabaseStorage {
         sqlite = new SQLite(plugin.getLogger(), " ", plugin.getDataFolder()
                 .getAbsolutePath(), "storage");
         sqlite.open();
+        SetupQueries("playerpoints");
         if(!sqlite.isTable("playerpoints")) {
             build();
         }

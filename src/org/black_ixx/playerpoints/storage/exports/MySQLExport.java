@@ -35,10 +35,11 @@ public class MySQLExport extends DatabaseExport {
 
     @Override
     void doExport() {
+    	RootConfig config = plugin.getModuleForClass(RootConfig.class);
         IStorage yaml = generator.createStorageHandlerForType(StorageType.YAML);
         ResultSet query = null;
         try {
-            query = mysql.query("SELECT * FROM playerpoints");
+            query = mysql.query(String.format("SELECT * FROM %s", config.table));
             if(query.next()) {
                 do {
                     yaml.setPoints(query.getString("playername"),
@@ -48,7 +49,7 @@ public class MySQLExport extends DatabaseExport {
             query.close();
         } catch(SQLException e) {
             plugin.getLogger().log(Level.SEVERE,
-                    "SQLException on SQLite export", e);
+                    "SQLException on MySQL export", e);
         } finally {
             mysql.close();
         }

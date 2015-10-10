@@ -20,23 +20,23 @@ public abstract class DatabaseStorage implements IStorage {
     /**
      * Query for getting points.
      */
-    protected static final String GET_POINTS = "SELECT points FROM playerpoints WHERE playername=?;";
+    protected String GET_POINTS = "SELECT points FROM %s WHERE playername=?;";
     /**
      * Query for getting player names.
      */
-    protected static final String GET_PLAYERS = "SELECT playername FROM playerpoints;";
+    protected String GET_PLAYERS = "SELECT %s FROM playerpoints;";
     /**
      * Query for adding a new player.
      */
-    protected static final String INSERT_PLAYER = "INSERT INTO playerpoints (points,playername) VALUES(?,?);";
+    protected String INSERT_PLAYER = "INSERT INTO %s (points,playername) VALUES(?,?);";
     /**
      * Query for updating a player's point amount.
      */
-    protected static final String UPDATE_PLAYER = "UPDATE playerpoints SET points=? WHERE playername=?";
+    protected String UPDATE_PLAYER = "UPDATE %s SET points=? WHERE playername=?";
     /**
      * Query for removing a player.
      */
-    protected static final String REMOVE_PLAYER = "DELETE playerpoints WHERE playername=?";
+    protected String REMOVE_PLAYER = "DELETE %s WHERE playername=?";
 
     /**
      * Constructor.
@@ -46,6 +46,14 @@ public abstract class DatabaseStorage implements IStorage {
      */
     public DatabaseStorage(PlayerPoints plugin) {
         this.plugin = plugin;
+    }
+    
+    protected void SetupQueries(String tableName) {
+    	GET_POINTS = String.format(GET_POINTS, tableName);
+    	GET_PLAYERS = String.format(GET_PLAYERS, tableName);
+    	INSERT_PLAYER = String.format(INSERT_PLAYER, tableName);
+    	UPDATE_PLAYER = String.format(UPDATE_PLAYER, tableName);
+    	REMOVE_PLAYER = String.format(REMOVE_PLAYER, tableName);
     }
 
     /**

@@ -23,7 +23,7 @@ public class RootConfig implements IModule {
     /**
      * Database info.
      */
-    public String host, port, database, user, password;
+    public String host, port, database, user, password, table;
     /**
      * Vote amount and MySQL retry limit.
      */
@@ -104,6 +104,7 @@ public class RootConfig implements IModule {
         database = config.getString("mysql.database", "minecraft");
         user = config.getString("mysql.user", "user");
         password = config.getString("mysql.password", "password");
+        table = config.getString("mysql.table", "playerpoints");
         importSQL = config.getBoolean("mysql.import.use", false);
         retryLimit = config.getInt("mysql.retry", 10);
         exportSQL = config.getBoolean("mysql.export.use", false);
@@ -144,6 +145,7 @@ public class RootConfig implements IModule {
         defaults.put("mysql.database", "minecraft");
         defaults.put("mysql.user", "username");
         defaults.put("mysql.password", "pass");
+        defaults.put("mysql.table", "playerpoints");
         defaults.put("mysql.import.use", false);
         defaults.put("mysql.import.source", "YAML");
         defaults.put("mysql.export.use", false);

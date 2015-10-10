@@ -29,6 +29,10 @@ public class MySQLStorage extends DatabaseStorage {
      */
     private int retryLimit = 10;
     /**
+     * The table name to use.
+     */
+    private String tableName;
+    /**
      * Current retry count.
      */
     private int retryCount = 0;
@@ -49,9 +53,13 @@ public class MySQLStorage extends DatabaseStorage {
         if(config.debugDatabase) {
         	plugin.getLogger().info("Constructor");
         }
-        retryLimit = plugin.getModuleForClass(RootConfig.class).retryLimit;
+        retryLimit = config.retryLimit;
+        //setup table name and strings
+        tableName = config.table;
+        SetupQueries(tableName);
+        //Connect
         connect();
-        if(!mysql.isTable("playerpoints")) {
+        if(!mysql.isTable(tableName)) {
             build();
         }
     }
@@ -292,7 +300,7 @@ public class MySQLStorage extends DatabaseStorage {
         	plugin.getLogger().info("Dropping playerpoints table");
         }
         try {
-            mysql.query("DROP TABLE playerpoints;");
+            mysql.query(String.format("DROP TABLE %s;", tableName));
             success = true;
         } catch(SQLException e) {
             plugin.getLogger().log(Level.SEVERE,
@@ -306,10 +314,10 @@ public class MySQLStorage extends DatabaseStorage {
         boolean success = false;
         RootConfig config = plugin.getModuleForClass(RootConfig.class);
         if(config.debugDatabase) {
-        	plugin.getLogger().info("Creating playerpoints table");
+        	plugin.getLogger().info(String.format("Creating %s table", tableName));
         }
         try {
-            mysql.query("CREATE TABLE playerpoints (id INT UNSIGNED NOT NULL AUTO_INCREMENT, playername varchar(36) NOT NULL, points INT NOT NULL, PRIMARY KEY(id), UNIQUE(playername));");
+            mysql.query(String.format("CREATE TABLE %s (id INT UNSIGNED NOT NULL AUTO_INCREMENT, playername varchar(36) NOT NULL, points INT NOT NULL, PRIMARY KEY(id), UNIQUE(playername));", tableName));
             success = true;
         } catch(SQLException e) {
             plugin.getLogger().log(Level.SEVERE,
