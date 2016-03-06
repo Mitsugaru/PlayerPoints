@@ -4,7 +4,7 @@
 	<!-- Project properties. -->
 	<groupId>org.black_ixx</groupId>
 	<artifactId>PlayerPoints</artifactId>
-	<version>2.1.4</version>
+	<version>2.1.5-SNAPSHOT</version>
 	<name>PlayerPoints</name>
 	<description>Player points system for Bukkit</description>
 	<!-- Source code management URL. -->
