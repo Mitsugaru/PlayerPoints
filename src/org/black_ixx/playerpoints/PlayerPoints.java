@@ -226,7 +226,8 @@ public class PlayerPoints extends JavaPlugin {
         if(config.debugUUID) {
         	getLogger().info("translateNameToUUID() - Looking through online players: " + Bukkit.getServer().getOnlinePlayers().size());
         }
-        for(Player p : Bukkit.getServer().getOnlinePlayers()) {
+        Collection<? extends Player> players = Bukkit.getServer().getOnlinePlayers();
+        for(Player p : players) {
             if(p.getName().equalsIgnoreCase(name)) {
                 id = p.getUniqueId();
                 if(config.debugUUID) {
