@@ -24,7 +24,7 @@ public abstract class DatabaseStorage implements IStorage {
     /**
      * Query for getting player names.
      */
-    protected String GET_PLAYERS = "SELECT %s FROM playerpoints;";
+    protected String GET_PLAYERS = "SELECT playername FROM %s;";
     /**
      * Query for adding a new player.
      */
