@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.logging.Level;
 
 import org.black_ixx.playerpoints.PlayerPoints;
+import org.black_ixx.playerpoints.services.ExecutorModule;
 import org.black_ixx.playerpoints.storage.IStorage;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -35,6 +36,11 @@ public class YAMLStorage implements IStorage {
     private YamlConfiguration config;
 
     /**
+     * Task that saves to disk.
+     */
+    private SaveTask saveTask;
+
+    /**
      * Points section string.
      */
     private static final String POINTS_SECTION = "Points.";
@@ -50,22 +56,18 @@ public class YAMLStorage implements IStorage {
         file = new File(plugin.getDataFolder().getAbsolutePath()
                 + "/storage.yml");
         config = YamlConfiguration.loadConfiguration(file);
+        saveTask = new SaveTask();
         save();
     }
 
     /**
      * Save the config data.
+     *
+     * The save action is done in a separate thread to save the server
+     * performance.
      */
     public void save() {
-        // Set config
-        try {
-            // Save the file
-            config.save(file);
-        } catch(IOException e1) {
-            plugin.getLogger().warning(
-                    "File I/O Exception on saving storage.yml");
-            e1.printStackTrace();
-        }
+        plugin.getModuleForClass(ExecutorModule.class).submit(saveTask);
     }
 
     /**
@@ -135,6 +137,21 @@ public class YAMLStorage implements IStorage {
             plugin.getLogger().log(Level.SEVERE, "Failed to create storage file!", e);
         }
         return success;
+    }
+
+    private final class SaveTask implements Runnable {
+        @Override
+        public void run() {
+            // Set config
+            try {
+                // Save the file
+                config.save(file);
+            } catch(IOException e1) {
+                plugin.getLogger().warning(
+                        "File I/O Exception on saving storage.yml");
+                e1.printStackTrace();
+            }
+        }
     }
 
 }
