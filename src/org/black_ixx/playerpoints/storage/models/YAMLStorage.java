@@ -106,6 +106,7 @@ public class YAMLStorage implements IStorage {
     @Override
     public boolean removePlayer(String id) {
         config.set(POINTS_SECTION + id, null);
+        save();
         return true;
     }
 
@@ -125,6 +126,7 @@ public class YAMLStorage implements IStorage {
         for(String section: sections) {
             config.set(section, null);
         }
+        save();
         return true;
     }
 
