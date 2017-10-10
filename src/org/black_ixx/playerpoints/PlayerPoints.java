@@ -14,6 +14,7 @@ import org.black_ixx.playerpoints.config.LocalizeConfig;
 import org.black_ixx.playerpoints.config.RootConfig;
 import org.black_ixx.playerpoints.listeners.RestrictionListener;
 import org.black_ixx.playerpoints.listeners.VotifierListener;
+import org.black_ixx.playerpoints.services.ExecutorModule;
 import org.black_ixx.playerpoints.services.IModule;
 import org.black_ixx.playerpoints.storage.StorageHandler;
 import org.black_ixx.playerpoints.storage.exports.Exporter;
@@ -54,6 +55,8 @@ public class PlayerPoints extends JavaPlugin {
         // Initialize config
         RootConfig rootConfig = new RootConfig(this);
         registerModule(RootConfig.class, rootConfig);
+        // Initialize ExecutorService
+        registerModule(ExecutorModule.class, new ExecutorModule());
         // Do imports
         Importer importer = new Importer(this);
         importer.checkImport();
